@@ -1,0 +1,37 @@
+usehook ts
+usehooks
+
+https://create-react-app.dev/docs/getting-started/
+
+npx create-react-app my-app
+cd my-app
+npm start
+
+npm install tailwindcss permet d'installer les dependence tailwindcss
+
+installation de tailwindcss
+1-npm install -D tailwindcss@3 postcss autoprefixer:installe les dependence
+2-npm list tailwindcss  :voir la liste des tailwind installe
+3-npx tailwindcss init -p :creer le fichier init
+4-dans le fichier tailwind.config.js on ajoute  "./src/**/*.{js,jsx,ts,tsx}", dans "content: [],"
+5-Dans le fichier src/index.css on importe 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+npm install styled-components permet d'installe la dependence styled-compoment pour la gestion du style
+
+
+
+
+//gerer le tailwind dans un fichier visual code
+1-npm init
+2- npm install tailwindcss @tailwindcss/cli    
+3-npx @tailwindcss/cli -i ./src/css/input.css -o ./src/css/output.css    
+4-npx @tailwindcss/cli -i ./src/css/input.css -o ./src/css/output.css --watch  
+
+
+
+# npm 7+, extra double-dash is needed:
+npm create vite@latest nom_de_l'application -- --template react
+npm run dev

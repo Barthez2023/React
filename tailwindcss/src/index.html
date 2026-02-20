@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/output.css" rel="stylesheet">
+    <title>Busy bar formation tailwind css</title>
+</head>
+<body>
+    <!-- video -->
+     <video src="assets/images/welcome.mp4" autoplay loop muted
+        class="absolute -z-10
+        object-cover
+        w-full
+        h-screen"
+     ></video>
+    <main class="container mx-auto px-10 min-h-screen flex flex-col ">
+        <header class="flex justify-between items-center ">
+            <navbar>
+                <ul class="flex gap-5 text-gray-400 underline ">
+                    <li class="hover:text-black cursor-pointer duration-300"><a href="#">Busy Bar</a></li>
+                    <li class="hover:text-black cursor-pointer duration-300"><a href="#">Boutique</a></li>
+                    <li class="hover:text-black cursor-pointer duration-300"><a href="#">Telechargement</a></li>
+                    <li class="hover:text-black cursor-pointer duration-300"><a href="#">Blog</a></li>
+                </ul>
+            </navbar>
+            <a href="#"><img src="assets/images/badge.svg" alt="Badge" class="w-44 grayscale-100 
+            hover:grayscale-0 
+            cursor-pointer 
+            duration-300
+            hover:-translate-y-1
+            mt-5"></a>
+        </header>
+
+        <section class="flex flex-col mx-auto justify-center max-w-137.5 text-ls mt-[40vh] grow">
+            <p class=""><span class="font-bold">BUSY Bar </span>est un dispositif multi-outils de productivite avec un ecran LED pixelise.
+                Minuteur de concentration avecċfonction de blacage des distractions sur votre telephon et PC.Entierement personnalisable,open-source et pret pour la maison connectee.
+            </p>
+            <button class="btn"
+            >Acheter</button>
+        </section>
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 text-ls mt-5 mb-3 opacity-80">
+            <div class="flex items-start gap-3">
+                <img src="assets/images/feature-one.svg" alt="" class="w-14">
+                <div>
+                    <h2 class="font-bold mb-1.5">Outil de productivite</h2>
+                    <p>Blocages des distractions ,message busy personalise,
+                        minuteur de concentration,synchronisation multiplatforme.</p>
+                </div>
+            </div>
+            <div class="flex items-start gap-3">
+                <img src="assets/images/feature-two.svg" alt="" class="w-14">
+                <div>
+                    <h2 class="font-bold mb-1.5">Application et Integratin</h2>
+                    <p>Bibliotheque d'application,connexion a des logiciels tiers,
+                        integrations ave des evenementsde calandreier et appels </p>
+                </div>
+            </div>
+            <div class="flex items-start gap-3">
+                <img src="assets/images/feature-three.svg" alt="" class="w-14">
+                <div>
+                    <h2 class="font-bold mb-1.5">Support Maison Connecte</h2>
+                    <p>Connecte vous a  Google Homeet Apple Home via le protocol Matter.</p>
+                </div>
+            </div>
+            <div class="flex items-start gap-3">
+                <img src="assets/images/feature-four.svg" alt="" class="w-14">
+                <div>
+                    <h2 class="font-bold mb-1.5">Pour les developpeurs</h2>
+                    <p>API,HTTP ouverte,SDK open source,bibliotheques python/Go/Java.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    <section class="flex h-screen">
+        <div class="w-1/2 flex items-center ">
+            <div>
+                <h1 class="text-5xl font-bold font-merriweather">Montrez que vous etes occupe</h1>
+                <p class="mt-4 mb-10 text-xl">Empeche les autres d'interompre votre concentration profonde .
+                    L'ecran affiche que vous etes occupe et quand vous serez a nouveau disponible
+                </p>
+                <div class="flex gap-3 mt-10">
+                    <img src="assets/images/demo-one.png" alt="" class="w-20 items-start">
+                    <div>
+                        <h2 class="font-bold">Activation instantanee</h2>
+                        <p class="text-sm">Active et desactive les status Busy manuellement avec un large boutton 
+                            Fonctionne normalement hors ligne sans logicile requis.
+                        </p>
+                    </div>
+                </div>
+                <div class="flex gap-3 mt-10">
+                    <img src="assets/images/demo-two.png" alt=""  class="w-20 items-start">
+                    <div>
+                        <h2 class="font-bold">Set Timer</h2>
+                        <p class="text-sm">Set an optional expiration timer BUSY using the scroll wheet to let 
+                            others knows when you'll be available again .
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="w-1/2 relative">
+            <video src="assets/images/busy.mp4" autoplay loop muted
+            class="absolute -z-10
+            object-cover
+            w-full
+            h-screen">
+        </div>
+    </section>
+</body>
+</html>

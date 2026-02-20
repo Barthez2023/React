@@ -1,0 +1,29 @@
+.element{
+    margin-bottom: 30px;
+    filter: drop-shadow(0 0 1rem rgba(59 ,121 ,246 ,0.15));
+}
+.title{
+    margin-bottom: 10px;
+}
+.container{
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+    gap: 15px;
+}
+.input{
+    background-color: #171717;
+    border: 1px solid #272727;
+    border-radius: 8px;
+    font-size: 17px;
+    /* height: 40px; */
+    width: 100%;
+    padding: 15px 10px;
+    color: gray;
+    box-shadow: 1px 1px 20px #1b4eb2;
+}
+.input:focus{
+    outline: none;
+    color: white;
+    border-color: rgba(59 ,121 ,246 ,0.55);
+}

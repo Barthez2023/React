@@ -1,0 +1,73 @@
+.container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    border-radius: 8px;
+    border: 1px solid;
+    padding: 24px;
+    cursor: pointer;
+}
+.item{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+.default{
+    background-color: #171717;
+    border-color: #272727;
+}
+.default:hover{
+    background-color: rgba(59, 121, 246, 0.03);
+    border-color: rgba(59, 121, 246, 0.15);
+}
+.sucess{
+    background-color: rgba(64, 166, 24, 0.04);
+    border-color: rgba(84, 255, 14, 0.15);
+}
+.success:hover{
+    background-color: rgba(84, 255, 14, 0.07);
+    border-color: rgba(84, 255, 14, 0.2);
+}
+.id{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-weight: bolder;
+    margin: 0 2px;
+    font-size: 0.8rem;
+}
+.iddefault{
+    background-color: rgba(59, 121, 246, 0.15);
+    color: #2870ff;
+}
+.idsuccess{
+    background-color: rgba(84, 255, 14, 0.15);
+    color: rgba(84, 255, 14, 0.4);
+}
+.contentdefault{
+    color: white;
+}
+.contentsuccess{
+    text-decoration: line-through;
+    color: rgba(84, 255, 14, 0.4);
+}
+.corbeille{
+    color: rgba(84, 255, 14, 0.4);
+}
+.contentBlock {
+    display: flex;
+    flex-direction: column;
+    margin-left: 15px;
+    /* flex: 1; */
+}
+
+.date {
+    font-size: 14px;
+    color: gray;
+    margin-top: 10px;
+}
