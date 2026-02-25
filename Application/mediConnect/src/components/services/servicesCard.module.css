@@ -1,0 +1,26 @@
+.card {
+    background-color: #444; /* légèrement plus clair que le background */
+    padding: 20px 25px;
+    width: 280px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.6);
+}
+
+.doctorname {
+    color: #ffffff;
+    font-size: 20px;
+    margin: 0 0 8px 0;
+}
+
+.doctorspeciality {
+    color: #4da6ff; /* couleur accent moderne */
+    font-size: 16px;
+    margin: 0;
+    font-weight: 500;
+}

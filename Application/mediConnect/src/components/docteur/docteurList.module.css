@@ -1,0 +1,56 @@
+.containerStyle{
+    margin-top: 30px;
+    border-top: 2px solid #eee;
+}
+.cardStyle{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    margin: 10px 0;
+    /* background-color:#f9f9f9; */
+    border: 1px solid #f9f9f9;
+    border-radius: 5px;
+}
+.btnStyle{
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    background-color:#2ecc71;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin: 5px;
+}
+.selectStyle {
+    flex: 1; /* un peu plus petit que l’input */
+    padding: 10px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    margin-left: 15px;
+    border: 1px solid #ccc;
+
+}
+.titre {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+}
+
+/* Centrer parfaitement le h2 */
+.titre h2 {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+}
+
+/* Mettre l'input complètement à droite */
+.titre input {
+  margin-left: auto;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  font-size: 16px;
+}
