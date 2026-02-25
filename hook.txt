@@ -34,4 +34,14 @@ npm install styled-components permet d'installe la dependence styled-compoment p
 
 # npm 7+, extra double-dash is needed:
 npm create vite@latest nom_de_l'application -- --template react
+cd nom_de_l'application
+npm install : Télécharge toutes les "recettes" (dépendances) de React.
+npm install react-router-dom         //installe les dependences pour la gestions des routes(import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 npm run dev
+
+
+
+
+https://www.youtube.com/watch?v=W9LHxbR6fWs:react formation
+https://www.youtube.com/watch?v=GXYvtczB0pk  :reactţformation
+https://www.youtube.com/watch?v=LY3xsaQB7ZE&list=PLtKaauZVThjBt8nMBSa68YMdJR_I_vIU4&index=15  :react formation
