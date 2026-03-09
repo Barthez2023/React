@@ -1,0 +1,111 @@
+.container1 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.container2{
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 450px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.4s ease-out;
+}
+.icon{
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  background-color: #4CAF50;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: scaleIn 0.5s ease-out;
+}
+.title{
+    font-size: 28px;
+    font-weight: bolder;
+    color: #333;
+    margin-bottom: 15px;
+}
+.message{
+    color: #666;
+    font-size: 16px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+.submessage{
+    font-size: 14px;
+    color: #999;
+    margin-bottom: 30px;
+}
+.confirmbtn{
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 15px 40px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+.cancelbtn{
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #999;
+  line-height: 1;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s ease;
+}
+/* Effet au survol */
+.cancelbtn:hover {
+  color: #333;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { 
+    transform: translateY(50px);
+    opacity: 0;
+    }
+    to { 
+    transform: translateY(0);
+    opacity: 1;
+    }
+}
+
+@keyframes scaleIn {
+    from { 
+    transform: scale(0);
+    }
+    to { 
+    transform: scale(1);
+    }
+}

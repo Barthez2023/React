@@ -1,0 +1,113 @@
+.signinContainer {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #e0e4e3;
+    padding: 40px 20px;
+    width: 100%;
+}
+
+.signinForm {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 800px; /* Plus large pour les deux colonnes */
+}
+
+.signinTitle {
+    color: #0056b3;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+}
+
+/* Grille pour organiser les champs */
+.formGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Deux colonnes égales */
+    gap: 20px; /* Espace entre les champs */
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+}
+
+.inputGroup label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #34495e;
+    margin-bottom: 5px;
+}
+
+.inputGroup input, .inputGroup select {
+    padding: 10px;
+    border: 1px solid #dcdde1;
+    border-radius: 6px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.inputGroup input:focus {
+    border-color: #0056b3;
+}
+
+.signin_btn {
+    grid-column: span 2; /* Le bouton prend toute la largeur */
+    margin-top: 30px;
+    padding: 15px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.signin_btn:hover {
+    background-color: #004494;
+}
+
+.signinFooter {
+    text-align: center;
+    margin-top: 20px;
+    color: #7f8c8d;
+    grid-column: span 2;
+}
+
+.signinFooter span {
+    color: #0056b3;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Responsivité : Une seule colonne sur mobile */
+@media (max-width: 600px) {
+    .formGrid {
+        grid-template-columns: 1fr;
+    }
+    .signin_btn, .signinFooter {
+        grid-column: span 1;
+    }
+}
+
+
+/* Style du select */
+.select_container {
+  width: 100%;
+  padding: 10px 40px 10px 12px; /* espace intérieur, prévoir espace pour la flèche */
+  border-radius: 8px;
+  font-size: 16px;
+  color: #333;
+  appearance: none;              /* supprime l'apparence native */
+  -webkit-appearance: none;      /* Safari/Chrome */
+  -moz-appearance: none;         /* Firefox */
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
