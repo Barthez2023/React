@@ -87,3 +87,24 @@
     justify-content: space-between;
     gap: 30px;
 }
+
+.clearBtn {
+    position: fixed;       /* Toujours visible */
+    bottom: 20px;          /* 20px du bas */
+    right: 20px;           /* 20px de la droite */
+    background: linear-gradient(45deg, #ff416c, #ff4b2b); /* Dégradé rose/rouge */
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;   /* Bouton arrondi */
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Petit effet d'ombre */
+    transition: all 0.3s ease;
+    z-index: 1000;         /* Toujours au-dessus */
+}
+
+.clearBtn:hover {
+    transform: translateY(-3px) scale(1.05); /* Léger effet au hover */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}

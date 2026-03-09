@@ -45,3 +45,11 @@ npm run dev
 https://www.youtube.com/watch?v=W9LHxbR6fWs:react formation
 https://www.youtube.com/watch?v=GXYvtczB0pk  :reactţformation
 https://www.youtube.com/watch?v=LY3xsaQB7ZE&list=PLtKaauZVThjBt8nMBSa68YMdJR_I_vIU4&index=15  :react formation
+https://www.youtube.com/watch?v=43H_PNDPHtg   :useReducer 
+https://www.youtube.com/watch?v=Pmxb-OlL_Dg   :useReducer
+
+
+
+
+
+https://youtu.be/2p9Ue_xpTAQ?si=ip01w0mriXnEPJze

@@ -1,13 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import style from "./confirmation.module.css"
+import { NameContext } from '../context/nameContext';
+import { TimeContext } from '../context/timeContext';
+import { useContext } from "react";
 
+useContext
 const Confirmation = ({
   selectedSpecialty,
   selectedDoctor,
-  rendevoustime,
-  patientName,
 }) => {
-
   const navigate = useNavigate();   
     if (!selectedDoctor) {                  //ici il y a une modification a faire si le pateint ne choisir pas de medecin on dois genere une erreur plus dynamique
         return (
@@ -20,7 +21,9 @@ const Confirmation = ({
             </button>
             </div>
         );
-    }
+  }
+  const {patientName,setPatientName}=useContext(NameContext)
+  const {rendevoustime}=useContext(TimeContext)
   return (
     <div className={style.page}>
       <div className={style.card}>
@@ -47,9 +50,9 @@ const Confirmation = ({
 
         <button
           className={style.button}
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/rendezvous")}
         >
-          Retour à l'accueil
+         Voir Mes Rendez-Vous
         </button>
       </div>
     </div>

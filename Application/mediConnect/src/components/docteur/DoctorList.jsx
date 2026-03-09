@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import style from "./docteurList.module.css"
-import { useState,useEffect } from "react";
+import { useState,useEffect, useContext } from "react";
+import { TimeContext } from "../context/timeContext";
 
-function DoctorList({handleSelectDoctor,selectedSpecialty,setRendeVousTime,rendevoustime}) {
+function DoctorList({handleSelectDoctor}) {
   const [doctor, setDoctors] = useState([]); // Liste vide au début search
   const [loading, setLoading] = useState(true); // On commence en mode chargement
   const [search, setSearch] = useState(""); // On on garde l'element que l'on veut recherche
@@ -65,6 +66,7 @@ function DoctorList({handleSelectDoctor,selectedSpecialty,setRendeVousTime,rende
     if (loading) {
         return <div style={loaderStyle}>⌛ Chargement des médecins en cours...</div>;
     }
+    const {setRendeVousTime,rendevoustime}=useContext(TimeContext)   //utilisation des context
 
     //fonction qui recupere le temps du rendez-vous
      //fonction pour recupere la valeur du la specialite du docteur

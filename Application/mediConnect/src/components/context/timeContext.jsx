@@ -3,6 +3,6 @@
 import { createContext } from "react";
 
 export const TimeContext=createContext({
-    rendevoustime:"",
+    rendevoustime:"08h30",
     setRendeVousTime:()=>{},
 })

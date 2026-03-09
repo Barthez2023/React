@@ -7,6 +7,7 @@ function Nav() {
         <Link to="/" style={linkStyle}>Accueil</Link>    { /*permet de diriger vers une autre page comme le fait la balise <a> a l'oppose de <a> link ne refresh pas la page */}
         <Link to="/docteurs" style={linkStyle}>Nos Médecins</Link>
         <Link to="/reservation" style={linkStyle}>Prendre RDV</Link>
+        <Link to="/rendezvous" style={linkStyle}>Mes rendevous</Link>
     </nav>
     </div>
   );

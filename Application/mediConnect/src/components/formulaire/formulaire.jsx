@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import style from "./formulaire.module.css"
 import { useNavigate } from 'react-router-dom';
+import { NameContext } from '../context/nameContext';
+import { TimeContext } from '../context/timeContext';
 
-const Formulaire=({handleSelectDoctor,selectedDoctor,selectedSpecialty,setSelectedSpecialty,rendevoustime,patientName,setPatientName})=>{
+const Formulaire=({selectedDoctor,selectedSpecialty,setSelectedSpecialty,dispatch})=>{
   // 2. Un State pour confirmer le rendez-vous
   const [isConfirmed, setIsConfirmed] = useState(false);
   //3. Recupere la specialite du medecin choisir
@@ -18,18 +20,35 @@ const Formulaire=({handleSelectDoctor,selectedDoctor,selectedSpecialty,setSelect
         setSelectedSpecialty(e.target.value);
     };
 
-  const handleConfirm = () => {
-    if (patientName.length > 2) {
-      setIsConfirmed(true);
-      navigate("/confirmation")
-    } else {
-      alert("Veuillez entrer un nom valide.");
-    }
-  };
+  // const handleConfirm = () => {
+  //   if (patientName.length > 2) {
+  //     setIsConfirmed(true);
+  //     navigate("/confirmation")
+  //   } else {
+  //     alert("Veuillez entrer un nom valide.");
+  //   }
+  // };
   const navigate=useNavigate()
   // const handleclick=()=>{
   //   navigate("/confirmation")
   // }
+  const {patientName,setPatientName}=useContext(NameContext)
+  const {rendevoustime}=useContext(TimeContext)
+
+  const handleAdd = () => {
+    const newAppointment = { id: Date.now(), patient:patientName,time:rendevoustime ,doctor:selectedDoctor.name,Spécialité:selectedSpecialty};
+    // On envoie l'ordre au reducer
+    if (patientName.length > 2) {
+      setIsConfirmed(true);
+      dispatch({ type: 'ADD_APPOINTMENT', payload: newAppointment });
+      navigate("/confirmation");
+    } else {
+      alert("Veuillez entrer un nom valide.");
+    }
+
+    
+    
+};
   return (
     <div className={style.container}>
       <h1>MediConnect - Prise de Rendez-vous</h1>
@@ -56,7 +75,7 @@ const Formulaire=({handleSelectDoctor,selectedDoctor,selectedSpecialty,setSelect
                 <option value="Ophtamalogie">Ophtamalogie</option>
            </select>
           <p>Aperçu du badge : <strong>{patientName}</strong>  , {selectedDoctor?.name || "Aucun médecin sélectionné"}</p>
-          <button onClick={handleConfirm} className={style.btnStyle}>
+          <button onClick={handleAdd} className={style.btnStyle}>
             Confirmer le rendez-vous
           </button>
           {/* <button onClick={handleclick} className={style.btnStyle}>

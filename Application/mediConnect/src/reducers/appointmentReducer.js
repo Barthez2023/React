@@ -15,8 +15,21 @@ export const appointmentReducer = (state, action) => {
       return (
         state.filter(appt => appt.id !== action.payload)
     )
+
+    case 'CLEAR_ALL':
+      // On supprime  tout les RDV
+      return ([])
       
     default:
       return state;
   }
 };
+
+/**case 'TOGGLE_STATUS':
+      // On parcourt la liste avec .map()
+      return state.map(appt => 
+        // Si l'ID correspond, on crée une COPIE de l'objet avec le status inversé
+        appt.id === action.payload 
+          ? { ...appt, status: appt.status === 'pending' ? 'completed' : 'pending' } 
+          : appt // Sinon, on garde l'objet tel quel
+      ); */

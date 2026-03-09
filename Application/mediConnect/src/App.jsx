@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState,useReducer } from 'react'
 import './App.css'
 import Header from './components/Header/header'
 import ServiceCard from './components/services/ServiceCard'
@@ -9,7 +9,10 @@ import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react
 import Nav from './components/navBar/nav'
 import Confirmation from './components/formulaire/confirmation'
 import DoctorListFiltre from './components/docteur/DocteurListeFiltre'
-import style from "./components/formulaire/formulaire.module.css"
+import { NameContext } from './components/context/nameContext'
+import { TimeContext } from './components/context/timeContext'
+import AppointmentManager from './components/rendezvous/MesRendevous'
+import { appointmentReducer } from './reducers/appointmentReducer'
 
 function App() {
   const navigate=useNavigate()
@@ -33,10 +36,20 @@ function App() {
   // 3. On crée un State pour le nom du patient
   const [patientName, setPatientName] = useState("");
 
+  //creation du reducer
+  // state : la liste des RDV
+  // dispatch : la fonction pour envoyer des ordres
+  const [appointments, dispatch] = useReducer(appointmentReducer, []);
 
+
+  const nameValue={
+    patientName:patientName,
+    setPatientName:setPatientName
+  }
   // 2. Le composant principal qui assemble tout
   return (
-    <div>
+    <NameContext.Provider value={nameValue}>
+       <TimeContext.Provider value={{ rendevoustime, setRendeVousTime }}>
     {/*Router (souvent BrowserRouter) est le contexte global qui permet à l'application de gérer les URLs
     sans lui Les <Route> Les <Link>  Les <Routes> ne fonctionne pas. Il doit être utilisé une seule fois, généralement dans App.jsx ou main.jsx.*/}
         <Nav/>
@@ -64,28 +77,26 @@ function App() {
                 <ServiceCard name="Petiatrie" doctor="Dr. Lucas" />
                 <ServiceCard name="Petiatrie" doctor="Dr. Lucas" />
               </div>
-              <DoctorList handleSelectDoctor={handleSelectDoctor} 
-                selectedSpecialty={selectedSpecialty}
-                rendevoustime={rendevoustime}
-                setRendeVousTime={setRendeVousTime}/>
+              <DoctorList handleSelectDoctor={handleSelectDoctor} />
             </>
 
           }/>
           <Route path='/reservation' element={
             <>
               <Formulaire handleSelectDoctor={handleSelectDoctor} selectedDoctor={selectedDoctor}
-              selectedSpecialty={selectedSpecialty}  setSelectedSpecialty={setSelectedSpecialty}
-              rendevoustime={rendevoustime} patientName={patientName} setPatientName={setPatientName}/>
+              selectedSpecialty={selectedSpecialty}  setSelectedSpecialty={setSelectedSpecialty} dispatch={dispatch}/>
               <DoctorListFiltre handleSelectDoctor={handleSelectDoctor} 
-                selectedSpecialty={selectedSpecialty}
-                rendevoustime={rendevoustime}
-                setRendeVousTime={setRendeVousTime}/>
+                selectedSpecialty={selectedSpecialty}/>
             </>
           }/>
           <Route path='/confirmation' element={
             <>
-              <Confirmation selectedSpecialty={selectedSpecialty}  selectedDoctor={selectedDoctor}
-              rendevoustime={rendevoustime} patientName={patientName}/>
+              <Confirmation selectedSpecialty={selectedSpecialty}  selectedDoctor={selectedDoctor}/>
+            </>
+          }/>
+          <Route path='/rendezvous' element={
+            <>
+              <AppointmentManager selectedSpecialty={selectedSpecialty}  selectedDoctor={selectedDoctor} dispatch={dispatch} appointments={appointments}/>
             </>
           }/>
           
@@ -114,7 +125,8 @@ function App() {
       rendevoustime={rendevoustime}
       setRendeVousTime={setRendeVousTime}/> */}
      
-    </div>
+      </TimeContext.Provider>
+    </NameContext.Provider>
   )
 }
 

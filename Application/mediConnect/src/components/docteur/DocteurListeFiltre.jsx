@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import style from "./docteurList.module.css"
-import { useState,useEffect } from "react";
+import { useState,useEffect, useContext } from "react";
+import { TimeContext } from "../context/timeContext";
 
-function DoctorListFiltre({handleSelectDoctor,selectedSpecialty,setRendeVousTime,rendevoustime}) {
+function DoctorListFiltre({handleSelectDoctor,selectedSpecialty}) {
   const [doctor, setDoctors] = useState([]); // Liste vide au début search
 
   const doctors = [
@@ -27,6 +28,7 @@ function DoctorListFiltre({handleSelectDoctor,selectedSpecialty,setRendeVousTime
 
         }
     );
+    const {setRendeVousTime,rendevoustime}=useContext(TimeContext)   //utilisation des context
     
     //fonction qui recupere le temps du rendez-vous
      //fonction pour recupere la valeur du la specialite du docteur
