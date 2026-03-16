@@ -1,82 +1,130 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState,useEffect,useRef } from 'react';
 import ClinicCard from './ClinicCard';
 import  style from './klinik.module.css'
 import axios from 'axios';
+import NavbarHasta from '../navbar/navBarHasta';
 
 function KlinikList() {
-  const [clinics,setClinics] = useState([
-    {
-      id: 1,
-      name: "Hôpital Central d'Istanbul",
-      city: "Istanbul",
-      description: "Centre hospitalier de référence offrant des soins spécialisés dans toutes les branches médicales avec équipements de dernière génération.",
-      horaire: "Lun-Sam 08h-18h30",
-      branches: '00',
-      doctors: '00',
-      rating: "0.0"
-    },
-    {
-      id: 2,
-      name: "Clinique Santé Ankara",
-      city: "Ankara",
-      description: "Établissement moderne spécialisé en pédiatrie et cardiologie, reconnu pour son excellence médicale et son approche personnalisée.",
-      horaire: "Lun-Dim 24h/24",
-      branches: '00',
-      doctors: '00',
-      rating: "0.0"
-    },
-    {
-      id: 3,
-      name: "Hôpital Médical Izmir",
-      city: "Izmir",
-      description: "Plus de 20 ans d'expertise en chirurgie générale et soins intensifs, avec une équipe médicale hautement qualifiée.",
-      horaire: "Lun-Sam 08h-18h30",
-      branches: '00',
-      doctors: '00',
-      rating: "0.0"
-    },
-    {
-      id: 4,
-      name: "Hôpital Médical Konya",
-      city: "Konya",
-      description: "Plus de 20 ans d'expertise en chirurgie générale et soins intensifs, avec une équipe médicale hautement qualifiée.",
-      horaire: "Lun-Sam 08h-18h30",
-      branches: '00',
-      doctors: '00',
-      rating: "0.0"
-    }
-  ]);
+  // const [clinics,setClinics] = useState([
+  //   {
+  //     id: 1,
+  //     name: "Hôpital Central d'Istanbul",
+  //     city: "Istanbul",
+  //     description: "Centre hospitalier de référence offrant des soins spécialisés dans toutes les branches médicales avec équipements de dernière génération.",
+  //     horaire: "Lun-Sam 08h-18h30",
+  //     branches: '00',
+  //     doctors: '00',
+  //     rating: "0.0"
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Clinique Santé Ankara",
+  //     city: "Ankara",
+  //     description: "Établissement moderne spécialisé en pédiatrie et cardiologie, reconnu pour son excellence médicale et son approche personnalisée.",
+  //     horaire: "Lun-Dim 24h/24",
+  //     branches: '00',
+  //     doctors: '00',
+  //     rating: "0.0"
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Hôpital Médical Izmir",
+  //     city: "Izmir",
+  //     description: "Plus de 20 ans d'expertise en chirurgie générale et soins intensifs, avec une équipe médicale hautement qualifiée.",
+  //     horaire: "Lun-Sam 08h-18h30",
+  //     branches: '00',
+  //     doctors: '00',
+  //     rating: "0.0"
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Hôpital Médical Konya",
+  //     city: "Konya",
+  //     description: "Plus de 20 ans d'expertise en chirurgie générale et soins intensifs, avec une équipe médicale hautement qualifiée.",
+  //     horaire: "Lun-Sam 08h-18h30",
+  //     branches: '00',
+  //     doctors: '00',
+  //     rating: "0.0"
+  //   }
+  // ]);
+  const [klinikler,setKlinikler]=useState({})
+  const hasFetched = useRef(false); // Flag pour éviter double appel de useEffectţ conditionner par le strict mode
+  //ce useEfect est utiliser pour mettre des elements(des cliniques dans notre base de donnees)
+  /*useEffect(() => {
+    // Si le useEffect s'est déjà exécuté une fois , on arrête
+      if (hasFetched.current) 
+        return;
+      hasFetched.current = true;
+    const fetchHospitals = async () => {
+
+      try {
+
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        const url = "https://overpass-api.de/api/interpreter?data=[out:json];node['amenity'='hospital'](37.8300,32.4000,38.0500,32.7000);out 10;";
+        const response = await axios.get(url);
+        console.log(response.data.elements);
+        const hospitals = response.data.elements;
+          console.log(`${hospitals.length} Le nombre d'hopitaux trouvés:`, hospitals);
+          //ÉTAPE 2 : Mettre à jour l'état React
+          setKlinikler('');
+        const result = await axios.post("http://localhost/BilisimTekno/clinic.php", {
+          klinikler: hospitals  // ← Envoyer les données récupérées, pas l'état vide
+        });
+      } catch (error) {
+        console.error("Erreur API :", error);
+      }
+    };
+    
+
+    fetchHospitals();
+
+  }, []);*/
+
+
+
+  //permet de recuperer les donnes dans la data base et l'utiliser dans mon programme
+  const[klinikDB,setKlinikDB]=useState([])    //stocke les donnes recuperer dans la database
+  useEffect(() => {
+    const fetchKlinikler = async () => {
+      try {
+        const response = await axios.get("http://localhost/BilisimTekno/getklinik.php");
+        // Supposons que la réponse soit de la forme { success: true, data: [...] }
+        if (response.data.success) {
+          setKlinikDB(response.data.data); // mettre toutes les cliniques dans l'état
+          console.log(response.data.data)
+        } else {
+          console.error("Erreur serveur :", response.data.message);
+        }
+      } catch (error) {
+        console.error("Erreur lors de la récupération :", error);
+      }
+    };
+
+    fetchKlinikler();
+  }, []); // [] signifie que ça s'exécute une seule fois au montage
+
+  // useEffect 2 : S'exécute CHAQUE FOIS que klinikDB change permet de suivre l'evolution de klinikDB
+  useEffect(()=>{
+    console.log("klinik database ",klinikDB)
+  },[klinikDB])
 
   const [search, setSearch] = useState(""); // On on garde l'element que l'on veut recherche
   // S'exécute à CHAQUE FOIS que 'search' change
-    useEffect(() => {
+  useEffect(() => {
         if (search !== "") {
             console.log(`🔍 Log de monitoring : Recherche en cours pour "${search}"`);
         }
     }, [search]); // On "observe" la variable search
 
-  const filteredKlinik = clinics.filter((klinik) =>
+
+  const filteredKlinik = klinikDB.filter((klinik) =>
     klinik.name.toLowerCase().includes(search.toLowerCase())
   );
-useEffect(() => {
-  const fetchHospitals = async () => {
 
-    try {
 
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      const url = "https://overpass-api.de/api/interpreter?data=[out:json];node['amenity'='hospital'](40.8,28.5,41.3,29.5);out;";
-      const response = await axios.get(url);
-      console.log(response.data.elements);
-    } catch (error) {
-      console.error("Erreur API :", error);
-    }
-  };
-
-  fetchHospitals();
-
-}, []);
   return (
     <div className={style.clinic_explorer}>
+      <NavbarHasta/>
       <header className={style.explorer_header}>
         <div className={style.header_content}>
           {/* <span className={style.header_subtitle}>Système de santé premium</span> */}

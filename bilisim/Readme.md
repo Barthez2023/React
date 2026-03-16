@@ -150,6 +150,33 @@ une fois l'utilisatur enreigister il est diriger vers l'espace qui contient tous
 Le patient a la possiblite de filtrer les clinique en utilisant la boutton recheche
 # creation de la db klinik
 cette base de donnees permettra de stocker des infos en rapport avec le clinique etant donner que l'on ne peut pas cherger tous les clique de l'API dans notre programme
+CREATE TABLE klinik (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    description TEXT,
+    horaire VARCHAR(100),
+    branches VARCHAR(255),
+    doctors INT DEFAULT 0,
+    rating DECIMAL(2,1) DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+Overpass API
+     ↓
+React (axios)
+     ↓
+PHP API (saveHospitals.php)
+     ↓
+MySQL (table klinik)
+
+-konya :(37.8300,32.4000,38.0500,32.7000)
+-Istanbul :(40.8,28.5,41.3,29.5)
+-izmir :(38.35,26.95,38.55,27.25)
+-Antalya:(36.80,30.60,36.95,30.85)
+-Ankara:(39.85,32.75,40.05,33.05)
+-Bursa:(40.15,28.90,40.25,29.05)
+-Trabzon:(39.65,39.60,41.05,39.85)
 
 
 

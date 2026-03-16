@@ -29,7 +29,7 @@ function LoginHasta() {
       const response =await axios.post('http://localhost/BilisimTekno/loginHasta.php',credentials)
         if (response.data.success){
           console.log(response.data)               //for debugging
-          navigate('/klinik')
+          navigate('/klinikList')
         }
         else {
           console.log('pas de donnees')
