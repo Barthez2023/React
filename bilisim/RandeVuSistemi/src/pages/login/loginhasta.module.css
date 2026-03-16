@@ -1,0 +1,142 @@
+/* src/pages/Auth/Login.css */
+
+.login_container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f4f7f6; /* Même fond que l'inscription */
+    padding: 20px;
+}
+
+.login_card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.login_header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo_small {
+    background-color: #0056b3;
+    color: white;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 10px;
+    font-weight: bold;
+    margin: 0 auto 15px;
+}
+
+.login_header h2 {
+    color: #2c3e50;
+    margin-bottom: 8px;
+}
+
+.login_header p {
+    color: #95a5a6;
+    font-size: 0.9rem;
+}
+
+/* Bannière d'erreur */
+.error_banner {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+    text-align: center;
+    border: 1px solid #fecaca;
+}
+
+.input_field {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.input_field label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #34495e;
+    margin-bottom: 8px;
+}
+
+.input_field input {
+    padding: 12px;
+    border: 1px solid #dcdde1;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.input_field input:focus {
+    border-color: #0056b3;
+    box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
+    outline: none;
+}
+
+.login_options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    margin-bottom: 25px;
+}
+
+.login_options span {
+    color: #0056b3;
+    cursor: pointer;
+}
+
+.submit_btn {
+    width: 100%;
+    padding: 14px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.submit_btn:hover {
+    background-color: #004494;
+}
+
+.login_redirect {
+    text-align: center;
+    margin-top: 25px;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+.login_redirect span {
+    color: #0056b3;
+    font-weight: bold;
+    cursor: pointer;
+}
+.logo_badge {
+  background-color: var(--primary-blue);
+  color: white;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin: 0 auto 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}

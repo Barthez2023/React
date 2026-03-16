@@ -4,7 +4,7 @@ import style from './signinhasta.module.css'
 import Select from "react-select";
 import SuccessPopup from './popup';
 import axios from 'axios';
-function SignInPatient() {
+function SignInDoktor() {
   const navigate = useNavigate();
 
   // 1. İstenen tüm özelliklerle durumu başlatma
@@ -14,10 +14,8 @@ function SignInPatient() {
     Birth: '',
     email: '',
     city: '',
-    Il: '',
-    Ilce: '',
-    Durum: 'Genç', //default value
-    Cinsiyet: '',
+    workNumber:'',
+    speciality:'',
     telephone: '',
     password: '',
     confirmPassword: ''
@@ -36,11 +34,7 @@ function SignInPatient() {
 
   //for fecth and get city infirmation using API
   const [cities, setCities] = useState([]);
-  const [districts, setDistricts] = useState([]);
-  const [neighbourhoods, setNeighbourhoods] = useState([]);
-
   const [sehir, setSehir] = useState("");
-  const [il, setIl] = useState("");
 
   useEffect(() => {
     fetch("https://beterali.com/api/v1/cities")
@@ -52,14 +46,6 @@ function SignInPatient() {
       .catch(err => console.log(err));
   }, []);
 
-  // Loguer cities APRÈS sa mise à jour
-  useEffect(() => {
-    console.log('Type de cities:', typeof cities);
-    console.log('cities est un tableau?', Array.isArray(cities));
-    console.log('Valeur de cities:', cities);
-    console.log('Nombre de villes:', cities.length);
-  }, [cities]); // ← Se déclenche quand cities change
-
   const handleSehirChange = (e) => {
     const cityCode = e.target.value;
     setSehir(cityCode);
@@ -67,39 +53,9 @@ function SignInPatient() {
       ...formData,
       city: cityCode
     });
-    fetch(`https://beterali.com/api/v1/districts?city_code=${cityCode}`)
-      .then(res => res.json())
-      .then(data => {
-        setDistricts(data.data.districts);
-        setNeighbourhoods([]);
-      });
   };
 
-  const handleIlChange = (e) => {
-    const districtCode = e.target.value;
-    setIl(districtCode);
-    setFormData({
-      ...formData,
-      Il: districtCode
-    });
-
-    fetch(`https://beterali.com/api/v1/neighbourhoods?districts_code=${districtCode}`)
-      .then(res => res.json())
-      .then(data => {
-        setNeighbourhoods(data.data.neighbourhoods);
-      });
-  };
-
-  //handler function for neighbourhood
-  const handleIlceChange = (e) => {
-    const neighbourhoodCode = e.target.value;
-    setFormData({
-      ...formData,
-      Ilce: neighbourhoodCode
-    });
-  };
-
-
+  
   //for include popup
   const [showPopup, setShowPopup] = useState(false);
   //use to send the data 
@@ -114,14 +70,19 @@ function SignInPatient() {
     setShowPopup(true);
       // Redirection après 3 secondes
       setTimeout(() => {
-        navigate('/loginhasta');
+        navigate('/logindoktor');
     }, 3000);
 
-    //permet la gestion de la base de donnees
-    const response =await axios.post('http://localhost/BilisimTekno/signHasta.php',formData)
-    console.log(response.data)               //for debugging
 
-    
+
+
+
+
+
+
+    //permet la gestion de la base de donnees
+    const response =await axios.post('http://localhost/BilisimTekno/signDoktor.php',formData)
+    console.log(response.data)               //for debugging
   };
 
 
@@ -130,7 +91,7 @@ function SignInPatient() {
   return (
     <div className={style.signinContainer}>
       <form className={style.signinForm} onSubmit={handleSubmit}>
-        <h2 className={style.signinTitle}>Hasta Kaydı - Systemi</h2>
+        <h2 className={style.signinTitle}>Doktor Kaydı - Systemi</h2>
         
         {/* Utilisation d'une grille pour organiser les 12 champs */}
         <div className={style.formGrid}>
@@ -173,68 +134,20 @@ function SignInPatient() {
             </select>
             {/* <input type="text" name="city" value={formData.city} onChange={handleChange} required /> */}
           </div>
-
-          {/* we use this to select the il */}
           <div className={style.inputGroup}>
-            <label>Il</label>
-            {/* <input type="text" name="Il" value={formData.Il} onChange={handleChange} required /> */}
-            <select value={il} 
-              className={style.select_container}
-              onChange={handleIlChange} 
-              disabled={!sehir} 
-              isSearchable={true} required
-              name='Il'
-            >
-              <option value="">Il Seçin</option>
-              {districts.map((district)=>(
-                <option key={district.district_code} value={district.district_code}>
-                  {district.district_name}
-                </option>
-              ))}
-              
-            </select>
+            <label>Work Number</label>
+            <input type="text" name="workNumber" value={formData.workNumber} onChange={handleChange} required />
           </div>
-
-          {/* we use this to select the ilce */}
-
+         
           <div className={style.inputGroup}>
-            <label>Ilçe</label>
-           <select  
-              onChange={handleIlceChange} 
-              className={style.select_container}
-              disabled={!il} 
-              isSearchable={true} 
-              required
-              name='Ilce'
-            >
-              <option value="">Ilçe Seçin</option>
-              {neighbourhoods.map((neighbourhood) => (
-                <option key={neighbourhood.neighbourhood_code} value={neighbourhood.neighbourhood_code}>
-                  {neighbourhood.neighbourhood_name}
-                </option>
-              ))}
-          </select>
-            {/* <input type="text" name="Ilce" value={formData.Ilce} onChange={handleChange} required /> */}
-          </div>
-
-          <div className={style.inputGroup}>
-            <label>Durum</label>
-            <select name="Durum" value={formData.Durum} onChange={handleChange}>
-              <option value="">Durunuz Seçin</option>
-              <option value="yasli">Yaşlı</option>
-              <option value="genc">Genç</option>
-              <option value="cocuk">Çocuk</option>
-              <option value="hamile">Hamile Kadın</option>
-              <option value="engelli">Engelli</option>
-            </select>
-          </div>
-
-          <div className={style.inputGroup}>
-            <label>Çinsiyet</label>
-            <select name="Cinsiyet" value={formData.Cinsiyet} onChange={handleChange}>
-              <option value="">Cinsiyet Seçin</option>
-              <option value="erkek">Erkek</option>
-              <option value="kadin">Kadın</option>
+            <label>Uzmanlık</label>
+            <select name="speciality" value={formData.speciality} onChange={handleChange}>
+              <option value="">uzmanlik Seçin</option>
+              <option value="Kardiyoloji">Kardiyoloji</option>
+              <option value="Nöroloji">Nöroloji</option>
+              <option value="Ortopedi">Ortopedi</option>
+              <option value="Dermatoloji">Dermatoloji</option>
+              <option value="Göz">Göz Hastalıkları</option>
             </select>
           </div>
 
@@ -264,11 +177,11 @@ function SignInPatient() {
         />
         
         <p className={style.signinFooter}>
-          Zaten kayıtlı mısınız? <span onClick={() => navigate('/loginhasta')}>Giriş yapmak</span>
+          Zaten kayıtlı mısınız? <span onClick={() => navigate('/logindoktor')}>Giriş yapmak</span>
         </p>
       </form>
     </div>
   );
 }
 
-export default SignInPatient;
+export default SignInDoktor;

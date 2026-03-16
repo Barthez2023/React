@@ -1,0 +1,112 @@
+.role_container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8fafc;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.role_header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.role_header h1 {
+    font-size: 2.5rem;
+    color: #1e293b;
+    margin-bottom: 10px;
+}
+
+.role_header p {
+    color: #64748b;
+    font-size: 1.1rem;
+}
+
+.underline {
+    width: 60px;
+    height: 4px;
+    background-color: #0056b3;
+    margin: 15px auto;
+    border-radius: 2px;
+}
+
+/* Grille des cartes */
+.role_grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1100px;
+    width: 100%;
+}
+
+.role_card {
+    background: white;
+    padding: 40px 20px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border-top: 5px solid transparent;
+}
+
+/* Couleurs par rôle */
+.role_card.patient { border-top-color: #0056b3; }
+.role_card.doctor { border-top-color: #10b981; } /* Vert médical */
+.role_card.admin { border-top-color: #334155; } /* Gris sombre */
+
+.role_card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.role_icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.role_card h2 {
+    color: #1e293b;
+    margin-bottom: 15px;
+}
+
+.role_card p {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+    line-height: 1.5;
+    height: 60px;
+}
+
+.role_btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: #f1f5f9;
+    color: #334155;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.role_card:hover .role_btn {
+    background-color: #0056b3;
+    color: white;
+}
+
+.role_footer {
+    margin-top: 50px;
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+/* Responsivité : 1 colonne sur mobile */
+@media (max-width: 900px) {
+    .role-grid {
+        grid-template-columns: 1fr;
+    }
+}

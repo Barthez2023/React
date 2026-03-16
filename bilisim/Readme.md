@@ -36,6 +36,190 @@ API mahalle:https://beterali.com/api/v1/neighbourhoods?districts_code=1747
 Lorsque l'tutilisateur se connecte il a deux choix soit il est dirriger vers le menu sign ou login.
 Dans le menu sign in il remplir ces infos et si tout est valide un popup apparais pour confirmed son inscription et disparait apres 3 seconde et dirige automatiquement le user vers la page de login
 
+# Gestion de la base de donnees
+Actuellement j'ai 6 table dans la base de donnees:table patient,docteur,admin,city,hospital,depatement.Un patient peut consulter plusieurs docteurs et un docteur peut avoir plusieurs patients.L'administrateur se charge de gerer les docteurs et les patients du system.Un hopital peut avoir plusieurs docteurs ,mais un docteur appartient juste a un hopital.Une ville peut avoir plusieurs hopitaux mais un hopital n'appartient que a une seul ville.Chaque hopital a plusieurs departement.
+# Patient ↔ Docteur
+Relation : Plusieurs à plusieurs (Many-to-Many)
+Raisonnement : Un patient peut consulter plusieurs docteurs et un docteur peut avoir plusieurs patients.
+Solution : Créer une table de liaison Patient_Doctor :
+{
+    Patient_Doctor
+    ---------------------
+    patient_id (FK → Patient.id)
+    doctor_id (FK → Doctor.id)
+    date_consultation
+    notes
+    PRIMARY KEY (patient_id, doctor_id)
+}
+# Hospital ↔ Docteur
+Relation : Un à plusieurs (One-to-Many)
+Un hôpital peut avoir plusieurs docteurs, un docteur appartient à un seul hôpital.
+Doctor.hospital_id est une clé étrangère vers Hospital.id.
+# City ↔ Hospital
+Relation : Un à plusieurs
+Une ville peut avoir plusieurs hôpitaux, un hôpital appartient à une seule ville.
+Hospital.city_id est une clé étrangère vers City.id.
+# Hospital ↔ Department
+Relation : Un à plusieurs
+Chaque hôpital peut avoir plusieurs départements.
+Department.hospital_id est une clé étrangère vers Hospital.id.
+# Admin ↔ Patient / Docteur
+Relation implicite : Un admin gère tous les patients et docteurs.
+Tu peux ajouter un champ created_by_admin_id si tu veux tracer quel admin a ajouté quel utilisateur.
+# Appointment (Rendez-vous)
+Pour gérer les rendez-vous patient-docteur.
+{
+    Appointment
+    -------------------
+    id
+    patient_id (FK → Patient.id)
+    doctor_id (FK → Doctor.id)
+    date
+    time
+    status (confirmé, annulé, en attente)
+    notes
+}
+# Table hastalar
+  CREATE TABLE Hastalar (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    surname VARCHAR(100) NOT NULL,
+    birth DATE NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    city_code INT,
+    district_code INT,
+    neighbourhood_code INT,
+    phone VARCHAR(20),
+    password_hash VARCHAR(255) NOT NULL,
+    gender CHAR(1) DEFAULT 'M',
+    status VARCHAR(20) DEFAULT 'Genç',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+# NB:npm install axios  vas nous permettre d'utiliser le axios pour lier notre php a notre react  et on dois l'importer apres :import axios from 'axios';.
+# NB ces headers sont important pour la connection de php a react
+// Headers CORS
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
+header("Content-Type: application/json");
+
+# NB on utilise awit uniquement avec des fonctioon asynchrone 
+const handleLogin = async(e) => {
+    e.preventDefault();
+    const response =await axios.post('http://localhost/BilisimTekno/signHasta.php',formData)
+    console.log(response.data)               //for debugging
+  };
+
+
+
+#lorque un doktor s'enreigistre , il fournir son nom ,prenom,date de naissance ,specialite ,numero de travailleur.Une fois valider il est diriger vers la page de login.
+# creation de la table doktor
+CREATE TABLE doktorlar (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Surname VARCHAR(100) NOT NULL,
+    Birth DATE NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    city VARCHAR(100),
+    worknumber VARCHAR(50),
+    speciality VARCHAR(100),
+    telephone VARCHAR(50),
+    hash_password VARCHAR(255) NOT NULL,
+    hasta_id INT,
+    FOREIGN KEY (hasta_id) REFERENCES hastalar(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+# creation de la table admin
+;'admin n'aura pas besoins de faire un sign in ces elemnts sont drectement stocker en db il fait juste un sign in.
+CREATE TABLE admin (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL ,
+    Surname VARCHAR(100) NOT NULL,
+    Birth DATE NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    telephone VARCHAR(50) ',
+    hash_password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+INSERT INTO admin (Name, Surname, Birth, email, telephone, hash_password) VALUES ('Ahmet', 'Demir', '1985-03-21', 'mehmet@gmail.com', '05086358941', '123456789');
+une fois l'utilisatur enreigister il est diriger vers l'espace qui contient tous les  clinique qui se trouve dans la memem ville que lui .Seul le admina le droit de voir toute les clinique presnte dans le hastane db ou api
+# Etapes suivante:
+-gerer le boutton recherche
+-integrer l'api pour la gestion des clinique ou une database
+Le patient a la possiblite de filtrer les clinique en utilisant la boutton recheche
+# creation de la db klinik
+cette base de donnees permettra de stocker des infos en rapport avec le clinique etant donner que l'on ne peut pas cherger tous les clique de l'API dans notre programme
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -107,3 +291,191 @@ Dans le menu sign in il remplir ces infos et si tout est valide un popup apparai
 
 import Select from "react-select";
 isSearchable={true}   // active la recherche  using with 
+
+
+fetch("http://localhost/bilisim1/register.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      })
+      .then(res => res.text())
+      .then(data => {
+        console.log(data);
+      });
+
+
+
+
+
+
+import React from 'react';
+import  style from './klinik.module.css'
+
+// Ce composant reçoit un objet "clinic" via les PROPS
+function ClinicCard({ clinic }) {
+  return (
+    <div className={style.clinic_card}>
+      <div className={style.clinic_image}>🏥</div>
+      <div className={style.clinic_info}>
+        <h3 className={style.clinic_name}>{clinic.name}</h3>
+        <span className={style.clinic_city}>📍 {clinic.city}</span>
+        <p className={style.clinic_description}>{clinic.description}</p>
+        <span className={style.clinic_horaire}><i className="fa-solid fa-clock"></i> {clinic.horaire}</span>
+        <button className={style.clinic_btn}>Voir les branches</button>
+      </div>
+    </div>
+  );
+}
+
+export default ClinicCard;
+
+
+
+import React, { useState } from 'react';
+import ClinicCard from './ClinicCard';
+import  style from './klinik.module.css'
+
+function KlinikList() {
+  // Simulation de données qui viendront plus tard de ta base de données PHP
+  const [clinics] = useState([
+    {
+      id: 1,
+      name: "Hôpital Central d'Istanbul",
+      city: "Istanbul",
+      description: "L'un des plus grands centres hospitaliers du pays, spécialisé dans toutes les branches médicales.",
+      horaire:"ouvert de Lun-sam 08h-18h30"
+    },
+    {
+      id: 2,
+      name: "Clinique Santé Ankara",
+      city: "Ankara",
+      description: "Une clinique moderne axée sur la pédiatrie et la cardiologie avec des technologies de pointe.",
+      horaire:"ouvert de Lun-sam 08h-18h30"
+    },
+    {
+      id: 3,
+      name: "Hôpital Médical Izmir",
+      city: "Izmir",
+      description: "Expertise reconnue en chirurgie générale et soins intensifs depuis plus de 20 ans.",
+      horaire:"ouvert de Lun-sam 08h-18h30"
+    }
+  ]);
+
+  return (
+    <div className={style.clinic_explorer}>
+      <header className={style.explorer_header}>
+        <h2>Découvrez nos Cliniques</h2>
+        <p>Sélectionnez un établissement pour voir les disponibilités.</p>
+      </header>
+
+      {/* C'est ici que la magie du Mapping opère */}
+      <div className={style.clinic_grid}>
+        {clinics.map((item) => (
+          /* On passe l'objet 'item' à notre composant ClinicCard */
+          /* 'key' est obligatoire pour que React sache quel élément modifier si besoin */
+          <ClinicCard key={item.id} clinic={item} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default KlinikList;
+
+
+
+
+
+.clinic_explorer {
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.explorer_header {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.explorer_header h2 {
+    color: #2c3e50;
+    font-size: 2rem;
+}
+
+/* Grille de Cliniques */
+.clinic_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+/* Carte Individuelle */
+.clinic_card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden; /* Pour que l'image ne dépasse pas des bords arrondis */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #edf2f7;
+}
+
+.clinic_card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+}
+
+.clinic_image{
+    background-color: #ebf4ff;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 4rem;
+}
+
+.clinic_info {
+    padding: 20px;
+    flex-grow: 1; /* Pour que les boutons soient tous alignés en bas */
+    display: flex;
+    flex-direction: column;
+}
+
+.clinic_name {
+    margin: 0 0 10px 0;
+    color: #0056b3;
+    font-size: 1.25rem;
+}
+
+.clinic_city,.clinic_horaire {
+    color: #718096;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.clinic_description {
+    color: #4a5568;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.clinic_btn {
+    margin-top: auto; /* Aligne le bouton en bas */
+    padding: 12px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.clinic_btn:hover {
+    background-color: #004494;
+}

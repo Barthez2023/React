@@ -1,17 +1,35 @@
 import { useState } from 'react'
 import './App.css'
-import AuthHome from './pages/Auth/AuthHome'
+import AuthHomeHasta from './pages/Auth/AuthHomehasta'
 import React from 'react'
 import { BrowserRouter, Routes, Route,useNavigate } from "react-router-dom";
 import SignInPatient from './pages/signin/signinhasta';
+import LoginHasta from './pages/login/loginhasta';
+import Klinik from './pages/klinik/klinik';
+import Home from './pages/home/home';
+import AuthHomeDoktor from './pages/Auth/AuthHomedoktor';
+import SignInDoktor from './pages/signin/signdoktor';
+import LoginDoktor from './pages/login/logindoktor';
+import LoginAdmin from './pages/login/loginadlin';
+import KlinikList from './pages/klinik/ClinicList';
 
 function App() {
   const [count, setCount] = useState(0)
   return (
     <>
     <Routes>
-      <Route path="/" element={<AuthHome/>} />
+      <Route path="/" element={<Home/>} />
+      <Route path="/hasta" element={<AuthHomeHasta/>} />
+      <Route path="/doctor" element={<AuthHomeDoktor/>} />
       <Route path="/signinhasta" element={<SignInPatient/>} />
+      <Route path="/loginhasta" element={<LoginHasta/>} />
+      <Route path="/signindoktor" element={<SignInDoktor/>} />
+      <Route path="/logindoktor" element={<LoginDoktor/>} />
+      <Route path="/loginadmin" element={<LoginAdmin/>} />
+      <Route path="/klinik" element={<Klinik/>} />
+      <Route path="/klinikList" element={<KlinikList/>} />
+
+
     </Routes>
     </>
   )

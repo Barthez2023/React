@@ -1,0 +1,116 @@
+import React, { useState,useEffect } from 'react';
+import ClinicCard from './ClinicCard';
+import  style from './klinik.module.css'
+import axios from 'axios';
+
+function KlinikList() {
+  const [clinics,setClinics] = useState([
+    {
+      id: 1,
+      name: "Hôpital Central d'Istanbul",
+      city: "Istanbul",
+      description: "Centre hospitalier de référence offrant des soins spécialisés dans toutes les branches médicales avec équipements de dernière génération.",
+      horaire: "Lun-Sam 08h-18h30",
+      branches: '00',
+      doctors: '00',
+      rating: "0.0"
+    },
+    {
+      id: 2,
+      name: "Clinique Santé Ankara",
+      city: "Ankara",
+      description: "Établissement moderne spécialisé en pédiatrie et cardiologie, reconnu pour son excellence médicale et son approche personnalisée.",
+      horaire: "Lun-Dim 24h/24",
+      branches: '00',
+      doctors: '00',
+      rating: "0.0"
+    },
+    {
+      id: 3,
+      name: "Hôpital Médical Izmir",
+      city: "Izmir",
+      description: "Plus de 20 ans d'expertise en chirurgie générale et soins intensifs, avec une équipe médicale hautement qualifiée.",
+      horaire: "Lun-Sam 08h-18h30",
+      branches: '00',
+      doctors: '00',
+      rating: "0.0"
+    },
+    {
+      id: 4,
+      name: "Hôpital Médical Konya",
+      city: "Konya",
+      description: "Plus de 20 ans d'expertise en chirurgie générale et soins intensifs, avec une équipe médicale hautement qualifiée.",
+      horaire: "Lun-Sam 08h-18h30",
+      branches: '00',
+      doctors: '00',
+      rating: "0.0"
+    }
+  ]);
+
+  const [search, setSearch] = useState(""); // On on garde l'element que l'on veut recherche
+  // S'exécute à CHAQUE FOIS que 'search' change
+    useEffect(() => {
+        if (search !== "") {
+            console.log(`🔍 Log de monitoring : Recherche en cours pour "${search}"`);
+        }
+    }, [search]); // On "observe" la variable search
+
+  const filteredKlinik = clinics.filter((klinik) =>
+    klinik.name.toLowerCase().includes(search.toLowerCase())
+  );
+useEffect(() => {
+  const fetchHospitals = async () => {
+
+    try {
+
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      const url = "https://overpass-api.de/api/interpreter?data=[out:json];node['amenity'='hospital'](40.8,28.5,41.3,29.5);out;";
+      const response = await axios.get(url);
+      console.log(response.data.elements);
+    } catch (error) {
+      console.error("Erreur API :", error);
+    }
+  };
+
+  fetchHospitals();
+
+}, []);
+  return (
+    <div className={style.clinic_explorer}>
+      <header className={style.explorer_header}>
+        <div className={style.header_content}>
+          {/* <span className={style.header_subtitle}>Système de santé premium</span> */}
+          <div className={style.logo_badge}><i className="fa-solid fa-hospital" style={{fontSize:'40px'}}></i></div>
+          <h1 className={style.header_title}>Nos Établissements de Santé</h1>
+          <p className={style.header_description}>
+            Découvrez nos centres médicaux équipés des dernières technologies 
+            et staffés par des professionnels de santé qualifiés
+          </p>
+        </div>
+        
+        <div className={style.header_search}>
+          <svg viewBox="0 0 24 24" fill="currentColor" className={style.search_icon}>
+            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+          </svg>
+          <input 
+            type="text" 
+            placeholder="Rechercher une clinique, une ville ou une spécialité..."
+            onChange={(e) => setSearch(e.target.value)}
+            className={style.search_input}
+          />
+        </div>
+      </header>
+
+      <div className={style.clinic_grid}>
+        {filteredKlinik.length > 0 ? (
+            filteredKlinik.map((item) => (
+              <ClinicCard key={item.id} clinic={item} />
+            ))
+          ) : (
+            <p className={style.yok_klinik}>Aucune clinique ne correspond à ce nom.</p>
+          )}
+      </div>
+    </div>
+  );
+}
+export default KlinikList

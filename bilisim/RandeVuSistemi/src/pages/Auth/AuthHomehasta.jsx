@@ -2,10 +2,13 @@ import style from './AuthHome.module.css'  // CSS'yi içe aktarma
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function AuthHome() {
+function AuthHomeHasta() {
     const navigate=useNavigate()
     const handlesign = (e) => {
         navigate('/signinhasta');
+    };
+    const handlelogin = (e) => {
+        navigate('/loginhasta');
     };
 
   return (
@@ -25,7 +28,7 @@ function AuthHome() {
         <div className={style.action_card}>
           <h2>Zaten Kayıtlı?</h2>
           <p>Randevularınızı yönetmek için kişisel hesabınıza giriş yapın.</p>
-          <button className={`${style.btn} ${style.btn_login}`}>Giriş yapmak(Login)</button>
+          <button className={`${style.btn} ${style.btn_login}`} onClick={handlelogin}>Giriş yapmak(Login)</button>
         </div>
 
         <div className={style.action_card}>
@@ -42,4 +45,4 @@ function AuthHome() {
   );
 }
 
-export default AuthHome;
+export default AuthHomeHasta;
