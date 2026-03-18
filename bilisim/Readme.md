@@ -178,6 +178,22 @@ MySQL (table klinik)
 -Bursa:(40.15,28.90,40.25,29.05)
 -Trabzon:(39.65,39.60,41.05,39.85)
 
+# choix du departemant
+Lorsque un hasta choisir son hopital un popup apparait et lui demande de choisir la specialite dans laquelle il veut prendre rendezvous
+# creation de la table bolumler
+CREATE TABLE Uzmanlık (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(100) NOT NULL,
+    icon VARCHAR(100) NOT NULL
+);
+# Not:klinik?.id 
+On appelle cela l'Optional Chaining (le chaînage optionnel).
+Le ?. dit à JavaScript : "Regarde si l'objet devant moi existe. S'il existe, donne-moi son ID. S'il est nul ou indéfini, arrête-toi là et renvoie simplement undefined au lieu de faire planter tout le site.""Utilisez le ?. dès que vous manipulez des données qui viennent d'une base de données ou d'une API. C'est une assurance vie pour votre code. Cela montre que vous êtes un développeur qui prévoit les erreurs au lieu de les subir."
+
+
+
+
+
 
 
 
@@ -506,3 +522,41 @@ export default KlinikList;
 .clinic_btn:hover {
     background-color: #004494;
 }
+
+
+
+    useEffect(() => {
+        const fetchUzmanlik = async () => {
+        try {
+            // IMPORTANT : On envoie l'ID de l'hôpital au PHP
+            const response = await axios.post('http://localhost/BilisimTekno/uzmanlik.php');
+            
+            // On vérifie que les données existent avant de les stocker
+            if (response.data && response.data.data) {
+            setUzmanlik(response.data.data);
+            }
+        } catch (error) {
+            console.error("Erreur lors de la récupération des spécialités:", error);
+        } finally {
+            setLoading(false);
+        }
+        };
+
+        if (klinik?.id) {
+        fetchUzmanlik();
+        }
+    }, []); // On relance si l'ID de l'hôpital change
+
+
+
+
+
+    useEffect(() => {
+        const uzmanliksec=async(e)=>{
+            const response =await axios.post('http://localhost/BilisimTekno/uzmanlik.php',uzmanlik)
+            console.log(response.data)               //for debugging
+            setUzmanlik(response.data.data)
+        }
+        uzmanliksec();
+
+    }, []);

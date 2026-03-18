@@ -3,6 +3,7 @@ import ClinicCard from './ClinicCard';
 import  style from './klinik.module.css'
 import axios from 'axios';
 import NavbarHasta from '../navbar/navBarHasta';
+import UzmanlikPopup from './uzmanlikSec';
 
 function KlinikList() {
   // const [clinics,setClinics] = useState([
@@ -121,6 +122,8 @@ function KlinikList() {
     klinik.name.toLowerCase().includes(search.toLowerCase())
   );
 
+  //permet de selectionner la clinique  afin d'afficher le popup au bon endroit
+  const [selectedKlinik, setSelectedKlinik] = useState(null);
 
   return (
     <div className={style.clinic_explorer}>
@@ -152,10 +155,19 @@ function KlinikList() {
       <div className={style.clinic_grid}>
         {filteredKlinik.length > 0 ? (
             filteredKlinik.map((item) => (
-              <ClinicCard key={item.id} clinic={item} />
+              <ClinicCard key={item.id} clinic={item} 
+                onOpenPopup={() => setSelectedKlinik(item)}
+              />
             ))
           ) : (
             <p className={style.yok_klinik}>Aucune clinique ne correspond à ce nom.</p>
+          )}
+
+          {selectedKlinik && (
+              <UzmanlikPopup 
+                klinik={selectedKlinik} 
+                onClose={() => setSelectedKlinik(null)} 
+              />
           )}
       </div>
     </div>

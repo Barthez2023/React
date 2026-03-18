@@ -55,7 +55,6 @@ function SignInDoktor() {
     });
   };
 
-  
   //for include popup
   const [showPopup, setShowPopup] = useState(false);
   //use to send the data 
@@ -72,18 +71,22 @@ function SignInDoktor() {
       setTimeout(() => {
         navigate('/logindoktor');
     }, 3000);
-
-
-
-
-
-
-
-
     //permet la gestion de la base de donnees
     const response =await axios.post('http://localhost/BilisimTekno/signDoktor.php',formData)
     console.log(response.data)               //for debugging
   };
+
+
+  const[uzmanlik,setUzmanlik]=useState([])
+  useEffect(() => {
+    const uzmanliksec=async(e)=>{
+      const response =await axios.post('http://localhost/BilisimTekno/uzmanlik.php',uzmanlik)
+      console.log(response.data)               //for debugging
+      setUzmanlik(response.data.data)
+    }
+    uzmanliksec();
+  }, []);
+
 
 
  
@@ -139,7 +142,7 @@ function SignInDoktor() {
             <input type="text" name="workNumber" value={formData.workNumber} onChange={handleChange} required />
           </div>
          
-          <div className={style.inputGroup}>
+          {/* <div className={style.inputGroup}>
             <label>Uzmanlık</label>
             <select name="speciality" value={formData.speciality} onChange={handleChange}>
               <option value="">uzmanlik Seçin</option>
@@ -148,6 +151,18 @@ function SignInDoktor() {
               <option value="Ortopedi">Ortopedi</option>
               <option value="Dermatoloji">Dermatoloji</option>
               <option value="Göz">Göz Hastalıkları</option>
+            </select>
+          </div> */}
+
+          <div className={style.inputGroup}>
+            <label>Uzmanlık</label>
+            <select name="speciality" value={formData.speciality} onChange={handleChange}>
+              <option value="">uzmanlik Seçin</option>
+              {
+                uzmanlik.map((uzmanlikIsim,index)=>(
+                  <option value={uzmanlikIsim.nom} key={index}>{uzmanlikIsim.nom}</option>
+                ))
+              }
             </select>
           </div>
 

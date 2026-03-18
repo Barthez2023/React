@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import  style from './klinik.module.css'
-
 // Composant ClinicCard amélioré
-function ClinicCard({ clinic }) {
+function ClinicCard({ clinic ,onOpenPopup}) {
   return (
     <div className={style.clinic_card}>
       <div className={style.clinic_header}>
@@ -48,7 +47,7 @@ function ClinicCard({ clinic }) {
           </div>
         </div>
         
-        <button className={style.clinic_btn}>
+        <button className={style.clinic_btn} onClick={onOpenPopup}>
           <span>Prendre rendez-vous</span>
           <svg viewBox="0 0 24 24" fill="currentColor" className={style.btn_icon}>
             <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
