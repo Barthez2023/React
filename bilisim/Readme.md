@@ -177,6 +177,7 @@ MySQL (table klinik)
 -Ankara:(39.85,32.75,40.05,33.05)
 -Bursa:(40.15,28.90,40.25,29.05)
 -Trabzon:(39.65,39.60,41.05,39.85)
+-Kayseri:(38.65, 35.35, 38.80, 35.65)
 
 # choix du departemant
 Lorsque un hasta choisir son hopital un popup apparait et lui demande de choisir la specialite dans laquelle il veut prendre rendezvous
@@ -190,6 +191,32 @@ CREATE TABLE Uzmanlık (
 On appelle cela l'Optional Chaining (le chaînage optionnel).
 Le ?. dit à JavaScript : "Regarde si l'objet devant moi existe. S'il existe, donne-moi son ID. S'il est nul ou indéfini, arrête-toi là et renvoie simplement undefined au lieu de faire planter tout le site.""Utilisez le ?. dès que vous manipulez des données qui viennent d'une base de données ou d'une API. C'est une assurance vie pour votre code. Cela montre que vous êtes un développeur qui prévoit les erreurs au lieu de les subir."
 
+# 18-03-2026
+creation et configuration de l'espace admin 
+l'admin a la possibilite d'ajouter une clinique  et ,de voir la iste de tout les cliniques presnete dans le systeme.Il peut aussi consulter la liste de toutes les specialite pour chaque specialite on voir les clinique qui propose cette specialite,les medecins qui ont les capacite de consulter sur cette specialite .Pour le admin on aura un navbar avec :Home-clinique-doktors-specialites-patients. 
+L'admin peut ajouter plusieurs clinique correspondant a une zone geographique defini et il peut aussi juste ajouter une clinque tous ces boutton sont controler par le boutton principale clinique.L'ajout des clinique est directement ajouter a la db
+
+# 19-03-2026  
+Nous allons travailler sur uzmanlik de meme que clinique l'admin aura la possiblite d'ajouter de nouvelles branche de medecines .Dans l'onglet uzmanlik la premier page presente toute des clinique sous forme de block et la liste deroulante de uzmanlik contient un boutton 'Uzmanlik ekle' qui permet d'ajouter une nouvelle discipline et 'Uzmanlik sil' permet de suprimer une discipline.
+Chaque bloc contient le nom de l'uzmanlik ,les klinik qui propose cette specialite ,le nombre total de docteurs et le nom des docteurs qui consulte sur cette discipline.
+# NB 
+Souviens-toi : Tout ce qui est utilisé à l'intérieur d'un useMemo ou d'un useEffect et qui peut changer au cours du temps DOIT être listé dans les dépendances.
+useMemo est le "pense-bête" de React. C'est un Hook qui sert à optimiser les performances en mettant en cache (on dit "mémoriser") le résultat d'un calcul coûteux.
+Imagine que tu as une fonction qui prend 2 secondes à s'exécuter. Sans useMemo, React relancerait ce calcul de 2 secondes à chaque fois que ton composant se met à jour (même pour un petit changement d'état qui n'a rien à voir). Avec useMemo, React dit : "Attends, les ingrédients n'ont pas changé, je te redonne le résultat que j'avais déjà calculé la dernière fois !"
+useMemo prend deux arguments :
+  Une fonction qui effectue le calcul.
+  Un tableau de dépendances (comme useEffect).
+
+# ici on va lier les table doktor et uzmanmlik
+-- 1. On ajoute la colonne dans la table doktor (si elle n'existe pas déjà)
+ALTER TABLE doktor ADD COLUMN specialite_id INT;
+-- 2. On définit cette colonne comme une Clé Étrangère (Foreign Key)
+ALTER TABLE doktor 
+ADD CONSTRAINT fk_doktor_specialite 
+FOREIGN KEY (specialite_id) 
+REFERENCES uzmanlik(id) 
+ON DELETE SET NULL 
+ON UPDATE CASCADE;
 
 
 
@@ -560,3 +587,6 @@ export default KlinikList;
         uzmanliksec();
 
     }, []);
+
+        <Link to="/klinikadmin" className={`${style.link} ${isActive('/klinikadmin') ? style.linkActive : ''}`}>Klinikler</Link>
+

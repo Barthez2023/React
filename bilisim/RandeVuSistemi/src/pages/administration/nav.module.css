@@ -1,0 +1,138 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 36px;
+  height: 64px;
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  font-family: 'DM Sans', sans-serif;
+  margin-bottom: 50px;
+  border-radius: 10px;
+  
+  position: fixed;     /* Elle ne bouge plus du tout */
+  top: 0;              /* Collée en haut */
+  left: 0;             /* Collée à gauche */
+  right: 0;            /* Collée à droite (pour prendre toute la largeur) */
+  width: 100%;         /* Sécurité pour la largeur */
+  z-index: 1000;       /* Toujours au-dessus du reste */
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.logo {
+  color: white;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+
+.link{
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 8px;
+  transition: color 0.2s ease, background 0.2s ease;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.link:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+
+.linkActive {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.1);
+}
+
+.linkActive:hover {
+  color: #7dd3fc;
+  background: rgba(56, 189, 248, 0.15);
+}
+
+/* Badge optionnel pour "Randevularım" */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #38bdf8;;
+  font-size: 30px;
+  font-weight: 700;
+  padding: 1px 6px;;
+}
+
+
+
+/* Conteneur parent */
+.dropdown {
+  position: relative; /* Très important : le menu se positionnera par rapport à ici */
+  display: inline-block;
+}
+/* Le menu qui "flotte" */
+.dropdownMenu {
+  position: absolute;
+  top: 100%; /* Juste en dessous du lien */
+  right:0;
+  background-color: #ffffff;
+  min-width: 220px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 10px 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e2e8f0;
+  margin-top: 10px;
+  animation: slideDown 0.2s ease;
+}
+
+/* Animation d'apparition */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Chaque option du menu */
+.dropdownItem {
+  padding: 12px 20px;
+  text-decoration: none;
+  color: #334155;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+  text-align: left;
+  outline: none;
+  border: none;
+  background-color: white;
+}
+
+.dropdownItem:hover {
+  background-color: #f1f5f9;
+  color: #0056b3;
+}

@@ -1,0 +1,249 @@
+
+
+
+
+
+
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.overlay {
+  position: fixed;
+  inset: 0;
+  top: 50px;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 1rem;
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+  font-family: 'DM Sans', sans-serif;
+  max-height: 80vh;
+  overflow-y: auto;
+  animation: slideUp 0.2s ease;
+  /* overflow: hidden; */
+}
+
+@keyframes slideUp {
+  from { transform: translateY(16px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* Scrollbar Stylisé et Arrondi */
+.modal::-webkit-scrollbar { width: 8px; }
+.modal::-webkit-scrollbar-track { 
+    background: transparent; 
+    margin-block: 20px; 
+}
+.modal::-webkit-scrollbar-thumb { 
+    background: #d1d5db; 
+    border-radius: 20px; 
+    border: 2px solid var(--white); /* Crée l'effet flottant */
+}
+.modal::-webkit-scrollbar-thumb:hover { background:rgba(15, 23, 42, 0.3); }
+
+.closeBtn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 17px;
+  color: #b8bcc3;
+  line-height: 1;
+  transition: color 0.15s;
+}
+.closeBtn:hover { color: #374151; }
+
+/* Header */
+
+.title {
+  font-size: 30px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.description {
+  font-size:14px;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.65;
+}
+
+.divider {
+  height: 1px;
+  background: #f3f4f6;
+  margin: 1.25rem 0;
+}
+
+/* Champs */
+.field {
+  margin-bottom: 1rem;
+}
+
+.label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+
+
+.input, .textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 16px;
+  font-size: 14px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: #f9fafb;
+  color: #111827;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.input:focus {
+  border-color: #3b82f6;
+  background: #ffffff;
+}
+.inputError {
+  border-color: #f87171 !important;
+  background: #fff5f5 !important;
+}
+.errorMsg {
+  font-size: 11px;
+  color: #ef4444;
+  margin: 4px 0 0;
+}
+
+.textarea {
+    resize: none;
+}
+
+/* Grille coordonnées */
+.coordsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.coordInput {
+  text-align: center;
+  padding: 9px 6px;
+  font-size: 15px;
+}
+
+.coordLabel {
+  font-size: 13px;
+  color: #9ca3af;
+  text-align: center;
+  margin: 5px 0;
+  font-weight: 500;
+}
+
+.hint {
+  font-size: 13px;
+  color: #9ca3af;
+  margin: 8px 0 0;
+  line-height: 1.5;
+}
+
+/* Ligne city + code */
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+.cancelBtn {
+  padding: 9px 18px;
+  font-size: 0.875rem;
+  font-family: 'DM Sans', sans-serif;
+  border-radius: 10px;
+  border: 1.5px solid #e5e7eb;
+  background: #ffffff;
+  color: #374151;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.cancelBtn:hover { background: #f9fafb; }
+
+.saveBtn {
+  padding: 9px 22px;
+  font-size: 0.875rem;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  border-radius: 10px;
+  border: none;
+  background: #3b82f6;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.saveBtn:hover { background: #2563eb; }
+.select {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1e293b; /* Notre Navy text */
+    background: #f9fafb;
+    border: 2px solid transparent;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+    
+    /* On supprime la flèche par défaut */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    /* On ajoute une flèche personnalisée en SVG */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%234f46e5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    background-size: 18px;
+}
+
+.select:focus {
+    border-color: #3b82f6;
+    background-color: #ffffff;
+}
+.select option {
+    background-color: #ffffff;
+    color: #1e293b;
+    padding: 10px;
+}

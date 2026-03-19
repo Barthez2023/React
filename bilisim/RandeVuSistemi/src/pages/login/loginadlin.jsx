@@ -29,7 +29,7 @@ function LoginAdmin() {
       const response =await axios.post('http://localhost/BilisimTekno/loginAdmin.php',credentials)
         if (response.data.success){
           console.log(response.data)               //for debugging
-          navigate('/klinik')
+          navigate('/adminhomepage')
         }
         else {
           console.log('pas de donnees')
@@ -94,10 +94,6 @@ function LoginAdmin() {
             Giriş Yap
           </button>
         </form>
-
-        <p className={style.login_redirect}>
-          Yeni misiniz? <span onClick={() => navigate('/signinhasta')}>Bir hesap Oluşturun</span>
-        </p>
       </div>
     </div>
   );

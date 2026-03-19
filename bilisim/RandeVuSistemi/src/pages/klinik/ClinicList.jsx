@@ -127,7 +127,6 @@ function KlinikList() {
 
   return (
     <div className={style.clinic_explorer}>
-      <NavbarHasta/>
       <header className={style.explorer_header}>
         <div className={style.header_content}>
           {/* <span className={style.header_subtitle}>Système de santé premium</span> */}
