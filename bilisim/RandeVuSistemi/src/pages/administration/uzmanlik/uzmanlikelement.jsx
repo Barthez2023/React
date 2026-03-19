@@ -5,7 +5,9 @@ import axios from 'axios';
 // ─────creation du cardre qui va contenir des uzmanlik
 function SpecialiteCard({ spec }) {
     const [clinics,setClinics]=useState(['Medicana Rize', 'Kuzey Sağlık']);
-    const [doctors,setDoctors]=useState(['Dr. Tarık Doğan', 'Dr. Sibel Aydın', 'Dr. Cem Başar']);
+    const doctorArray = spec.doktorlar && spec.doktorlar !== '—' 
+    ? spec.doktorlar.split(', ') 
+    : [];
   return (
     <div className={style.card}>
       {/* Header */}
@@ -30,9 +32,13 @@ function SpecialiteCard({ spec }) {
         {/* Médecins */}
         <p className={style.sectionLabel}>Doktorlar</p>
         <div className={style.doctorPills}>
-          {doctors.map((d) => (
-            <span key={d} className={style.pill}>{d}</span>
-          ))}
+          {doctorArray.length > 0 ? (
+            doctorArray.map((d) => (
+              <span key={d} className={style.pill}>{d}</span>
+            ))
+          ) : (
+            <span style={{fontSize: '12px', color: '#94a3b8'}}>Henüz doktor yok</span>
+          )}
         </div>
       </div>
 
@@ -43,7 +49,7 @@ function SpecialiteCard({ spec }) {
           <span className={style.statLabel}>klinik</span>
         </div>
         <div className={style.stat}>
-          <span className={style.statNum}>{doctors.length}</span>
+          <span className={style.statNum}>{doctorArray.length}</span>
           <span className={style.statLabel}>doktor</span>
         </div>
       </div>
@@ -54,12 +60,13 @@ function SpecialiteCard({ spec }) {
 function UzmanlikElement() {
     const [specialites, setSpecialites] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [data, setData] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
         try {
-            const response = await axios.get('http://localhost/BilisimTekno/uzmanliklist.php');
-            setSpecialites(response.data.data);
+            const response = await axios.get('http://localhost/BilisimTekno/uzmanliklist1.php');
+            setData(response.data);
             console.log(response.data)
         } catch (error) {
             console.error("Yükleme hatası:", error);
@@ -69,15 +76,15 @@ function UzmanlikElement() {
         };
         fetchData();
     }, []);
-  const [query, setQuery] = useState('');
-  const filtered = useMemo(
-    () =>
-      specialites.filter((s) =>
-        s.nom.toLowerCase().includes(query.toLowerCase())
-      ),
-    [query,specialites]
-  );
-  if (loading) return <div className={style.loader}>Uzmanlik yükleniyor......</div>;
+    const [query, setQuery] = useState('');
+    const filtered = useMemo(
+        () =>
+        data.filter((s) =>
+            s.nom?.toLowerCase().includes(query.toLowerCase())
+        ),
+        [query,data]
+    );
+    if (loading) return <div className={style.loader}>Uzmanlik yükleniyor......</div>;
   return (
     <div className={style.page}>
         <p className={style.presentation}>Randevu sistemimizde bulduğumuz farklı uzmanlık alanları</p>
@@ -95,8 +102,8 @@ function UzmanlikElement() {
         <p className={style.empty}>Sonuç bulunamadı.</p>
       ) : (
         <div className={style.grid}>
-          {filtered.map((s) => (
-            <SpecialiteCard key={s.id} spec={s} />
+          {filtered.map((item,index) => (
+            <SpecialiteCard key={index} spec={item} />
           ))}
         </div>
       )}
