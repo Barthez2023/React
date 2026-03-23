@@ -218,6 +218,9 @@ REFERENCES uzmanlik(id)
 ON DELETE SET NULL 
 ON UPDATE CASCADE;
 
+# 23-03-2026
+ici on va travailler sur la partir doktor .Lorsque un doktor s'enreigistre il est visible sur l'interface doktorlar d∈adlin et c'est l'admin qui lui associe un optital .Nous allons mettre en place cela.
+
 
 
 

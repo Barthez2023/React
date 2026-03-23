@@ -27,7 +27,7 @@
   max-width: 550px; /* Un peu plus large pour le confort */
   max-height: 90vh; /* NE PAS DÉPASSER 90% de la hauteur de l'écran */
   flex-direction: column; /* Organise le contenu verticalement */
-  margin: 10px;
+  margin-top: 60px;
 }
 
 @keyframes slideUp {

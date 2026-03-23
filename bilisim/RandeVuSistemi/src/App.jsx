@@ -12,6 +12,10 @@ import SignInDoktor from './pages/signin/signdoktor';
 import LoginDoktor from './pages/login/logindoktor';
 import LoginAdmin from './pages/login/loginadlin';
 import KlinikList from './pages/klinik/ClinicList';
+import AdminHomePage from './pages/administration/homePage';
+import KlinikAdmin from './pages/administration/klinikadmin';
+import UzmanlikList from './pages/administration/uzmanlik/uzmanlik';
+import Doktorlar from './pages/administration/doktorlar/doktorlar';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -26,8 +30,12 @@ function App() {
       <Route path="/signindoktor" element={<SignInDoktor/>} />
       <Route path="/logindoktor" element={<LoginDoktor/>} />
       <Route path="/loginadmin" element={<LoginAdmin/>} />
-      <Route path="/klinik" element={<Klinik/>} />
       <Route path="/klinikList" element={<KlinikList/>} />
+      <Route path="/adminhomepage" element={<AdminHomePage/>} />
+      <Route path="/klinikadmin" element={<KlinikAdmin/>} />
+      <Route path="/uzmanliklist" element={<UzmanlikList/>} />
+      <Route path="/doktorlar" element={<Doktorlar/>} />
+      <Route path="/klinik" element={<Klinik/>} />
 
 
     </Routes>

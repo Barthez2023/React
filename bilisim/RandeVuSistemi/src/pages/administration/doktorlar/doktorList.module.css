@@ -1,0 +1,201 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+/* ── Page & Background ────────────────────────────────────────────────────── */
+.page {
+  padding: 2.5rem;
+  font-family: 'DM Sans', sans-serif;
+  background-color: #f0f4f8; /* Un gris-bleu très léger pour faire ressortir le blanc */
+  min-height: 100vh;
+}
+
+.page h2 {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #0f172a; /* Bleu marine très profond */
+  letter-spacing: -0.02em;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Petit indicateur visuel devant le titre */
+.page h2::before {
+  content: '';
+  width: 6px;
+  height: 28px;
+  background: #3b82f6; /* Bleu vif */
+  border-radius: 4px;
+}
+
+/* ── Tableau (Le Cadre) ───────────────────────────────────────────────────── */
+.adminTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  border: none;
+  /* Ombre portée pour donner du relief */
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+}
+
+/* En-têtes */
+.adminTable thead tr {
+  background: #0f172a; /* Fond sombre pour un contraste maximum */
+}
+
+.adminTable thead th {
+  padding: 18px 24px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 700;
+  color: #94a3b8; /* Texte gris clair sur fond sombre */
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-align: center;
+}
+
+/* Lignes */
+.adminTable tbody tr {
+  border-bottom: 1px solid #f1f5f9;
+  transition: all 0.2s ease;
+}
+
+.adminTable tbody tr:hover {
+  background: #f8faff; /* Effet bleu très clair au survol */
+}
+
+.adminTable tbody tr:last-child {
+  border-bottom: none;
+}
+
+/* Cellules */
+.adminTable tbody td {
+  padding: 16px 24px;
+  color: #334155;
+  vertical-align: middle;
+  text-align: center;
+}
+
+/* Colonne Is Numarasi (ID / Matricule) */
+.adminTable tbody td:first-child {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #3b82f6; /* Bleu vif pour l'ID */
+  text-align: center;
+}
+
+/* Ad Soyad */
+.adminTable tbody td:nth-child(2) {
+  font-weight: 600;
+  color: #0f172a;
+  text-align: center;
+}
+
+/* Şehir / Uzmanlık */
+.adminTable tbody td:nth-child(3) {
+  color: #64748b;
+  font-size: 13.5px;
+  text-align: center;
+}
+
+/* La Spécialité (Le petit badge à l'intérieur de la cellule) */
+.adminTable tbody td:nth-child(3) strong {
+  color: #ffffff;
+  font-weight: 600;
+  background: #3b82f6; /* Badge bleu vif */
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  margin-left: 8px;
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+  text-align: center;
+}
+
+/* ── Badges Durum (Les États) ────────────────────────────────────────────── */
+.statusOk,
+.statusWait {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 99px; /* Forme pilule parfaite */
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.statusOk {
+  background: #dcfce7;
+  color: #15803d; /* Vert émeraude vif */
+  border: 1px solid #bbf7d0;
+}
+
+.statusWait {
+  background: #ffedd5;
+  color: #9a3412; /* Orange vif */
+  border: 1px solid #fed7aa;
+}
+
+/* ── Boutons Actions (Plus modernes) ───────────────────────────────────────── */
+.adminTable tbody td:last-child {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+}
+
+.adminTable tbody td:last-child button {
+  padding: 10px 18px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  border: none;
+  background: #f1f5f9;
+  color: #475569;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Style spécifique pour le bouton Stats */
+.adminTable tbody td:last-child button:hover {
+  background: #3b82f6;
+  color: white;
+  box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Bouton Supprimer (Vif et rouge) */
+.delBtn {
+  background: #fee2e2 !important;
+  color: #ef4444 !important;
+}
+
+.delBtn:hover {
+  background: #ef4444 !important;
+  color: white !important;
+  box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.4);
+  transform: translateY(-2px);
+}
+
+.btn{
+  background-color: #4CAF50  !important;  
+  color: white  !important;
+  border: none;
+  transition: all 0.3s ease  !important;
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3)   !important;
+}
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .adminTable {
+    border-radius: 12px;
+  }
+}
+
