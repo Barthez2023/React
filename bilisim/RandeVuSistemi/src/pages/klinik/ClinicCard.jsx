@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import  style from './klinik.module.css'
+import axios from 'axios';
 // Composant ClinicCard amélioré
 function ClinicCard({ clinic ,onOpenPopup}) {
   return (
@@ -34,7 +35,7 @@ function ClinicCard({ clinic ,onOpenPopup}) {
         
         <div className={style.clinic_stats}>
           <div className={style.stat_item}>
-            <span className={style.stat_number}>{clinic.branches || 12}</span>
+            <span className={style.stat_number}>{clinic.total_brans || 12}</span>
             <span className={style.stat_label}>Branches</span>
           </div>
           <div className={style.stat_item}>

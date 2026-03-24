@@ -92,7 +92,7 @@ function KlinikList() {
         // Supposons que la réponse soit de la forme { success: true, data: [...] }
         if (response.data.success) {
           setKlinikDB(response.data.data); // mettre toutes les cliniques dans l'état
-          console.log(response.data.data)
+          console.log("klinikler Db ",response.data.data)
         } else {
           console.error("Erreur serveur :", response.data.message);
         }
@@ -121,6 +121,7 @@ function KlinikList() {
   const filteredKlinik = klinikDB.filter((klinik) =>
     klinik.name.toLowerCase().includes(search.toLowerCase())
   );
+
 
   //permet de selectionner la clinique  afin d'afficher le popup au bon endroit
   const [selectedKlinik, setSelectedKlinik] = useState(null);
@@ -154,7 +155,7 @@ function KlinikList() {
       <div className={style.clinic_grid}>
         {filteredKlinik.length > 0 ? (
             filteredKlinik.map((item) => (
-              <ClinicCard key={item.id} clinic={item} 
+              <ClinicCard key={item.id} clinic={item}
                 onOpenPopup={() => setSelectedKlinik(item)}
               />
             ))

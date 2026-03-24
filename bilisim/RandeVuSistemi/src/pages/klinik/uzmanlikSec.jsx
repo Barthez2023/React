@@ -15,6 +15,7 @@ function UzmanlikPopup({ klinik, onClose }) {
           hastane_id: klinik.id 
         });
         setUzmanlik(response.data.data || []);
+        console.log("uzmanlik: ",response.data)
       } catch (error) {
         console.error("Erreur PHP:", error);
       } finally {

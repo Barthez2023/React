@@ -220,6 +220,19 @@ ON UPDATE CASCADE;
 
 # 23-03-2026
 ici on va travailler sur la partir doktor .Lorsque un doktor s'enreigistre il est visible sur l'interface doktorlar d∈adlin et c'est l'admin qui lui associe un optital .Nous allons mettre en place cela.
+# 24-03-2026
+Avant de continuer sur la gestion des boutton "klinik ver" de l'interface doktorlar de l'admin qui va permettre a l'admin d'assigner un clinique a un doktor ,nous allons d'abors essayer de definier pour chaque clinique une nombre de specilite specifique.
+CREATE TABLE klinik_uzmanlik (
+    klinik_id INT,
+    uzmanlik_id INT,
+    -- On définit une clé primaire composée pour éviter les doublons
+    PRIMARY KEY (klinik_id, uzmanlik_id),
+    -- On lie les IDs aux tables parentes
+    FOREIGN KEY (klinik_id) REFERENCES klinik(id) ON DELETE CASCADE,
+    FOREIGN KEY (uzmanlik_id) REFERENCES Uzmanlık(id) ON DELETE CASCADE
+);
+# Not:ON DELETE CASCADE. Cela signifie que si tu supprimes une clinique, les liens vers ses spécialités sont automatiquement nettoyés. 
+On va se penche sur l'ajout d'une clinique pour ajouter une clinique l'admin dois devoir choisir les differentes brances de cette clinique et nous allons mettre au fur et a mesure la table klinik_uzmanlik a jour.
 
 
 
@@ -293,7 +306,7 @@ ici on va travailler sur la partir doktor .Lorsque un doktor s'enreigistre il es
 
 
 
-
+on vas continuer avec le syteme lorsque l'admin clique sur le boutton klinik ver la liste de des clinique dois s'afficher sous forme de popup seul les clinique qui ont la disciplene du docteur doivent s'afficher sue le popup et l'admis dois assigner une clinique ou le doctrue dois aller travailler
 
 
 /*const data = {
@@ -722,3 +735,66 @@ function UzmanlikElement() {
 }
 
 export default UzmanlikElement;
+
+
+
+
+
+<?php
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type");
+    header("Content-Type: application/json");
+
+    // Gérer la requête preflight
+    if($_SERVER['REQUEST_METHOD'] !== 'POST'){
+        echo json_encode([
+            "success"=>false,
+            "message"=>"Méthode non autorisée"
+        ]);
+        exit();
+    }
+
+    // Connexion à la base de données
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "hastane";
+
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    // Vérifier la connexion
+    if ($conn->connect_error) {
+        echo json_encode([
+            "success" => false, 
+            "message" => "Erreur de connexion: " . $conn->connect_error
+        ]);
+        exit();
+    }
+
+
+    // 1. On récupère l'ID envoyé par React via $_GET['id']
+    // On utilise intval() pour être sûr que c'est un nombre (sécurité)
+    $id_recu = isset($_GET['id']) ? intval($_GET['id']) : 0;
+    
+    $query = $conn->prepare("SELECT u.id,u.nom,u.icon 
+    FROM uzmanlik u
+    INNER JOIN klinik_uzmanlik ku ON u.id = ku.uzmanlik_id
+    WHERE ku.klinik_id =?");
+    $query->bind_param("i", $id_recu);
+    $query->execute();
+    $result = $query->get_result();
+
+    $uzmanlik = [];
+    if ($result && $result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $uzmanlik[] = $row;
+        }
+    }
+    echo json_encode([
+        "success" => true,
+        "data" => $uzmanlik
+    ]);
+
+    $conn->close();
+
+?>
