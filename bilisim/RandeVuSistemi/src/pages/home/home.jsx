@@ -22,7 +22,7 @@ function Home() {
   return (
     <div className={style.role_container}>
       <header className={style.role_header}>
-        <h1>Bienvenue sur MHRS</h1>
+        <h1>Bienvenue sur RENDEVU SISTEMI</h1>
         <p>Système National de Gestion des Cliniques</p>
         <div className={style.underline}></div>
       </header>

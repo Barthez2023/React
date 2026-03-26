@@ -247,3 +247,75 @@
     color: #1e293b;
     padding: 10px;
 }
+
+
+
+/* Conteneur qui contient tous les labels uzmanlik */
+.uzmanlik {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* Aligne les spécialités en colonnes */
+    gap: 10px;
+    background: #f1f5f9; /* Un gris un peu plus soutenu pour délimiter la zone */
+    padding: 15px;
+    border-radius: 14px;
+    max-height: 200px; /* Évite que le modal devienne trop long */
+    overflow-y: auto;  /* Ajoute un scroll interne si tu as beaucoup de spécialités */
+    border: 1.5px solid #e2e8f0;
+}
+
+/* Le "Badge" cliquable pour chaque spécialité */
+.checkboxLabel {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #ffffff;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none; /* Empêche la sélection du texte au clic */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.checkboxLabel span {
+    font-size: 13px;
+    font-weight: 500;
+    color: #475569;
+}
+
+/* Changement de style quand on survole */
+.checkboxLabel:hover {
+    background: #f8faff;
+    border-color: #bfdbfe;
+}
+
+/* L'input checkbox lui-même (Optionnel : on le rend plus bleu) */
+.checkboxLabel input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #3b82f6; /* Couleur bleue vive quand coché */
+    cursor: pointer;
+}
+
+/* Style quand la checkbox est cochée (Effet de sélection) */
+/* On utilise :has() si ton navigateur le supporte, sinon le span fera le travail */
+.checkboxLabel:has(input:checked) {
+    background: #eff6ff;
+    border-color: #3b82f6;
+    box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.1);
+}
+
+.checkboxLabel:has(input:checked) span {
+    color: #1e40af;
+    font-weight: 600;
+}
+
+/* Personnalisation du scrollbar interne du bloc Uzmanlik */
+.uzmanlik::-webkit-scrollbar {
+    width: 5px;
+}
+.uzmanlik::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}

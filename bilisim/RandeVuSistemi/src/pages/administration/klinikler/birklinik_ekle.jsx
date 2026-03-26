@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import style from './birklinik_ekle.module.css';
 import React from 'react';
 import axios from 'axios';
@@ -6,6 +6,7 @@ import axios from 'axios';
 const INITIAL_FORM = {
   name: '',
   city: '',
+  uzmanlik_ids:[],
   description: '',
   zaman:'Mon-Fri 08h-18h'
 };
@@ -25,6 +26,7 @@ function KlinikAddPopup({ onClose, onSave }) {
   const validate = () => {
     const errs = {};
     if (!form.name)      errs.name      = 'Zorunlu';
+    if (form.uzmanlik_ids.length===0)      errs.uzmanlik_ids      = 'Zorunlu';
     if (!form.city.trim()) errs.city      = 'Zorunlu';
     if (!form.description.trim()) errs.description = 'Zorunlu';
     return errs;
@@ -33,8 +35,8 @@ function KlinikAddPopup({ onClose, onSave }) {
     const handleSubmit = () => {
         const errs = validate();
         if (Object.keys(errs).length > 0) {
-        setErrors(errs);
-        return;
+            setErrors(errs);
+            return;
         }
         setIsSubmitting(true);
         const fetchHospitals = async () => {
@@ -56,6 +58,39 @@ function KlinikAddPopup({ onClose, onSave }) {
     fetchHospitals()
     onClose();
   }
+  const [uzmanlik,setUzmanlik]=useState([]);
+    useEffect(()=>{
+        const getuzmanlik=async ()=>{
+            try {
+                const response = await axios.get('http://localhost/BilisimTekno/getUzmanlik.php');
+                setUzmanlik(response.data.data);
+                console.log(response.data)
+            } catch (error) {
+                console.error("Get uzmanlik hatası:", error);
+            }
+            };
+            getuzmanlik();
+  },[])
+
+
+  //permet de retirer ou d'ajouter un uzmanlik dans notre tableau
+  const handleCheckboxChange = (id) => {
+    // On récupère la liste actuelle des IDs depuis ton state (ex: formData.uzmanlik_ids)
+        const currentIds = [...form.uzmanlik_ids];
+        
+        if (currentIds.includes(id)) {
+            // Si l'ID est déjà là, on le retire (décocher)
+            const newIds = currentIds.filter(item => item !== id);
+            handleChange('uzmanlik_ids', newIds);
+        } else {
+            // Sinon, on l'ajoute (cocher)
+            handleChange('uzmanlik_ids', [...currentIds, id]);
+        }
+    };
+    const chek=()=>{
+        console.log(form.uzmanlik_ids)
+    }
+
   return (
     <div className={style.overlay} onClick={onClose}>
         <div className={style.modal} onClick={(e) => e.stopPropagation()}>
@@ -116,6 +151,36 @@ function KlinikAddPopup({ onClose, onSave }) {
                         <option  value="Mon-Sum 08h-18h">Mon-Sum 08h-18h</option>
                         <option  value="Mon-Sum 08h-18h30">Mon-Sum 08h-18h30</option>
                     </select>
+                </div>
+            </div>
+            {/* <div className={style.field}>
+                <label className={style.label}>Uzmanlik Secin</label>
+                <div className={style.timeRow}>
+                    <select className={style.select} name="" id="" onChange={(e) => handleChange('uzmanlik_ids', e.target.value)}>
+                        <option  value="sec">Sec</option>
+                        {uzmanlik?.map((uzman)=>(
+                            <option key={uzman.id} value={uzman.nom}>
+                                {uzman.nom}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            </div> */}
+
+            <div className={style.field}>
+                <label className={style.label}>Uzmanlik Secin</label>
+                <div className={style.uzmanlik}>
+                    {uzmanlik?.map((uzman) => (
+                        <label key={uzman.id} className={style.checkboxLabel}>
+                        <input
+                            type="checkbox"
+                            value={uzman.id}
+                            checked={form.uzmanlik_ids.includes(uzman.id)}
+                            onChange={() => handleCheckboxChange(uzman.id)}
+                        />
+                        <span>{uzman.icon} {uzman.nom}</span>
+                        </label>
+                    ))}
                 </div>
             </div>
 

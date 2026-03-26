@@ -233,11 +233,21 @@ CREATE TABLE klinik_uzmanlik (
 );
 # Not:ON DELETE CASCADE. Cela signifie que si tu supprimes une clinique, les liens vers ses spécialités sont automatiquement nettoyés. 
 On va se penche sur l'ajout d'une clinique pour ajouter une clinique l'admin dois devoir choisir les differentes brances de cette clinique et nous allons mettre au fur et a mesure la table klinik_uzmanlik a jour.
+# 26-03-2026
+on va modifier le boutton ajout d'une clinique de telle facon que lorsque l'admin ajoute une clinique il peut directement choisir les differentes specialites que propose la clinique.
 
+# error_log("new_clinic_id: " . $new_clinic_id);
+error_log("uzmanlik_ids: " . json_encode($uzmanlik_ids));
+error_log("empty check: " . (empty($uzmanlik_ids) ? "VIDE" : "NON VIDE"));
+echo json_encode([
+    "success"        => true,
+    "debug_id"       => $new_clinic_id,
+    "debug_uzmanlik" => $uzmanlik_ids,
+    "debug_empty"    => empty($uzmanlik_ids),
+]);
+# exit(); // ← stoppe ici pour voir le debug   permet de debuger
 
-
-
-
+On vas maintenant compter le nombre de clinique qui propose les differentes specilite et on va ajouter a chaque specialite le nombre de clinique qui propose cette sepcialite.On va gerer le boutton "Klinik Ver" pour permettre a l'admin d'attribuer des clinique aux doktors.
 
 
 
