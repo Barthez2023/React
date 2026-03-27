@@ -192,3 +192,30 @@
   font-weight: bolder;
   color: #1e3a8a;
 }
+
+.viewMore {
+  background: none;
+  border: none;
+  color: #3b82f6; /* Ton bleu principal */
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  padding: 4px 0;
+  margin-top: -8px; /* On le rapproche de la liste */
+  margin-bottom: 16px;
+  display: block;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.viewMore:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+  transform: translateX(3px); /* Petit effet de mouvement au survol */
+}
+
+/* On ajuste un peu le clinicList pour que le bouton s'insère bien */
+.clinicList {
+  margin-bottom: 12px;
+}

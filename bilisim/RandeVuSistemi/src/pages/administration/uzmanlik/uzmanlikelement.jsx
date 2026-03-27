@@ -4,10 +4,17 @@ import axios from 'axios';
 
 // ─────creation du cardre qui va contenir des uzmanlik
 function SpecialiteCard({ spec }) {
+    // État pour gérer le "Voir plus"
+    const [showAll, setShowAll] = useState(false);
     const [clinics,setClinics]=useState(['Medicana Rize', 'Kuzey Sağlık']);
     const doctorArray = spec.doktorlar && spec.doktorlar !== '—' 
     ? spec.doktorlar.split(', ') 
     : [];
+    const klinikArray = spec.liste_cliniques && spec.liste_cliniques !== '—' 
+    ? spec.liste_cliniques.split(', ') 
+    : [];
+    // On détermine quelles cliniques afficher
+    const displayedClinics = showAll ? klinikArray : klinikArray.slice(0, 3)
   return (
     <div className={style.card}>
       {/* Header */}
@@ -21,14 +28,22 @@ function SpecialiteCard({ spec }) {
         {/* Cliniques */}
         <p className={style.sectionLabel}>Klinikler</p>
         <ul className={style.clinicList}>
-          {clinics.map((c) => (
+          {displayedClinics.map((c) => (
             <li key={c} className={style.clinicItem}>
               <span className={style.clinicDot} />
               {c}
             </li>
           ))}
         </ul>
-
+        {/* Bouton Voir Plus - Apparaît seulement s'il y a plus de 5 cliniques */}
+        {klinikArray.length > 3 && (
+          <button 
+            className={style.viewMore} 
+            onClick={() => setShowAll(!showAll)}
+          >
+            {showAll ? '▲ Daha az göster' : `▼ Tümünü gör (${klinikArray.length})`}
+          </button>
+        )}
         {/* Médecins */}
         <p className={style.sectionLabel}>Doktorlar</p>
         <div className={style.doctorPills}>
@@ -45,7 +60,7 @@ function SpecialiteCard({ spec }) {
       {/* Footer — statistiques */}
       <div className={style.cardFooter}>
         <div className={style.stat}>
-          <span className={style.statNum}>{clinics.length}</span>
+          <span className={style.statNum}>{spec.nombre_cliniques}</span>
           <span className={style.statLabel}>klinik</span>
         </div>
         <div className={style.stat}>

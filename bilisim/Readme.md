@@ -808,3 +808,52 @@ export default UzmanlikElement;
     $conn->close();
 
 ?>
+
+
+<?php
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
+header("Content-Type: application/json");
+
+// Connexion à la base de données
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "hastane";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Vérifier la connexion
+if ($conn->connect_error) {
+    echo json_encode([
+        "success" => false,
+        "message" => "Erreur de connexion à la DB : " . $conn->connect_error
+    ]);
+    exit();
+}
+
+//on va join les tables klinik_uzmanlik et klinikler afin de recuperer le nombre de clinique qui propose chaque specilite
+$sql = "SELECT u.nom, u.icon, GROUP_CONCAT(CONCAT(d.Name, ' ', d.Surname) SEPARATOR ', ') as doktorlar_Isim
+    FROM uzmanlik u 
+    LEFT JOIN doktorlar d ON u.id = d.specialite_id 
+    GROUP BY u.id, u.nom, u.icon";
+
+$result = $conn->query($sql);
+$data = [];
+
+while($row = $result->fetch_assoc()) {
+    $data[] = [
+        "nom" => $row['nom'],
+        "icon" => $row['icon'],
+        "doktorlar" => $row['doktorlar_Isim'] ?? '—' 
+    ];
+}
+
+
+
+
+echo json_encode($data);
+
+$conn->close();
+?>
