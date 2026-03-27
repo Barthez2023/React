@@ -2,16 +2,17 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import style from './doktorList.module.css'; 
-import KlinikCard from './KlinikCard/KlinikCard';
+import KlinikCardPopup from './KlinikCard/KlinikCard';
+
 
 function DoktorList() {
   const [loading, setLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [popupOpen, setPopupOpen] = useState(false);
   const [fetchedClinics, setFetchedClinics] = useState([]);
   const handleClinicSelect = (selectedClinic) => {
-  console.log("Clinique choisie :", selectedClinic);
+    console.log("Clinique choisie :", selectedClinic);
     // Ici tu peux mettre à jour ton formulaire ou envoyer au PHP
-    setIsModalOpen(false);
+    setPopupOpen(false);
   };
   const klinikver=(uzman_id)=>{
     const fetchData = async () => {
@@ -19,7 +20,7 @@ function DoktorList() {
           const response = await axios.get(`http://localhost/BilisimTekno/klinikverGetklinik.php?uzman=${uzman_id}`);
           setFetchedClinics(response.data.data);
           console.log('Les cliniques du medecins sont:',response.data)
-          setIsModalOpen(true); // ✅ On ouvre le modal une fois les données reçues
+          setPopupOpen(true); // ✅ On ouvre le modal une fois les données reçues
       } catch (error) {
           console.error("Yükleme hatası:", error);
       } finally {
@@ -72,12 +73,13 @@ function DoktorList() {
   //   : [];
   return (
     <div className={style.page}>
-      <KlinikCard
-        clinics={fetchedClinics} 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-        onConfirm={handleClinicSelect} 
+      {popupOpen && (
+      <KlinikCardPopup
+        cliniques={fetchedClinics}       // tableau { id, name, city }
+        onConfirm={handleClinicSelect}    // reçoit l'objet clinique sélectionné
+        onClose={() => setPopupOpen(false)}
       />
+    )}
       <h2>Doktor Yönetimi</h2>
       <table className={style.adminTable}>
         <thead>

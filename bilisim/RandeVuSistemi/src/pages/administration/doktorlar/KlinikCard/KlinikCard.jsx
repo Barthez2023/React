@@ -1,52 +1,86 @@
-import { useState } from 'react';
-import style from './KlinikCard.module.css';
+import { useState, useMemo } from 'react';
+import style from './klinikCard.module.css';
 
-function KlinikCard({ clinics, isOpen, onClose, onConfirm }) {
+function KlinikCardPopup({ cliniques, onConfirm, onClose }) {
   const [selected, setSelected] = useState(null);
+  const [query, setQuery]       = useState('');
 
-  if (!isOpen) return null;
+  const filtered = useMemo(
+    () =>
+      cliniques.filter((c) =>
+        c && c.toString().toLowerCase().includes(query.toLowerCase())
+      ),
+    [query, cliniques]
+  );
+
+  const handleConfirm = () => {
+    if (!selected) return;
+    onConfirm(selected);   // retourne l'objet clinique complet
+    onClose();
+  };
 
   return (
-    <div className={style.overlay}>
-      <div className={style.modal}>
+    <div className={style.overlay} onClick={onClose}>
+      <div className={style.modal} onClick={(e) => e.stopPropagation()}>
+
+        {/* Header */}
         <div className={style.header}>
-          <h3>Klinik Seçin</h3>
-          <p>Lütfen doktor için bir çalışma kliniği belirleyin.</p>
+          <h3 className={style.title}>Klinik seçin</h3>
+          <p className={style.subtitle}>Doktoru atamak istediğiniz kliniği seçin.</p>
         </div>
 
-        <div className={style.body}>
-          {clinics.length > 0 ? (
-            <div className={style.clinicGrid}>
-              {clinics.map((clinic, index) => (
-                <div 
-                  key={index} 
-                  className={`${style.clinicRow} ${selected === clinic ? style.active : ''}`}
-                  onClick={() => setSelected(clinic)}
-                >
-                  <div className={style.radioCircle}>
-                    {selected === clinic && <div className={style.innerCircle} />}
-                  </div>
-                  <span className={style.clinicName}>{clinic}</span>
-                </div>
-              ))}
-            </div>
+        {/* Recherche */}
+        <div className={style.searchWrapper}>
+          <input
+            type="text"
+            className={style.search}
+            placeholder="Klinik ara..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </div>
+
+        {/* Grille des cliniques */}
+        <div className={style.grid}>
+          {filtered.length === 0 ? (
+            <p className={style.empty}>Sonuç bulunamadı.</p>
           ) : (
-            <p className={style.empty}>Bu uzmanlık için klinik bulunamadı.</p>
+            filtered.map((clinicName,index) => {
+                // On compare directement la chaîne 'clinicName' avec l'état 'selected'
+                const isSelected = selected === clinicName;
+              return (
+                <div
+                  key={`clinic-${index}`}
+                  className={`${style.card} ${isSelected ? style.cardSelected : ''}`}
+                  onClick={() => setSelected(clinicName)}
+                >
+                  <div className={`${style.radio} ${isSelected ? style.radioSelected : ''}`}>
+                    {isSelected && <span className={style.radioDot} />}
+                  </div>
+                  <div>
+                    <p className={style.clinicName}>{clinicName}</p>
+                  </div>
+                </div>
+              );
+            })
           )}
         </div>
 
+        {/* Footer */}
         <div className={style.footer}>
-          <button className={style.cancelBtn} onClick={onClose}>Iptal</button>
-          <button 
-            className={style.confirmBtn} 
+          <button className={style.cancelBtn} onClick={onClose}>İptal</button>
+          <button
+            className={style.confirmBtn}
+            onClick={handleConfirm}
             disabled={!selected}
-            onClick={() => onConfirm(selected)}
           >
             Onayla
           </button>
         </div>
+
       </div>
     </div>
   );
 }
-export default KlinikCard
+
+export default KlinikCardPopup;
