@@ -9,15 +9,18 @@ function DoktorList() {
   const [loading, setLoading] = useState(true);
   const [popupOpen, setPopupOpen] = useState(false);
   const [fetchedClinics, setFetchedClinics] = useState([]);
+  const [selectedDoctorId, setSelectedDoctorId] = useState(" ");
   const handleClinicSelect = (selectedClinic) => {
     console.log("Clinique choisie :", selectedClinic);
     // Ici tu peux mettre à jour ton formulaire ou envoyer au PHP
     setPopupOpen(false);
   };
-  const klinikver=(uzman_id)=>{
+  const klinikver=(uzman_id,doctor_id)=>{
     const fetchData = async () => {
+      setSelectedDoctorId(doctor_id); // 1. On mémorise quel docteur on traite
+      console.log('Lid su medecin :',doctor_id)
       try {
-          const response = await axios.get(`http://localhost/BilisimTekno/klinikverGetklinik.php?uzman=${uzman_id}`);
+          const response = await axios.get(`http://localhost/BilisimTekno/klinikverGetklinik.php?uzman=${uzman_id}&doctor_id=${doctor_id}`);
           setFetchedClinics(response.data.data);
           console.log('Les cliniques du medecins sont:',response.data)
           setPopupOpen(true); // ✅ On ouvre le modal une fois les données reçues
@@ -108,7 +111,7 @@ function DoktorList() {
                 )}
               </td>
               <td>
-                <button className={style.btn} onClick={()=>{klinikver(doc.specialiteId)}}>Klinik Ver</button>
+                <button className={style.btn} onClick={()=>{klinikver(doc.specialiteId,doc.id)}}>Klinik Ver</button>
                 <button onClick={() => navigate(`/doktor/stats/${doc.id}`)}>📊 Stats</button>
                 <button onClick={() => deleteDoctor(doc.id)} className={style.delBtn}>🗑️ Sil</button>
               </td>

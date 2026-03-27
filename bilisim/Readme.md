@@ -250,7 +250,8 @@ echo json_encode([
 On vas maintenant compter le nombre de clinique qui propose les differentes specilite et on va ajouter a chaque specialite le nombre de clinique qui propose cette sepcialite.On va gerer le boutton "Klinik Ver" pour permettre a l'admin d'attribuer des clinique aux doktors.
 
 
-
+# 28-03-2026
+recuperer le doctor_id  dans un .php est stocker l'id de la clinique correspondante dans la db doktor  ,changer le durum en mettant le nom de la clinique 
 
 
 
@@ -808,5 +809,9 @@ export default UzmanlikElement;
     $conn->close();
 
 ?>
+
+
+
+
 
 

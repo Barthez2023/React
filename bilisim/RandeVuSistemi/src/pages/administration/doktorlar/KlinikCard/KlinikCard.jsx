@@ -8,7 +8,7 @@ function KlinikCardPopup({ cliniques, onConfirm, onClose }) {
   const filtered = useMemo(
     () =>
       cliniques.filter((c) =>
-        c && c.toString().toLowerCase().includes(query.toLowerCase())
+        (c.name).toLowerCase().includes(query.toLowerCase())
       ),
     [query, cliniques]
   );
@@ -45,20 +45,21 @@ function KlinikCardPopup({ cliniques, onConfirm, onClose }) {
           {filtered.length === 0 ? (
             <p className={style.empty}>Sonuç bulunamadı.</p>
           ) : (
-            filtered.map((clinicName,index) => {
-                // On compare directement la chaîne 'clinicName' avec l'état 'selected'
-                const isSelected = selected === clinicName;
+            filtered.map((c) => {
+                // On compare le id 'selected' avec le id de la clinique
+                const isSelected = selected?.klinikid === c.klinikid;
               return (
                 <div
-                  key={`clinic-${index}`}
+                  key={c.klinikid}
                   className={`${style.card} ${isSelected ? style.cardSelected : ''}`}
-                  onClick={() => setSelected(clinicName)}
+                  onClick={() => setSelected(c)}
                 >
                   <div className={`${style.radio} ${isSelected ? style.radioSelected : ''}`}>
                     {isSelected && <span className={style.radioDot} />}
                   </div>
                   <div>
-                    <p className={style.clinicName}>{clinicName}</p>
+                    <p className={style.clinicName}>{c.name}</p>
+                    <p className={style.clinicCity}>{c.city}</p>
                   </div>
                 </div>
               );
