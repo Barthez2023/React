@@ -2,8 +2,33 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import style from './doktorList.module.css'; 
+import KlinikCard from './KlinikCard/KlinikCard';
 
 function DoktorList() {
+  const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [fetchedClinics, setFetchedClinics] = useState([]);
+  const handleClinicSelect = (selectedClinic) => {
+  console.log("Clinique choisie :", selectedClinic);
+    // Ici tu peux mettre à jour ton formulaire ou envoyer au PHP
+    setIsModalOpen(false);
+  };
+  const klinikver=(uzman_id)=>{
+    const fetchData = async () => {
+      try {
+          const response = await axios.get(`http://localhost/BilisimTekno/klinikverGetklinik.php?uzman=${uzman_id}`);
+          setFetchedClinics(response.data.data);
+          console.log('Les cliniques du medecins sont:',response.data)
+          setIsModalOpen(true); // ✅ On ouvre le modal une fois les données reçues
+      } catch (error) {
+          console.error("Yükleme hatası:", error);
+      } finally {
+          setLoading(false);
+      }
+      };
+      fetchData();
+  } 
+
   const [doctors, setDoctors] = useState([]);
   const navigate = useNavigate();
 
@@ -40,10 +65,19 @@ function DoktorList() {
         if (!cities || cities.length === 0) return "Chargement...";
         const city = cities.find(c => String(c.city_code) === String(code));
         return city ? city.city_name : null;
-    };
+  };
 
+  // const klinikList = fetchedClinics && fetchedClinics !== '—' 
+  //   ? fetchedClinics.split(', ') 
+  //   : [];
   return (
     <div className={style.page}>
+      <KlinikCard
+        clinics={fetchedClinics} 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        onConfirm={handleClinicSelect} 
+      />
       <h2>Doktor Yönetimi</h2>
       <table className={style.adminTable}>
         <thead>
@@ -72,7 +106,7 @@ function DoktorList() {
                 )}
               </td>
               <td>
-                <button className={style.btn}>Klinik Ver</button>
+                <button className={style.btn} onClick={()=>{klinikver(doc.specialiteId)}}>Klinik Ver</button>
                 <button onClick={() => navigate(`/doktor/stats/${doc.id}`)}>📊 Stats</button>
                 <button onClick={() => deleteDoctor(doc.id)} className={style.delBtn}>🗑️ Sil</button>
               </td>
