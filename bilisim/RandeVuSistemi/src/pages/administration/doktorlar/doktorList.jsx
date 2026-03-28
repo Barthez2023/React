@@ -10,10 +10,21 @@ function DoktorList() {
   const [popupOpen, setPopupOpen] = useState(false);
   const [fetchedClinics, setFetchedClinics] = useState([]);
   const [selectedDoctorId, setSelectedDoctorId] = useState(" ");
-  const handleClinicSelect = (selectedClinic) => {
-    console.log("Clinique choisie :", selectedClinic);
-    // Ici tu peux mettre à jour ton formulaire ou envoyer au PHP
-    setPopupOpen(false);
+  const handleClinicSelect = async (selectedClinic) => {
+    try {
+    // C'est ici qu'on appelle le PHP d'enregistrement
+      const response = await axios.get(
+        `http://localhost/BilisimTekno/setdoktorklinik.php?klinik_id=${selectedClinic.klinikid}&doctor_id=${selectedDoctorId}`
+      );
+      if (response.data.success) {
+        // On met à jour l'affichage localement
+        setPopupOpen(false);
+        alert("Klinik başarıyla atandı!");
+      }
+    }
+    catch (error) {
+      console.error("Atama hatası:", error);
+    }
   };
   const klinikver=(uzman_id,doctor_id)=>{
     const fetchData = async () => {

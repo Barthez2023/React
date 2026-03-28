@@ -39,7 +39,7 @@ function ClinicCard({ clinic ,onOpenPopup}) {
             <span className={style.stat_label}>Branches</span>
           </div>
           <div className={style.stat_item}>
-            <span className={style.stat_number}>{clinic.doctors || 45}</span>
+            <span className={style.stat_number}>{clinic.total_doktor || 45}</span>
             <span className={style.stat_label}>Médecins</span>
           </div>
           <div className={style.stat_item}>

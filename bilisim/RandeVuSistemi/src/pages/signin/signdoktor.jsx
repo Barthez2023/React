@@ -18,7 +18,8 @@ function SignInDoktor() {
     speciality:'',
     telephone: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    id_uzmanlik:''
   });
 
   // 2. A single function to manage all input changes
@@ -57,6 +58,7 @@ function SignInDoktor() {
 
   //for include popup
   const [showPopup, setShowPopup] = useState(false);
+  const[uzmanlikid,setUzmanlikid]=useState("");
   //use to send the data 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -72,7 +74,10 @@ function SignInDoktor() {
         navigate('/logindoktor');
     }, 3000);
     //permet la gestion de la base de donnees
-    const response =await axios.post('http://localhost/BilisimTekno/signDoktor.php',formData)
+    const response =await axios.post('http://localhost/BilisimTekno/signDoktor.php',{
+      ...formData,
+      uzmanlik_id:uzmanlikid
+    })
     console.log(response.data)               //for debugging
   };
 
@@ -80,16 +85,12 @@ function SignInDoktor() {
   const[uzmanlik,setUzmanlik]=useState([])
   useEffect(() => {
     const uzmanliksec=async(e)=>{
-      const response =await axios.post('http://localhost/BilisimTekno/uzmanlik.php',uzmanlik)
-      console.log(response.data)               //for debugging
+      const response =await axios.post('http://localhost/BilisimTekno/uzmanlik.php')
+      console.log('Les uzmanlik sont :',response.data)               //for debugging
       setUzmanlik(response.data.data)
     }
     uzmanliksec();
   }, []);
-
-
-
- 
 
   return (
     <div className={style.signinContainer}>
@@ -156,11 +157,16 @@ function SignInDoktor() {
 
           <div className={style.inputGroup}>
             <label>Uzmanlık</label>
-            <select name="speciality" value={formData.speciality} onChange={handleChange}>
+            <select name="speciality" value={formData.speciality} onChange={(e)=>{
+              handleChange(e);
+              // On trouve l'ID : si la value de l'option est l'ID, e.target.value sera l'ID
+              const selectedId = e.target.value;
+              setUzmanlikid(selectedId);
+            }}>
               <option value="">uzmanlik Seçin</option>
               {
-                uzmanlik.map((uzmanlikIsim,index)=>(
-                  <option value={uzmanlikIsim.nom} key={index}>{uzmanlikIsim.nom}</option>
+                uzmanlik.map((uzman)=>(
+                  <option value={uzman.id} key={uzman.id}>{uzman.nom}</option>
                 ))
               }
             </select>
