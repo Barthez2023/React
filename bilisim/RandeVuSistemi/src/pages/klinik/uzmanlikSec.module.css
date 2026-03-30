@@ -178,3 +178,32 @@
   cursor: not-allowed;
   opacity: 0.7;
 }
+
+.cardDisabled {
+    opacity: 0.5;            /* Rend le bouton plus transparent */
+    cursor: not-allowed;     /* Change le curseur en signe "interdit" */
+    filter: grayscale(1);    /* (Optionnel) Met l'icône en gris */
+    background-color: #f1f5f9;
+}
+
+/* .doctorBadge {
+    font-size: 10px;
+    background: #e2e8f0;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-left: auto;
+} */
+
+.doctorBadge {
+    font-size: 11px;
+    font-weight: 600;
+    color: #475569;             /* Gris ardoise pro */
+    background: #f1f5f9;        /* Fond très léger */
+    padding: 2px 8px;
+    border-radius: 6px;         /* Moins arrondi pour un look plus "tech" */
+    border: 1px solid #e2e8f0;  /* Fine bordure pour la structure */
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
