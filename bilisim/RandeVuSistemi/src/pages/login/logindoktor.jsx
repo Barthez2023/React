@@ -29,7 +29,12 @@ function LoginDoktor() {
         const response =await axios.post('http://localhost//BilisimTekno//loginDoktor.php',credentials)
         if (response.data.success){
           console.log(response.data)               //for debugging
-          navigate('/klinik')
+          // 1. On stocke les infos dans le localStorage pour s'en souvenir
+          localStorage.setItem('doktorName', response.data.user.name);
+          localStorage.setItem('doktorSurName', response.data.user.surname);
+          localStorage.setItem('doktorId', response.data.user.id);
+          // 2. On redirige vers la page de bienvenue (Dashboard)
+          navigate('/doktor/welcome');
         }
         else {
           console.log('pas de donnee')

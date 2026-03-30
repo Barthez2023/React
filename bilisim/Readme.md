@@ -253,8 +253,11 @@ On vas maintenant compter le nombre de clinique qui propose les differentes spec
 # 28-03-2026
 recuperer le doctor_id,l'envoyer   dans un .php et  stocker l'id de la clinique correspondante dans la db doktor  ,changer le durum en mettant le nom de la clinique ,stocker et mettre a jour el nombre de specilite et de docteurs de chaque clinique dans la db.
 # 29-03-2026
-on va travailler sur le cadre qui s'affiche lorsque on lcique sur le boutton "prendre rendezvous" dans klinik.Si dans cet hoital seulement les specialites ayant un dokteur seront cliquable le reste sera disable.Lorsque on clique sur la specialite ,la liste des docteurs qui consulte sur cette specialite dans cet hopital s'ouvre sous forme de popup.
+on va travailler sur le cadre qui s'affiche lorsque on lcique sur le boutton "prendre rendezvous" dans klinik.Si dans cet hopital seulement les specialites ayant un dokteur seront cliquable le reste sera disable.Lorsque on clique sur la specialite ,la liste des docteurs qui consulte sur cette specialite dans cet hopital s'ouvre sous forme de popup.
 
+# 30-03-2026
+ici on va travailler sur l'interface  de docteur.Une fois le docteur login il est dirriger vers l'interface propre a un docteur.
+En utilisant localStorage.setItem, le nom du docteur reste affiché même s'il actualise la page (F5).
 
 
 
@@ -814,143 +817,3 @@ export default UzmanlikElement;
 
 
 
-
-
-
-
-
-
-
-
-
-
-//uzmanlik.php
-
-<?php
-    header("Access-Control-Allow-Origin: *");
-    header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-    header("Access-Control-Allow-Headers: Content-Type");
-    header("Content-Type: application/json");
-
-    // 1. Récupérer le contenu brut du corps de la requête (le JSON)
-    $json = file_get_contents('php://input');
-
-    // 2. Transformer ce JSON en tableau associatif PHP
-    $data = json_decode($json, true);
-
-    // Gérer la requête preflight
-    if($_SERVER['REQUEST_METHOD'] !== 'POST'){
-        echo json_encode([
-            "success"=>false,
-            "message"=>"Méthode non autorisée"
-        ]);
-        exit();
-    }
-    
-    // Connexion à la base de données
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "hastane";
-
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    // Vérifier la connexion
-    if ($conn->connect_error) {
-        echo json_encode([
-            "success" => false, 
-            "message" => "Erreur de connexion: " . $conn->connect_error
-        ]);
-        exit();
-    }
-    $query = $conn->prepare("SELECT u.id,u.nom,u.icon 
-    FROM uzmanlik u ");
-    $query->execute();
-    $result = $query->get_result();
-
-    $uzmanlik = [];
-    if ($result && $result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $uzmanlik[] = $row;
-        }
-    }
-    echo json_encode([
-        "success" => true,
-        "data" => $uzmanlik
-    ]);
-
-    $conn->close();
-
-?>
-
-
-
-
-
-
-
-
-
-
-
-<?php
-    header("Access-Control-Allow-Origin: *");
-    header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-    header("Access-Control-Allow-Headers: Content-Type");
-    header("Content-Type: application/json");
-
-    // 1. Récupérer le contenu brut du corps de la requête (le JSON)
-    $json = file_get_contents('php://input');
-
-    // 2. Transformer ce JSON en tableau associatif PHP
-    $data = json_decode($json, true);
-
-    // Gérer la requête preflight
-    if($_SERVER['REQUEST_METHOD'] !== 'POST'){
-        echo json_encode([
-            "success"=>false,
-            "message"=>"Méthode non autorisée"
-        ]);
-        exit();
-    }
-    
-    $klinik_id = isset($data['hastane_id']) ? intval($data['hastane_id']) : 0;
-
-    // Connexion à la base de données
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "hastane";
-
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    // Vérifier la connexion
-    if ($conn->connect_error) {
-        echo json_encode([
-            "success" => false, 
-            "message" => "Erreur de connexion: " . $conn->connect_error
-        ]);
-        exit();
-    }
-    $query = $conn->prepare("SELECT u.id,u.nom,u.icon ,d.id AS doktor_id,d.Name AS doktor_name ,d.Surname AS doktor_surname
-    FROM uzmanlik u 
-    LEFT JOIN klinik_uzmanlik ku on u.id=ku.uzmanlik_id 
-    LEFT JOIN doktorlar d ON (u.id = d.specialite_id AND d.klinik_id = ku.klinik_id)
-    WHERE ku.klinik_id= ?");
-    $query->bind_param("i",$klinik_id);
-    $query->execute();
-    $result = $query->get_result();
-
-    $uzmanlik = [];
-    if ($result && $result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $uzmanlik[] = $row;
-        }
-    }
-    echo json_encode([
-        "success" => true,
-        "data" => $uzmanlik
-    ]);
-
-    $query->close();
-    $conn->close();
-
-?>

@@ -16,6 +16,7 @@ import AdminHomePage from './pages/administration/homePage';
 import KlinikAdmin from './pages/administration/klinikadmin';
 import UzmanlikList from './pages/administration/uzmanlik/uzmanlik';
 import Doktorlar from './pages/administration/doktorlar/doktorlar';
+import WelcomeDoktor from './pages/doktorlar/DoktorHomePage';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -35,6 +36,7 @@ function App() {
       <Route path="/klinikadmin" element={<KlinikAdmin/>} />
       <Route path="/uzmanliklist" element={<UzmanlikList/>} />
       <Route path="/doktorlar" element={<Doktorlar/>} />
+      <Route path="/doktor/welcome" element={<WelcomeDoktor/>} />
       <Route path="/klinik" element={<Klinik/>} />
 
 
