@@ -258,11 +258,30 @@ on va travailler sur le cadre qui s'affiche lorsque on lcique sur le boutton "pr
 # 30-03-2026
 ici on va travailler sur l'interface  de docteur.Une fois le docteur login il est dirriger vers l'interface propre a un docteur.
 En utilisant localStorage.setItem, le nom du docteur reste affiché même s'il actualise la page (F5).
+` Note importante :`
+# Quand on envoir les donnes avec la methode GET dans le axios comme:
+const result = await axios.get("http://localhost/BilisimTekno/getDoktorInfo.php",{idDoktor});
+pour recuperer dans le php on fait:$idDoktor = isset($_GET['idDoktor']) ? intval($_GET['idDoktor']) : 0;   //ici  intval:permet juste de convertir en nombre 
 
+# Quand on envoir les donnes avec la methode POST  dans le axios comme:
+const result = await axios.post("http://localhost/BilisimTekno/getDoktorInfo.php",{idDoktor:id});
+pour recuperer dans le php on fait:
+//Lire le JSON envoyé par Axios
+$json = file_get_contents('php://input');
+$data_input = json_decode($json, true);
+//lire la donnes proprement dit
+$idDoktor = isset($data_input['idDoktor']) ? intval($data_input['idDoktor']) : 0;
 
-
-
-
+// Gérer le preflight OPTIONS (indispensable pour Axios)  se met dans le php GET comme POST
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    exit();
+}
+# "new Date()" récupère automatiquement l'heure réglée sur l'ordinateur (ou le téléphone) du docteur. S'il est à Istanbul ou à Paris, l'heure sera juste.
+Internationalisation : Intl.DateTimeFormat est géré nativement par tous les navigateurs modernes. C'est beaucoup plus léger que d'installer une bibliothèque comme moment.js ou date-fns.
+# 31-03-2026
+on a travailler l'interface docteur lorsau un medecin ce connecte s'il a deja ete assigner a une clinique les information de la clinique s'affiche te l'utilisateur peut aussi voir ces propres infos.L'utilisateur a la possibilite de definir une plage de temps dans lequel est sera disponible pour des rendez-vous.Pour definir les plages de rendez-vous  il dois choisir le jour ,l'heure de bedut et l'heure de fin.
+# 01-04-2026
+On va afficher les plage entrer par le docteur dans le cadre au dessus du boutton "Randevu programımı düzenle" et ensuite on vas liee les palges de temps au cliniques pour permettre au patient de consulter les palges de temps et de prendres rendez-vous.
 
 
 
@@ -814,6 +833,170 @@ export default UzmanlikElement;
     $conn->close();
 
 ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React from 'react';
+import style from './navbar.module.css';
+
+const NavbarDoktor = ({ onLogout }) => {
+  return (
+    <nav className={style.navbar}>
+      <div className={style.navbar_container}>
+        {/* Logo / Nom de l'application */}
+        <div className={style.navbar_logo}>
+          <a href="/">Hastane<span>Panel</span></a>
+        </div>
+
+        {/* Liens de navigation principaux */}
+        <ul className={style.navbar_menu}>
+          <li>
+            <a href="/home" className={style.nav_link}>Home</a>
+          </li>
+          <li>
+            <a href="/today" className={style.nav_link}>Rendez-vous d'aujourd'hui</a>
+          </li>
+          <li>
+            <a href="/history" className={style.nav_link}>Rendez-vous passés</a>
+          </li>
+        </ul>
+
+        {/* Zone utilisateur (Profil & Déconnexion) */}
+        <div className={style.navbar_user_actions}>
+          <a href="/profile" className={style.profile_btn}>Mon Profil</a>
+          <button onClick={onLogout} className={style.logout_btn}>
+            Déconnexion
+          </button>
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+export default NavbarDoktor;
+
+
+
+
+
+/* Configuration de base */
+.navbar {
+    background-color: #ffffff;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 0 2rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navbar_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Style du Logo */
+.navbar_logo a {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2c3e50;
+    text-decoration: none;
+}
+
+.navbar_logo span {
+    color: #3498db; /* Couleur d'accentuation */
+}
+
+/* Menu de navigation */
+.navbar_menu {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav_link {
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+.nav_link:hover {
+    color: #3498db;
+    background-color: #f0f7ff;
+}
+
+/* Actions utilisateur */
+.navbar_user_actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.profile_btn {
+    text-decoration: none;
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.logout_btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.logout_btn:hover {
+    background-color: #c0392b;
+}
+
+/* Responsive : simple ajustement pour mobile */
+@media (max-width: 768px) {
+    .navbar_menu {
+        display: none; /* À remplacer par un menu burger plus tard */
+    }
+}
+
+
+
 
 
 

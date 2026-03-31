@@ -16,7 +16,6 @@
   font-family: 'DM Sans', sans-serif;
   margin-bottom: 50px;
   border-radius: 10px;
-  
   position: fixed;     /* Elle ne bouge plus du tout */
   top: 0;              /* Collée en haut */
   left: 0;             /* Collée à gauche */

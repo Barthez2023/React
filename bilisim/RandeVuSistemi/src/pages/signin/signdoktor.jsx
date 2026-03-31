@@ -59,6 +59,8 @@ function SignInDoktor() {
   //for include popup
   const [showPopup, setShowPopup] = useState(false);
   const[uzmanlikid,setUzmanlikid]=useState("");
+  const[uzmanlikname,setUzmanlikname]=useState("");
+
   //use to send the data 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -76,7 +78,8 @@ function SignInDoktor() {
     //permet la gestion de la base de donnees
     const response =await axios.post('http://localhost/BilisimTekno/signDoktor.php',{
       ...formData,
-      uzmanlik_id:uzmanlikid
+      uzmanlik_id:uzmanlikid,
+      uzmanlik_name:uzmanlikname
     })
     console.log(response.data)               //for debugging
   };
@@ -85,7 +88,7 @@ function SignInDoktor() {
   const[uzmanlik,setUzmanlik]=useState([])
   useEffect(() => {
     const uzmanliksec=async(e)=>{
-      const response =await axios.post('http://localhost/BilisimTekno/uzmanlik.php')
+      const response =await axios.post('http://localhost/BilisimTekno/uzmanliklist.php')
       console.log('Les uzmanlik sont :',response.data)               //for debugging
       setUzmanlik(response.data.data)
     }
@@ -161,7 +164,15 @@ function SignInDoktor() {
               handleChange(e);
               // On trouve l'ID : si la value de l'option est l'ID, e.target.value sera l'ID
               const selectedId = e.target.value;
+              // 1. On trouve l'objet complet dans la liste des spécialités
+              const selectedSpecialty = uzmanlik.find(u => u.id == selectedId);
+              // 2. On met à jour l'ID pour le formulaire
+              handleChange(e);
               setUzmanlikid(selectedId);
+              // 3. On stocke aussi le nom (dans un autre state ou dans formData)
+              if (selectedSpecialty) {
+                setUzmanlikname(selectedSpecialty.nom); 
+              }
             }}>
               <option value="">uzmanlik Seçin</option>
               {

@@ -1,38 +1,57 @@
-import React from 'react';
-import style from './navbar.module.css';
+import { BrowserRouter as Router, Routes, Route, Link ,useNavigate,useLocation} from 'react-router-dom';
+import { useState} from 'react'
+import style from './navbar.module.css'
 
-const NavbarDoktor = ({ onLogout }) => {
+
+function NavbarAmin() {
+  const location = useLocation();
+  const isActive = (path) => location.pathname === path;
+  const navigate=useNavigate()
+  const handleLogout = () => {
+    // Ta logique de déconnexion ici (ex: localStorage.clear())
+    navigate('/logindoktor');
+  };
+    const name = localStorage.getItem('doktorName');
+    const Surname = localStorage.getItem('doktorSurName');
   return (
-    <nav className={style.navbar}>
-      <div className={style.navbar_container}>
-        {/* Logo / Nom de l'application */}
-        <div className={style.navbar_logo}>
-          <a href="/">Hastane<span>Panel</span></a>
+    <div style={{marginBottom:'60px'}}>
+      <nav className={style.navbar}>
+        
+        {/* Logo / Home */}
+        <div className={style.left}>
+          <Link to="/doktor/welcome" className={style.logo}>
+            <i className={`${style.badge} fa-solid fa-house-medical`}></i>
+            <span style={{marginLeft: '10px', color: '#1e293b', fontWeight: 'bold',fontSize:'25px',textTransform:'uppercase'}}>Kliniği bağlayın</span>
+          </Link>
         </div>
 
-        {/* Liens de navigation principaux */}
-        <ul className={style.navbar_menu}>
-          <li>
-            <a href="/home" className={style.nav_link}>Home</a>
-          </li>
-          <li>
-            <a href="/today" className={style.nav_link}>Rendez-vous d'aujourd'hui</a>
-          </li>
-          <li>
-            <a href="/history" className={style.nav_link}>Rendez-vous passés</a>
-          </li>
-        </ul>
+        {/* Menu Principal */}
+        <div className={style.right}>
+          <Link to="/doktor/welcome" className={`${style.link} ${isActive('/doktor/welcome') ? style.linkActive : ''}`}>
+            Home
+          </Link>
+          <Link to="/klinik/today" className={`${style.link} ${isActive('/klinik/today') ? style.linkActive : ''}`}>
+            Bugünkü randevular
+          </Link>
+          <Link to="/klinik/history" className={`${style.link} ${isActive('/klinik/history') ? style.linkActive : ''}`}>
+            Geçmiş randevular
+          </Link>
+          
+          <div style={{width: '1px', height: '24px', background: '#e2e8f0', margin: '0 10px'}}></div>
 
-        {/* Zone utilisateur (Profil & Déconnexion) */}
-        <div className={style.navbar_user_actions}>
-          <a href="/profile" className={style.profile_btn}>Mon Profil</a>
-          <button onClick={onLogout} className={style.logout_btn}>
-            Déconnexion
+          <Link to="/profile" className={`${style.link} ${isActive('/profile') ? style.linkActive : ''}`}>
+            <i className="fa-regular fa-user" style={{marginRight: '6px'}}></i>{name} {Surname}
+          </Link>
+          
+          <button onClick={handleLogout} className={`${style.link} ${style.logoutBtn}`}
+            data-hover="Oturumu kapat">
+            <i className="fa-solid fa-power-off"></i>
           </button>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </div>
   );
-};
+}
+export default NavbarAmin;
 
-export default NavbarDoktor;
+
