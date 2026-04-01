@@ -41,35 +41,40 @@ function WelcomeDoktor() {
     };
     const navigate = useNavigate();
     const [idDoktor, setIdDoktor] = useState(null);
-    const [doktor, setDoktor] = useState(null); 
+    const [doktor, setDoktor] = useState(null);
+    const [randevouTime, setRandevouTime] = useState([]); 
     useEffect(() => {
-        const getDoktorInfo = async (id) => {
-            if (!id) return; // Sécurité : n'appelle pas l'API si l'ID est absent
-
+        const savedId = localStorage.getItem('doktorId');
+        if (!savedId) {
+            console.error("Aucun ID trouvé");  // Sécurité : n'appelle pas l'API si l'ID est absent
+            return;
+        }
+        const currentDay = new Intl.DateTimeFormat('tr-TR', { weekday: 'long' }).format(new Date());
+        const loadDashboardData = async () => {
             try {
-                const result = await axios.post("http://localhost/BilisimTekno/getDoktorInfo.php", {
-                    idDoktor: id
+                // Appel 1 : Infos Docteur
+                const resDoc = await axios.post("http://localhost/BilisimTekno/getDoktorInfo.php", {
+                    idDoktor: savedId
                 });
-
-                console.log("Réponse du serveur:", result.data);
-                if (result.data.success) {
-                    setDoktor(result.data.data);
-                }
+                if (resDoc.data.success) setDoktor(resDoc.data.data);
+                console.log("Réponse du serveur docteur:", resDoc.data);
+                // Appel 2 : Horaires
+                const resTime = await axios.post("http://localhost/BilisimTekno/GetTime_fromDoktor.php", {
+                        idDoktor: savedId,
+                        caslisma_gun:currentDay
+                    });
+                console.log("Vérification réelle des données :", resTime.data.data);
+                if (resTime.data.success) {
+                // On s'assure que c'est un tableau avant de le stocker
+                const data = Array.isArray(resTime.data.data) ? resTime.data.data : [];
+                setRandevouTime(data);
+            }
             } catch (error) {
                 console.error("Error API :", error);
             }
         };
-        // 1. On récupère l'ID
-        const savedId = localStorage.getItem('doktorId');
-        if (savedId) {
-            setIdDoktor(savedId);
-            // 2. On lance l'appel API seulement si l'ID existe
-            getDoktorInfo(savedId);
-        } else {
-            console.error("Aucun ID trouvé dans le localStorage");
-        }
+            loadDashboardData();
         }, []);
-        // Dans ton return
         if (!doktor) {
             return <div className={style.loading}>Chargement du profil...</div>;
         }
@@ -162,12 +167,19 @@ function WelcomeDoktor() {
                 <div className={`${style.card} ${style.scheduleCard}`}>
                     <h3><i className="fa-solid fa-clock-rotate-left"></i> Zaman Yönetimi</h3>
                     <p>Hastaların randevu alabilmeleri için zaman dilimlerinizi yapılandırın..</p>
-                    
-                    <div className={style.timePreview}>
-                        <div className={style.timeBadge}>09:00 - 12:00</div>
-                        <div className={style.timeBadge}>14:00 - 18:30</div>
-                    </div>
-
+                    {randevouTime.length===0 ? 
+                    (<div className={style.timePreview1}>
+                        <p className={style.noTimeMessage}>Bugün için planlanmış herhangi bir görüşme yok.</p>
+                    </div>)
+                    :
+                    (<div className={style.timePreview}>
+                        {randevouTime.map((time) => (
+                            <div className={style.timeBadge} key={time.id}>
+                                <i className="fa-regular fa-clock" style={{marginRight: '5px'}}></i>
+                                {time.baslangic_saat} - {time.bitis_saat}
+                            </div>
+                        ))}
+                    </div>)}
                     <button className={style.primaryBtn} onClick={() => setIsPopupOpen(true)}>
                         Randevu programımı düzenle
                     </button>
