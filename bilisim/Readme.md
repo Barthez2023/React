@@ -282,64 +282,8 @@ Internationalisation : Intl.DateTimeFormat est géré nativement par tous les na
 on a travailler l'interface docteur lorsau un medecin ce connecte s'il a deja ete assigner a une clinique les information de la clinique s'affiche te l'utilisateur peut aussi voir ces propres infos.L'utilisateur a la possibilite de definir une plage de temps dans lequel est sera disponible pour des rendez-vous.Pour definir les plages de rendez-vous  il dois choisir le jour ,l'heure de bedut et l'heure de fin.
 # 01-04-2026
 On va afficher les plage entrer par le docteur dans le cadre au dessus du boutton "Randevu programımı düzenle" et ensuite on vas liee les palges de temps au cliniques pour permettre au patient de consulter les palges de temps et de prendres rendez-vous.
-
-
-
-
-
-
-.overlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(15, 23, 42, 0.6);
-    backdrop-filter: blur(4px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.modal {
-    background: white;
-    width: 90%;
-    max-width: 450px;
-    border-radius: 24px;
-    padding: 30px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    position: relative;
-    animation: slideUp 0.3s ease-out;
-}
-
-.slotsGrid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 colonnes d'heures */
-    gap: 12px;
-    margin-top: 20px;
-}
-
-.timeChip {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    padding: 12px;
-    border-radius: 12px;
-    font-weight: 600;
-    color: #0f172a;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.timeChip:hover {
-    background: #0284c7;
-    color: white;
-    border-color: #0284c7;
-    transform: translateY(-2px);
-}
-
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
+# 02-04-2026
+Nous allons nous attaquer sur l'interface patient pour cela nuos devons creer un table randevular qui va regrouper les patient ayant pris rendevous chez x docteur.
 
 
 
