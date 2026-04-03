@@ -284,6 +284,20 @@ on a travailler l'interface docteur lorsau un medecin ce connecte s'il a deja et
 On va afficher les plage entrer par le docteur dans le cadre au dessus du boutton "Randevu programımı düzenle" et ensuite on vas liee les palges de temps au cliniques pour permettre au patient de consulter les palges de temps et de prendres rendez-vous.
 # 02-04-2026
 Nous allons nous attaquer sur l'interface patient pour cela nuos devons creer un table randevular qui va regrouper les patient ayant pris rendevous chez x docteur.
+CREATE TABLE rendezvous (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    doktor_id INT NOT NULL,
+    patient_id INT NOT NULL,
+    randevu_date DATE NOT NULL,      -- Le jour du RDV
+    baslangic_saat TIME NOT NULL,    -- L'heure choisie (ex: 09:00)
+    bitis_saat TIME NOT NULL,       -- L'heure de fin (ex: 10:00)
+    status ENUM('en_attente', 'confirme', 'annule') DEFAULT 'en_attente',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    -- Contraintes d'intégrité (Clés étrangères)
+    FOREIGN KEY (doktor_id) REFERENCES doktorlar(id) ON DELETE CASCADE,
+    FOREIGN KEY (patient_id) REFERENCES hastalar(id) ON DELETE CASCADE
+);
 
 
 

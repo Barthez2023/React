@@ -3,7 +3,7 @@ import { useState} from 'react'
 import style from './navbar.module.css'
 
 
-function NavbarDoktor() {
+function NavbarHasta() {
   const location = useLocation();
   const isActive = (path) => location.pathname === path;
   const navigate=useNavigate()
@@ -11,8 +11,6 @@ function NavbarDoktor() {
     // Ta logique de déconnexion ici (ex: localStorage.clear())
     navigate('/logindoktor');
   };
-    const name = localStorage.getItem('doktorName');
-    const Surname = localStorage.getItem('doktorSurName');
   return (
     <div style={{marginBottom:'60px'}}>
       <nav className={style.navbar}>
@@ -21,26 +19,29 @@ function NavbarDoktor() {
         <div className={style.left}>
           <Link to="/doktor/welcome" className={style.logo}>
             <i className={`${style.badge} fa-solid fa-house-medical`}></i>
-            <span style={{marginLeft: '10px', color: '#1e293b', fontWeight: 'bold',fontSize:'25px',textTransform:'uppercase'}}>Kliniği bağlayın</span>
+            <span style={{marginLeft: '10px', color: '#1e293b', fontWeight: 'bold',fontSize:'25px',textTransform:'uppercase'}}>RandeVu Sistemi bağlayın</span>
           </Link>
         </div>
 
         {/* Menu Principal */}
         <div className={style.right}>
-          <Link to="/doktor/welcome" className={`${style.link} ${isActive('/doktor/welcome') ? style.linkActive : ''}`}>
+          <Link to="/doktor/hasta" className={`${style.link} ${isActive('/doktor/hasta') ? style.linkActive : ''}`}>
             Home
           </Link>
-          <Link to="/klinik/today" className={`${style.link} ${isActive('/klinik/today') ? style.linkActive : ''}`}>
-            Bugünkü randevular
+          <Link to="/hasta/klinik" className={`${style.link} ${isActive('/hasta/klinik') ? style.linkActive : ''}`}>
+            Klinikler
           </Link>
-          <Link to="/klinik/history" className={`${style.link} ${isActive('/klinik/history') ? style.linkActive : ''}`}>
-            Geçmiş randevular
+          <Link to="/klinik" className={`${style.link} ${isActive('/klinik') ? style.linkActive : ''}`}>
+            Randevularim
+          </Link>
+          <Link to="/klinik" className={`${style.link} ${isActive('/klinik') ? style.linkActive : ''}`}>
+            Geçmiş randevularim
           </Link>
           
           <div style={{width: '1px', height: '24px', background: '#e2e8f0', margin: '0 10px'}}></div>
 
           <Link to="/profile" className={`${style.link} ${isActive('/profile') ? style.linkActive : ''}`}>
-            <i className="fa-regular fa-user" style={{marginRight: '6px'}}></i>{name} {Surname}
+            <i className="fa-regular fa-user" style={{marginRight: '6px'}}></i>
           </Link>
           
           <button onClick={handleLogout} className={`${style.link} ${style.logoutBtn}`}
@@ -52,6 +53,6 @@ function NavbarDoktor() {
     </div>
   );
 }
-export default NavbarDoktor;
+export default NavbarHasta;
 
 

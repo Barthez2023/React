@@ -1,0 +1,131 @@
+/* Reset local pour la nav */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    height: 70px;
+    background-color: rgba(255, 255, 255, 0.95); /* Blanc avec légère transparence */
+    border-bottom: 1px solid #e2e8f0; /* Bordure très fine */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1000;
+    backdrop-filter: blur(8px);
+    font-family: 'Inter', 'DM Sans', sans-serif;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02); /* Ombre très discrète */
+}
+
+.left {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
+/* Icône Maison / Badge */
+.badge {
+    color: #0284c7; /* Bleu médical professionnel */
+    font-size: 30px;
+    transition: color 0.3s;
+    text-align: center;
+}
+
+.right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Liens de navigation */
+.link {
+    color: #64748b; /* Gris texte doux */
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 10px 16px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.link:hover {
+    color: #0284c7;
+    background-color: #f1f5f9;
+}
+
+/* État Actif : Plus sobre */
+.linkActive {
+    color: #0369a1;
+    background-color: #e0f2fe; /* Bleu très clair */
+    font-weight: 600;
+}
+
+/* Bouton Déconnexion (Spécifique) */
+.logoutBtn {
+    color: #ef4444; /* Rouge alerte mais propre */
+    background: transparent;
+    border: 1px solid #fee2e2;
+    margin-left: 10px;
+    position: relative;
+}
+
+.logoutBtn:hover {
+    background-color: #fef2f2;
+    border-color: #fca5a5;
+    color: #b91c1c;
+}
+/* 2. On crée le petit texte de description */
+.logoutBtn::after {
+    content: attr(data-hover); /* Récupère le texte du JSX */
+    position: absolute;
+    top: 110%; /* Place le texte juste en dessous du btn */
+    left: 50%;
+    transform: translateX(-50%); /* Centre parfaitement */
+    
+    /* Style du petit texte */
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #b91c1c;
+    white-space: nowrap;
+    
+    /* Animation et visibilité */
+    opacity: 0;
+    pointer-events: none; /* Empêche d'interagir avec le petit texte */
+    transition: all 0.2s ease-in-out;
+}
+/* 3. On l'affiche uniquement au survol */
+.logoutBtn:hover::after {
+    opacity: 1;
+    top: 100%; /* Petit effet de remontée fluide */
+}
+
+/* Dropdown (Profil) */
+.dropdownMenu {
+    position: absolute;
+    top: 60px;
+    right: 40px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    min-width: 200px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    padding: 8px;
+    animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
