@@ -233,8 +233,8 @@ function SignInPatient() {
             <label>Çinsiyet</label>
             <select name="Cinsiyet" value={formData.Cinsiyet} onChange={handleChange}>
               <option value="">Cinsiyet Seçin</option>
-              <option value="erkek">Erkek</option>
-              <option value="kadin">Kadın</option>
+              <option value="Erkek">Erkek</option>
+              <option value="Kadin">Kadın</option>
             </select>
           </div>
 

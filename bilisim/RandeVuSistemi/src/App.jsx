@@ -19,6 +19,7 @@ import Doktorlar from './pages/administration/doktorlar/doktorlar';
 import WelcomeDoktor from './pages/doktorlar/DoktorHomePage';
 import WelcomeHasta from './pages/hastalar/HastaHomePage';
 import KliniklerHasta from './pages/hastalar/klinikler';
+import RandevularimHasta from './pages/hastalar/randevularim';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -41,6 +42,7 @@ function App() {
       <Route path="/doktor/welcome" element={<WelcomeDoktor/>} />
       <Route path="/doktor/hasta" element={<WelcomeHasta/>} />
       <Route path="/hasta/klinik" element={<KliniklerHasta/>} />
+      <Route path="/hasta/randevularim" element={<RandevularimHasta/>} />
       <Route path="/klinik" element={<Klinik/>} />
 
 

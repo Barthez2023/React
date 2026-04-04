@@ -29,6 +29,11 @@ function LoginHasta() {
       const response =await axios.post('http://localhost/BilisimTekno/loginHasta.php',credentials)
         if (response.data.success){
           console.log(response.data)               //for debugging
+          // 1. On stocke les infos dans le localStorage pour s'en souvenir
+          localStorage.setItem('hastaId', response.data.user?.id);
+          localStorage.setItem('hastaname', response.data.user?.name);
+          localStorage.setItem('hastasurname', response.data.user?.surname);
+           // 2. On redirige vers la page de bienvenue (Dashboard)
           navigate('/doktor/hasta')
         }
         else {

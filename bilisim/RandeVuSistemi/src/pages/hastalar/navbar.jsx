@@ -11,6 +11,8 @@ function NavbarHasta() {
     // Ta logique de déconnexion ici (ex: localStorage.clear())
     navigate('/logindoktor');
   };
+  const name = localStorage.getItem('hastaname');
+  const Surname = localStorage.getItem('hastasurname');
   return (
     <div style={{marginBottom:'60px'}}>
       <nav className={style.navbar}>
@@ -31,7 +33,7 @@ function NavbarHasta() {
           <Link to="/hasta/klinik" className={`${style.link} ${isActive('/hasta/klinik') ? style.linkActive : ''}`}>
             Klinikler
           </Link>
-          <Link to="/klinik" className={`${style.link} ${isActive('/klinik') ? style.linkActive : ''}`}>
+          <Link to="/hasta/randevularim" className={`${style.link} ${isActive('/hasta/randevularim') ? style.linkActive : ''}`}>
             Randevularim
           </Link>
           <Link to="/klinik" className={`${style.link} ${isActive('/klinik') ? style.linkActive : ''}`}>
@@ -41,7 +43,7 @@ function NavbarHasta() {
           <div style={{width: '1px', height: '24px', background: '#e2e8f0', margin: '0 10px'}}></div>
 
           <Link to="/profile" className={`${style.link} ${isActive('/profile') ? style.linkActive : ''}`}>
-            <i className="fa-regular fa-user" style={{marginRight: '6px'}}></i>
+            <i className="fa-regular fa-user" style={{marginRight: '6px'}}></i>{name} {Surname}
           </Link>
           
           <button onClick={handleLogout} className={`${style.link} ${style.logoutBtn}`}

@@ -298,9 +298,12 @@ CREATE TABLE rendezvous (
     FOREIGN KEY (doktor_id) REFERENCES doktorlar(id) ON DELETE CASCADE,
     FOREIGN KEY (patient_id) REFERENCES hastalar(id) ON DELETE CASCADE
 );
-
-
-
+# 04-04-2026
+Gestion de la prise de rendez-vous par le patient et afficahge de ces rendevous sur son interface.
+-Compter et afficher les rendevous du clients.
+-Creer l'interface de visualisation des rendevous chez le medcins.
+-Lorsaue le client choisir un medecins les jour de la semaines dois s'afficher en fonction du jour choisir les haoraires du docteurs vont s'afficher .
+-Lorsqu'une heure est choisir elle reste innaccessible car deux personnes ne peuvent pas etre  consulter par un meme docreur en meme temsps.
 
 
 
