@@ -34,7 +34,7 @@ function LoginHasta() {
           localStorage.setItem('hastaname', response.data.user?.name);
           localStorage.setItem('hastasurname', response.data.user?.surname);
            // 2. On redirige vers la page de bienvenue (Dashboard)
-          navigate('/doktor/hasta')
+          navigate('/hasta/welcome')
         }
         else {
           console.log('pas de donnees')

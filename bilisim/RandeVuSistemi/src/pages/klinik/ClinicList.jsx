@@ -132,10 +132,10 @@ function KlinikList() {
         <div className={style.header_content}>
           {/* <span className={style.header_subtitle}>Système de santé premium</span> */}
           <div className={style.logo_badge}><i className="fa-solid fa-hospital" style={{fontSize:'40px'}}></i></div>
-          <h1 className={style.header_title}>Nos Établissements de Santé</h1>
+          <h1 className={style.header_title}>Sağlık Kliniklerimiz</h1>
           <p className={style.header_description}>
-            Découvrez nos centres médicaux équipés des dernières technologies 
-            et staffés par des professionnels de santé qualifiés
+            En son teknolojiyle donatılmış ve nitelikli sağlık uzmanları 
+            tarafından hizmet verilen tıp merkezlerimizi keşfedin.
           </p>
         </div>
         
@@ -145,7 +145,7 @@ function KlinikList() {
           </svg>
           <input 
             type="text" 
-            placeholder="Rechercher une clinique, une ville ou une spécialité..."
+            placeholder="Klinik, şehir veya uzmanlık alanı olarak arayın..."
             onChange={(e) => setSearch(e.target.value)}
             className={style.search_input}
           />
@@ -160,7 +160,7 @@ function KlinikList() {
               />
             ))
           ) : (
-            <p className={style.yok_klinik}>Aucune clinique ne correspond à ce nom.</p>
+            <p className={style.yok_klinik}>Bu isimde bir klinik yok.</p>
           )}
 
           {selectedKlinik && (

@@ -19,7 +19,7 @@ function NavbarHasta() {
         
         {/* Logo / Home */}
         <div className={style.left}>
-          <Link to="/doktor/welcome" className={style.logo}>
+          <Link to="/hasta/welcome" className={style.logo}>
             <i className={`${style.badge} fa-solid fa-house-medical`}></i>
             <span style={{marginLeft: '10px', color: '#1e293b', fontWeight: 'bold',fontSize:'25px',textTransform:'uppercase'}}>RandeVu Sistemi bağlayın</span>
           </Link>
@@ -27,7 +27,7 @@ function NavbarHasta() {
 
         {/* Menu Principal */}
         <div className={style.right}>
-          <Link to="/doktor/hasta" className={`${style.link} ${isActive('/doktor/hasta') ? style.linkActive : ''}`}>
+          <Link to="/hasta/welcome" className={`${style.link} ${isActive('/doktor/hasta') ? style.linkActive : ''}`}>
             Home
           </Link>
           <Link to="/hasta/klinik" className={`${style.link} ${isActive('/hasta/klinik') ? style.linkActive : ''}`}>
@@ -36,7 +36,7 @@ function NavbarHasta() {
           <Link to="/hasta/randevularim" className={`${style.link} ${isActive('/hasta/randevularim') ? style.linkActive : ''}`}>
             Randevularim
           </Link>
-          <Link to="/klinik" className={`${style.link} ${isActive('/klinik') ? style.linkActive : ''}`}>
+          <Link to="/hasta/gecmisrandevular" className={`${style.link} ${isActive('/hasta/gecmisrandevular') ? style.linkActive : ''}`}>
             Geçmiş randevularim
           </Link>
           

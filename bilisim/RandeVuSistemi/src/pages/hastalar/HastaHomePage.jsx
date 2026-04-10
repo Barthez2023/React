@@ -1,14 +1,15 @@
 import NavbarHasta from './navbar';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import style from './HastaHomePage.module.css'
-
+import { UserContext } from '../contextAPI/randevuSayiContext';
 
 const WelcomeHasta = () => {
     const [currentTime, setCurrentTime] = useState(new Date());
 
     const [hasta, setHasta] = useState(null);
+    const { HastaRandevusayisi } = useContext(UserContext);
     useEffect(() => {
           const hastaId=localStorage.getItem("hastaId");
         if (!hastaId) {
@@ -21,7 +22,9 @@ const WelcomeHasta = () => {
                 const resHasta = await axios.post("http://localhost/BilisimTekno/getHastaInfo.php", {
                     hastaId: hastaId
                 });
-                if (resHasta.data.success) setHasta(resHasta.data.data);
+                if (resHasta.data.success){
+                    setHasta(resHasta.data.data);
+                } 
                 console.log("Réponse du serveur docteur:", resHasta.data);
 
             } catch (error) {
@@ -155,16 +158,16 @@ const WelcomeHasta = () => {
                 {/* 3. Section Statistiques Santé (Optionnel) */}
                 <div className={style.statsGrid}>
                     <div className={style.statBox}>
-                        <span className={style.statVal}>0</span>
-                        <span className={style.statLabel}>Analitik</span>
+                        <span className={style.statVal}>{HastaRandevusayisi}</span>
+                        <span className={style.statLabel}>RandeVu</span>
                     </div>
                     <div className={style.statBox}>
                         <span className={style.statVal}>0</span>
                         <span className={style.statLabel}>Reçeteler</span>
                     </div>
                     <div className={style.statBox}>
-                        <span className={style.statVal}>1</span>
-                        <span className={style.statLabel}>Aşılar</span>
+                        <span className={style.statVal}>0</span>
+                        <span className={style.statLabel}>Analitik</span>
                     </div>
                 </div>
             </div>

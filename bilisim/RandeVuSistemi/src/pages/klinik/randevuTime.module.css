@@ -179,3 +179,16 @@
     background: #e2e8f0;
     border-radius: 10px;
 }
+.timeChip:disabled {
+    background-color: #e2e8f0; /* Gris clair */
+    color: #94a3b8;            /* Texte effacé */
+    border-color: #cbd5e1;
+    cursor: not-allowed;       /* Le fameux cercle barré */
+    transform: none !important; /* On enlève les effets de hover */
+    box-shadow: none;
+}
+
+/* Optionnel : petite animation sur l'icône de chargement */
+.fa-spin {
+    margin-right: 5px;
+}

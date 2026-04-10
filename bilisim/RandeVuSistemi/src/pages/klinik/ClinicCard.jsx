@@ -40,16 +40,16 @@ function ClinicCard({ clinic ,onOpenPopup}) {
           </div>
           <div className={style.stat_item}>
             <span className={style.stat_number}>{clinic.total_doktor || 45}</span>
-            <span className={style.stat_label}>Médecins</span>
+            <span className={style.stat_label}>Doktorlar</span>
           </div>
           <div className={style.stat_item}>
             <span className={style.stat_number}>{clinic.rating || '4.8'}</span>
-            <span className={style.stat_label}>★ Avis</span>
+            <span className={style.stat_label}>★ Notice</span>
           </div>
         </div>
         
         <button className={style.clinic_btn} onClick={onOpenPopup}>
-          <span>Prendre rendez-vous</span>
+          <span>Randevu al</span>
           <svg viewBox="0 0 24 24" fill="currentColor" className={style.btn_icon}>
             <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
           </svg>

@@ -284,7 +284,7 @@ on a travailler l'interface docteur lorsau un medecin ce connecte s'il a deja et
 On va afficher les plage entrer par le docteur dans le cadre au dessus du boutton "Randevu programımı düzenle" et ensuite on vas liee les palges de temps au cliniques pour permettre au patient de consulter les palges de temps et de prendres rendez-vous.
 # 02-04-2026
 Nous allons nous attaquer sur l'interface patient pour cela nuos devons creer un table randevular qui va regrouper les patient ayant pris rendevous chez x docteur.
-CREATE TABLE rendezvous (
+CREATE TABLE randevular (
     id INT AUTO_INCREMENT PRIMARY KEY,
     doktor_id INT NOT NULL,
     patient_id INT NOT NULL,
@@ -300,19 +300,20 @@ CREATE TABLE rendezvous (
 );
 # 04-04-2026
 Gestion de la prise de rendez-vous par le patient et afficahge de ces rendevous sur son interface.
--Compter et afficher les rendevous du clients.
+-Compter et afficher les rendevous du patient.
 -Creer l'interface de visualisation des rendevous chez le medcins.
--Lorsaue le client choisir un medecins les jour de la semaines dois s'afficher en fonction du jour choisir les haoraires du docteurs vont s'afficher .
+-Lorsque le client choisir un medecins les jour de la semaines dois s'afficher en fonction du jour choisir les haoraires du docteurs vont s'afficher .
 -Lorsqu'une heure est choisir elle reste innaccessible car deux personnes ne peuvent pas etre  consulter par un meme docreur en meme temsps.
 
+# Note
+CORS (Cross-Origin Resource Sharing).
+Pourquoi as-tu cette erreur ?
+Ton frontend tourne sur http://localhost:5173 (Vite) et ton backend sur http://localhost (Apache/WAMP). Pour le navigateur, ce sont deux "origines" différentes à cause des ports (5173 vs 80). Par sécurité, le navigateur bloque la communication sauf si le serveur PHP dit explicitement : "J'autorise le port 5173 à me parler".
 
-
-
-
-
-
-
-
+# 09-04-2026 
+Gestion des boutton pour confrimer le rendevous par le docteur.
+lorsque le rendevous est terminer ,la plage de l'heure est liberer.On ne peut pas prendre un rendevous a une heure ne correspondant pas a notre fuseaux horaire.
+Gerer les boutton uzatmak qui va juste consuiste a cchanger de plages de temps.
 
 
 
@@ -330,20 +331,6 @@ Gestion de la prise de rendez-vous par le patient et afficahge de ces rendevous 
     
 
     
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

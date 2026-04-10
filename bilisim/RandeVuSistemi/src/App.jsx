@@ -20,6 +20,9 @@ import WelcomeDoktor from './pages/doktorlar/DoktorHomePage';
 import WelcomeHasta from './pages/hastalar/HastaHomePage';
 import KliniklerHasta from './pages/hastalar/klinikler';
 import RandevularimHasta from './pages/hastalar/randevularim';
+import DoctorBugunkuRandevu from './pages/doktorlar/bugunRandevu';
+import DoctorGecmisRandevu from './pages/doktorlar/gecmisRandevu';
+import HastaGecmisRandevularim from './pages/hastalar/gecmisRendevular';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -40,9 +43,12 @@ function App() {
       <Route path="/uzmanliklist" element={<UzmanlikList/>} />
       <Route path="/doktorlar" element={<Doktorlar/>} />
       <Route path="/doktor/welcome" element={<WelcomeDoktor/>} />
-      <Route path="/doktor/hasta" element={<WelcomeHasta/>} />
+      <Route path="/hasta/welcome" element={<WelcomeHasta/>} />
       <Route path="/hasta/klinik" element={<KliniklerHasta/>} />
       <Route path="/hasta/randevularim" element={<RandevularimHasta/>} />
+      <Route path="/hasta/gecmisrandevular" element={<HastaGecmisRandevularim/>} />
+      <Route path="/doktor/bugunkurandevular" element={<DoctorBugunkuRandevu/>} />
+      <Route path="/doktor/gecmisrandevular" element={<DoctorGecmisRandevu/>} />
       <Route path="/klinik" element={<Klinik/>} />
 
 

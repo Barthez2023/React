@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useContext} from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavbarDoktor from './navbar';
 import axios from 'axios';
 import style from './homePage.module.css'
 import PopUpSetTime from './popupsetTime';
+import { UserContext } from '../contextAPI/randevuSayiContext';
 
 
 function WelcomeDoktor() {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [dateTime, setDateTime] = useState(new Date());
+    const { bugunRandevuSayisi } = useContext(UserContext);
 
     //utiliser pour gerer la date et le tem^ps
     useEffect(() => {
@@ -76,7 +78,7 @@ function WelcomeDoktor() {
             loadDashboardData();
         }, []);
         if (!doktor) {
-            return <div className={style.loading}>Chargement du profil...</div>;
+            return <div className={style.loading}>Profil yükleniyor...</div>;
         }
     return (
         <div className={style.pageWrapper}>
@@ -180,7 +182,8 @@ function WelcomeDoktor() {
                             </div>
                         ))}
                     </div>)}
-                    <button className={style.primaryBtn} onClick={() => setIsPopupOpen(true)}>
+                    <button className={style.primaryBtn} onClick={() => setIsPopupOpen(true)}
+                    disabled={doktor?.clinicName ? false : true}>
                         Randevu programımı düzenle
                     </button>
                 </div>
@@ -188,7 +191,7 @@ function WelcomeDoktor() {
                 {/* 4. Mini Stats */}
                 <div className={style.statsContainer}>
                     <div className={style.statBox}>
-                        <span className={style.statVal}>0</span>
+                        <span className={style.statVal}>{bugunRandevuSayisi}</span>
                         <span className={style.statLabel}>Beklenen Hastalar</span>
                     </div>
                     <div className={style.statBox}>

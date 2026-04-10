@@ -15,17 +15,28 @@ const RandevuTimePopup = ({slots, selectedDoctor,isOpen, onClose }) => {
   
   //ici on va gerer la prise de rendez-vous pour un partient on a deja l'id du docteur selectionner
   //et le patient connecter .
-  // Dans ton fichier RandevuTimePopup.jsx
+
+  //affichage de l'heure sous le format jour-mois-annee
+    const d = new Date();
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0'); // d.getMonth() + 1: Janvier est 0 !
+    const year = d.getFullYear();
+    const currentDate = `${year}-${month}-${day}`;
+    // Déclare un état pour suivre quel créneau est en train d'être réservé afin d'eviter a deux patient de reserver un rendevu a la meme heure
+    const [isBookingId, setIsBookingId] = useState(null);
 
     const handleBooking = async (slot) => {
+        // On bloque le bouton immédiatement
+        setIsBookingId(slot.id);
         const patientId = localStorage.getItem('hastaId');
         // On prépare les données
         const bookingData = {
             patientId: patientId,
             doktorId: selectedDoctor.id,
-            date: "2026-04-04", //date aleatoire elle sera modifier plus tard
+            date: currentDate, //date aleatoire elle sera modifier plus tard
             start: slot.baslangic_saat,
-            end: slot.bitis_saat
+            end: slot.bitis_saat,
+            durum:"mesgul"
         };
 
         try {
@@ -37,9 +48,11 @@ const RandevuTimePopup = ({slots, selectedDoctor,isOpen, onClose }) => {
                 // Optionnel : rediriger vers la page d'accueil pour voir le RDV s'afficher
             } else {
                 alert("Hata: " + response.data.message);
+                setIsBookingId(null); // On débloque seulement en cas d'erreur pour qu'il puisse réessayer
             }
         } catch (error) {
             console.error("Erreur lors de la réservation", error);
+            setIsBookingId(null);
         }
     };
   
@@ -69,9 +82,16 @@ const RandevuTimePopup = ({slots, selectedDoctor,isOpen, onClose }) => {
                             <button 
                                 key={index} 
                                 className={style.timeChip}
+                                /* Le bouton est désactivé si son ID est celui en cours de traitement */
+                                disabled={isBookingId === slot.id}
                                 onClick={() => handleBooking(slot)}
                             >
-                                {slot.baslangic_saat} - {slot.bitis_saat}
+                                {isBookingId === slot.id ? (
+                                        <span><i className="fa-solid fa-spinner fa-spin"></i> ...</span>
+                                    ) : (
+                                        `${slot.baslangic_saat} - ${slot.bitis_saat}`
+                                    )
+                                }
                             </button>
                         ))
                     ) : (

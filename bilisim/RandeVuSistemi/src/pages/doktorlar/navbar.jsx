@@ -30,10 +30,10 @@ function NavbarDoktor() {
           <Link to="/doktor/welcome" className={`${style.link} ${isActive('/doktor/welcome') ? style.linkActive : ''}`}>
             Home
           </Link>
-          <Link to="/klinik/today" className={`${style.link} ${isActive('/klinik/today') ? style.linkActive : ''}`}>
+          <Link to="/doktor/bugunkurandevular" className={`${style.link} ${isActive('/doktor/bugunkurandevular') ? style.linkActive : ''}`}>
             Bugünkü randevular
           </Link>
-          <Link to="/klinik/history" className={`${style.link} ${isActive('/klinik/history') ? style.linkActive : ''}`}>
+          <Link to="/doktor/gecmisrandevular" className={`${style.link} ${isActive('/doktor/gecmisrandevular') ? style.linkActive : ''}`}>
             Geçmiş randevular
           </Link>
           
