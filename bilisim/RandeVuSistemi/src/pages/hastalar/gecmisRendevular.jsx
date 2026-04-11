@@ -44,6 +44,7 @@ function HastaGecmisRandevularim() {
             case 'Onaylandı': return style.statusConfirmed;
             case 'Beklemede': return style.statusPending;
             case 'iptal Edildi': return style.statusCancelled;
+            case 'Onaylamamıs': return style.statusOnaylamamis;
             default: return style.statusDefault;
         }
     };

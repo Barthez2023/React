@@ -77,6 +77,19 @@ function WelcomeDoktor() {
         };
             loadDashboardData();
         }, []);
+        useEffect(() => {
+        const autoCleanup = async () => {
+            try {
+                // On appelle le fichier sans envoyer d'ID (juste pour le nettoyage)
+                await axios.post("http://localhost/BilisimTekno/updateRandevuStatus1.php", {});
+                console.log("Maintenance du système effectuée avec succès.");
+            } catch (error) {
+                console.error("Erreur lors de la maintenance automatique", error);
+            }
+        };
+
+        autoCleanup();
+    }, []); // Les crochets vides [] signifient "au chargement du composant"
         if (!doktor) {
             return <div className={style.loading}>Profil yükleniyor...</div>;
         }

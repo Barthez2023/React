@@ -1,12 +1,16 @@
 import React from 'react';
-import { useState,useEffect } from 'react';
+import { useState,useEffect,useContext } from 'react';
 import axios from 'axios';
 import style from './randevularim.module.css'
 import NavbarHasta from './navbar';
+import { UserContext } from '../contextAPI/randevuSayiContext';
+import RandevuTimePopup from '../klinik/randevuTime';
 
-function RandevularimHasta() {
+function RandevularimHasta({isOpen, onClose}) {
     const [appointments, setAppointments] = useState([]);
     const [loading, setLoading] = useState(true);
+    // 1. On récupère le setter du contexte global
+    const { setHastaRandevusayisi } = useContext(UserContext);
 
     useEffect(() => {
         const fetchAppointments = async () => {
@@ -18,6 +22,7 @@ function RandevularimHasta() {
                 if (response.data.success) {
                     console.log(response.data);
                     setAppointments(response.data.data);
+                    setHastaRandevusayisi(response.data.randevuSayisi);
                 }
             } catch (error) {
                 console.error("Erreur lors de la récupération des RDV", error);
@@ -27,24 +32,44 @@ function RandevularimHasta() {
         };
         fetchAppointments();
     }, []);
-    const handleDelete = (id) => {
-        if(window.confirm("Bu randevuyu iptal etmek istediğinizden emin misiniz?")) {
-            // Logique de suppression ici
-            console.log("Supprimer RDV:", id);
-        }
-    };
-
-    const handleExtend = (id) => {
-        // Logique pour prolonger/modifier
-        console.log("Prolonger RDV:", id);
-    };
-
     const getStatusStyle = (status) => {
         switch(status) {
             case 'Onaylandı': return style.statusConfirmed;
             case 'Beklemede': return style.statusPending;
             case 'iptal Edildi': return style.statusCancelled;
+            case 'Onaylamamıs': return style.statusOnaylamamis;
             default: return style.statusDefault;
+        }
+    };
+    //on va gere l'ouverture et la fermeture du pop qui contient les heure du docteur
+    const [slots, setSlots] = useState([]);
+    const [isTimePopupOpen, setIsTimePopupOpen] = useState(false);
+    const [selectedDocForUpdate, setSelectedDocForUpdate] = useState(null);
+
+    const handleExtend = async (doctor) => {
+        // 1. Obtenir le jour actuel (ex: "Çarşamba")
+        const currentDay = new Intl.DateTimeFormat('tr-TR', { weekday: 'long' }).format(new Date());
+        try {
+            // Sauvegarder le docteur sélectionné pour le popup
+            setSelectedDocForUpdate(doctor);
+            // 2. Récupérer les créneaux de ce docteur pour CE jour précis
+            const response = await axios.post("http://localhost/BilisimTekno/GetTime_fromDoktor.php", {
+                idDoktor: doctor.id,
+                caslisma_gun: currentDay
+            });
+
+            if (response.data.success) {
+                setSlots(response.data.data);
+                setIsTimePopupOpen(true);  // On ouvre le deuxième popup celui des temps
+            }
+        } catch (error) {
+            console.error("Erreur lors de la récupération des créneaux", error);
+        }
+    };
+    const handleDelete = (id) => {
+        if(window.confirm("Bu randevuyu iptal etmek istediğinizden emin misiniz?")) {
+            // Logique de suppression ici
+            console.log("Supprimer RDV:", id);
         }
     };
   return (
@@ -83,25 +108,28 @@ function RandevularimHasta() {
                                 {/* Section Centre : Docteur et Clinique */}
                                 <div className={style.infoSection}>
                                     <div className={style.doctorInfo}>
-                                        <h3>Dr. {apt.docName} {apt.docSurname}</h3>
-                                        <span className={style.specialty}>{apt.speciality}</span>
+                                        <h3>Dr. {apt.doc.name} {apt.doc.surname}</h3>
+                                        <span className={style.specialty}>{apt.doc.speciality}</span>
                                     </div>
                                     <div className={style.clinicInfo}>
-                                        <p><i className="fa-solid fa-hospital-user"></i> {apt.clinicName}</p>
-                                        <p><i className="fa-solid fa-location-dot"></i>  {apt.clinicCity}</p>
+                                        <p><i className="fa-solid fa-hospital-user"></i> {apt.doc.clinic}</p>
+                                        <p><i className="fa-solid fa-location-dot"></i>  {apt.doc.city}</p>
                                     </div>
                                 </div>
 
                                 {/* Section Droite : Actions */}
                                 <div className={style.actionSection}>
-                                    <button className={style.extendBtn} onClick={() => handleExtend(apt.id)}>
+                                    <button className={style.extendBtn} onClick={() => handleExtend(apt.doc)}
+                                        disabled={apt.status !== "Beklemede"}>
                                         <i className="fa-solid fa-clock"></i> Uzatmak
                                     </button>
-                                    <button className={style.deleteBtn} onClick={() => handleDelete(apt.id)}>
-                                        <i className="fa-solid fa-trash-can"></i> Silmek
+                                    <button className={style.deleteBtn} onClick={() => handleDelete(apt.id)}
+                                        disabled={apt.status !== "Beklemede"}>
+                                        <i className="fa-solid fa-trash-can"></i> Iptal Et
                                     </button>
                                 </div>
                             </div>
+                            
                         ))}
                     </div>
                 ) : (
@@ -111,6 +139,12 @@ function RandevularimHasta() {
                     </div>
                 )}
             </div>
+            <RandevuTimePopup
+                isOpen={isTimePopupOpen} 
+                onClose={() => setIsTimePopupOpen(false)} 
+                slots={slots} 
+                selectedDoctor={selectedDocForUpdate} 
+            />
         </div>
   );
 }
