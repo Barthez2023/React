@@ -11,15 +11,52 @@
     padding: 0 20px;
 }
 
-.header h1 {
+.header {
+    display: flex;
+    justify-content: space-between; /* Pousse le texte à gauche et le bouton à droite */
+    align-items: flex-start;       /* Aligne en haut */
+    margin-bottom: 40px;           /* On déplace la marge ici pour espacer le header du reste */
+}
+
+.headerInfo h1 {
     font-size: 2rem;
     color: #0f172a;
     margin-bottom: 8px;
 }
 
-.header p {
+.headerInfo p {
     color: #64748b;
-    margin-bottom: 40px;
+    margin: 0; /* On retire la marge du bas ici car elle est gérée par le conteneur .header */
+}
+
+/* Style du bouton "Afficher tout" */
+.viewAllBtn {
+    background-color: #3b82f6; /* Bleu moderne */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Espace entre l'icône et le texte */
+    transition: background-color 0.2s ease, transform 0.1s;
+    white-space: nowrap; /* Évite que le texte du bouton ne revienne à la ligne */
+}
+
+.viewAllBtn:hover {
+    background-color: #2563eb;
+    transform: translateY(-1px);
+}
+
+.viewAllBtn:active {
+    transform: translateY(0);
+}
+
+/* Optionnel : Icône du bouton */
+.viewAllBtn i {
+    font-size: 0.9rem;
 }
 
 .appointmentList{

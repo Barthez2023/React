@@ -316,87 +316,34 @@ lorsque le rendevous est terminer ,la plage de l'heure est liberer.On ne peut pa
 Gerer les boutton uzatmak qui va juste consuiste a cchanger de plages de temps.
 
 
-
-
-
-
-
-
-
-
-<?php
-    header("Access-Control-Allow-Origin: *");
-    header("Access-Control-Allow-Methods: POST, OPTIONS");
-    header("Access-Control-Allow-Headers: Content-Type");
-    header("Content-Type: application/json");
-
-    if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') exit();
-
-    $conn = new mysqli("localhost", "root", "", "hastane");
-    
-    // TRÈS IMPORTANT pour les accents du ENUM (ı, ş, ğ, etc.)
-    $conn->set_charset("utf8mb4");
-    if ($conn->connect_error) {
-        echo json_encode(["success" => false, "message" => "Connexion échouée"]);
-        exit();
-    }
-    // --- ÉTAPE 1 : AUTO-CLEANUP (Maintenance automatique) ---
-    // On change en 'Onaylamamıs' (ou ton terme choisi) tout ce qui est BEKLEMEDE et périmé
-    // IMPORTANT : Assure-toi que 'Onaylamamıs' est bien dans ton ENUM en DB !
-    $cleanupQuery = "UPDATE randevular 
-                     SET status = 'Onaylamamıs'
-                     WHERE status = 'Beklemede' 
-                     AND (randevu_date < CURDATE() 
-                     OR (randevu_date = CURDATE() AND bitis_saat < CURTIME()))";
-    $conn->query($cleanupQuery);
-    $rowsAffected = $conn->affected_rows;
-
-
-    // --- ÉTAPE 2 : TRAITEMENT DU CLIC (Ton action spécifique) ---
-
-    $data = json_decode(file_get_contents("php://input"), true);
-    $id = isset($data['id']) ? intval($data['id']) : 0;
-
-    // On utilise exactement la valeur définie dans ton ENUM
-    $targetStatus = "Onaylandı"; 
-    $durum = "musait"; 
-
-    if ($id === 0) {
-        // CAS A : Appel automatique au chargement (Pas d'ID)
-        // On renvoie SUCCESS car le nettoyage a été fait.
-        echo json_encode([
-            "success" => true, 
-            "message" => "Maintenance automatique effectuée", 
-            "nettoyage_count" => $rowsAffected
-        ]);
-    }
-
-    // On met à jour la colonne 'status' (vérifie bien que c'est 'status' et non 'durum')
-    $query = "UPDATE randevular SET status = ? , durum= ? WHERE id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("ssi", $targetStatus,$durum ,$id);
-
-    if ($stmt->execute()) {
-        echo json_encode(["success" => true, "status" => $targetStatus]);
-    } else {
-        echo json_encode(["success" => false, "message" => "SQL Hatası"]);
-    }
-
-    $conn->close();
-?>
-
-
-    
-
-    
-
-
-
-
-
-
-
 on vas continuer avec le syteme lorsque l'admin clique sur le boutton klinik ver la liste de des clinique dois s'afficher sous forme de popup seul les clinique qui ont la disciplene du docteur doivent s'afficher sue le popup et l'admis dois assigner une clinique ou le doctrue dois aller travailler
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*const data = {

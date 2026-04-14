@@ -27,7 +27,7 @@ function NavbarHasta() {
 
         {/* Menu Principal */}
         <div className={style.right}>
-          <Link to="/hasta/welcome" className={`${style.link} ${isActive('/doktor/hasta') ? style.linkActive : ''}`}>
+          <Link to="/hasta/welcome" className={`${style.link} ${isActive('/hasta/welcome') ? style.linkActive : ''}`}>
             Home
           </Link>
           <Link to="/hasta/klinik" className={`${style.link} ${isActive('/hasta/klinik') ? style.linkActive : ''}`}>

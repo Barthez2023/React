@@ -48,20 +48,34 @@ function HastaGecmisRandevularim() {
             default: return style.statusDefault;
         }
     };
+    const [showAll, setShowAll] = useState(false);
+    // On définit les rendez-vous à afficher selon l'état showAll
+    const displayedAppointments = showAll ? appointments : appointments.slice(0, 4);
   return (
     <div className={style.container}>
             <NavbarHasta />
             <div className={style.content}>
-                <header className={style.header}>
+            <header className={style.header}>
+                <div className={style.headerInfo}>
                     <h1><i className="fa-solid fa-calendar-check"></i> Geçmiş Randevularım</h1>
-                    <p>Randevularınızı yönetin ve tıbbi geçmişinizi takip edin.</p>
-                </header>
+                    <p>Geçmiş randevularınızı yönetin ve tıbbi geçmişinizi takip edin.</p>
+                </div>
+                {appointments.length > 4 && (
+                    <button 
+                        className={style.viewAllBtn}
+                        onClick={() => setShowAll(!showAll)}
+                    >
+                        <i className={`fa-solid ${showAll ? 'fa-compress' : 'fa-list'}`}></i> 
+                        {showAll ? 'Daha Az Görüntüle' : `Tüm Listeyi Görüntüle (${appointments.length})`}
+                    </button>
+                )}
+            </header>
 
                 {loading ? (
                     <div className={style.loader}>Randevularınız yükleniyor...</div>
                 ) : appointments.length > 0 ? (
                     <div className={style.appointmentList}>
-                        {appointments.map((apt) => (
+                        {displayedAppointments.map((apt) => (
                             <div key={apt.id} className={style.appointmentCard}>
                                 {/* Section Gauche : Date et Heure */}
                                 <div className={style.timeSection}>

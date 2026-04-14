@@ -6,7 +6,6 @@ import axios from 'axios';
 function SpecialiteCard({ spec }) {
     // État pour gérer le "Voir plus"
     const [showAll, setShowAll] = useState(false);
-    const [clinics,setClinics]=useState(['Medicana Rize', 'Kuzey Sağlık']);
     const doctorArray = spec.doktorlar && spec.doktorlar !== '—' 
     ? spec.doktorlar.split(', ') 
     : [];
