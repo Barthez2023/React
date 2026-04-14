@@ -3,7 +3,7 @@ import { useState,useEffect } from 'react';
 import style from './randevuTime.module.css';
 import axios from 'axios';
 
-const RandevuTimePopup = ({slots, selectedDoctor,isOpen, onClose }) => {
+const RandevuTimePopup = ({slots, selectedDoctor,isOpen, onClose,randevuday }) => {
     // Si le popup n'est pas censé être ouvert, on n'affiche rien
     if (!isOpen) return null;
     // const handleBooking = (slot) => {
@@ -55,8 +55,12 @@ const RandevuTimePopup = ({slots, selectedDoctor,isOpen, onClose }) => {
             setIsBookingId(null);
         }
     };
-  
-  
+    //On récupère l'heure actuelle (ex: "14:30")
+    const now = new Date();
+    const currentTime = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+    // On récupère le nom du jour actuel (ex: "Pazartesi")
+    const todayName = new Intl.DateTimeFormat('tr-TR', { weekday: 'long' }).format(now);
+
     return (
     <div className={style.overlay} onClick={onClose}>
         <div className={style.modal} onClick={(e) => e.stopPropagation()}>
@@ -78,26 +82,32 @@ const RandevuTimePopup = ({slots, selectedDoctor,isOpen, onClose }) => {
                 
                 <div className={style.slotsGrid}>
                     {slots.length > 0 ? (
-                        slots.map((slot, index) => (
-                            <button 
-                                key={index} 
-                                className={style.timeChip}
-                                /* Le bouton est désactivé si son ID est celui en cours de traitement */
-                                disabled={isBookingId === slot.id}
-                                onClick={() => handleBooking(slot)}
-                            >
-                                {isBookingId === slot.id ? (
-                                        <span><i className="fa-solid fa-spinner fa-spin"></i> ...</span>
-                                    ) : (
-                                        `${slot.baslangic_saat} - ${slot.bitis_saat}`
-                                    )
-                                }
-                            </button>
-                        ))
+                        slots.map((slot, index) => {
+                            // On vérifie si le créneau est expiré
+                            // Un créneau est passé SEULEMENT si c'est aujourd'hui ET que l'heure de fin est dépassée
+                            const isToday = randevuday === todayName; 
+                            const isPast = isToday && (slot.bitis_saat < currentTime);
+                            return(
+                                <button 
+                                    key={index} 
+                                    className={`${style.timeChip} ${isPast ? style.pastSlot : ''}`}
+                                    /* Le bouton est désactivé si son ID est celui en cours de traitement */
+                                    disabled={isBookingId === slot.id || isPast}
+                                    onClick={() => handleBooking(slot)}
+                                >
+                                    {isBookingId === slot.id ? (
+                                            <span><i className="fa-solid fa-spinner fa-spin"></i> ...</span>
+                                        ) : (
+                                            `${slot.baslangic_saat} - ${slot.bitis_saat}`
+                                        )
+                                    }
+                                </button>
+                            ) 
+                        })
                     ) : (
                         <div className={style.emptyState}>
                             <i className="fa-solid fa-calendar-xmark"></i>
-                            <p>Bugün için uygun randevu bulunmamaktadır.</p>
+                            <p>Bugün için uygun randevu saati bulunmamaktadır.</p>
                         </div>
                     )}
                 </div>

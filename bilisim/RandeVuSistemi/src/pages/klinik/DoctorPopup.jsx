@@ -10,10 +10,9 @@ const DoctorPopup = ({ isOpen, onClose, doctors, specialtyName }) => {
     const [slots, setSlots] = useState([]);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [isTimePopupOpen, setIsTimePopupOpen] = useState(false);
-
+    const currentDay = new Intl.DateTimeFormat('tr-TR', { weekday: 'long' }).format(new Date());
     const handleDoctorClick = async (doctor) => {
         // 1. Obtenir le jour actuel (ex: "Çarşamba")
-        const currentDay = new Intl.DateTimeFormat('tr-TR', { weekday: 'long' }).format(new Date());
         try {
             // 2. Récupérer les créneaux de ce docteur pour CE jour précis
             const response = await axios.post("http://localhost/BilisimTekno/GetTime_fromDoktor.php", {
@@ -66,6 +65,7 @@ const DoctorPopup = ({ isOpen, onClose, doctors, specialtyName }) => {
                 onClose={() => setIsTimePopupOpen(false)} 
                 slots={slots} 
                 selectedDoctor={selectedDoctor} 
+                randevuday={currentDay}
             />
       </div>
     </div>

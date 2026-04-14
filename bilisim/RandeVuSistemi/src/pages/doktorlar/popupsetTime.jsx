@@ -33,6 +33,14 @@ const PopUpSetTime= ({ isOpen, onClose, clinicName, onAddSlot }) => {
       });
       if(response.data.success) alert("Zaman aralığı eklendi!");
   };
+
+  const DeleteSchedule = async (id,plage) => {
+      const response = await axios.post("http://localhost/BilisimTekno/DeleteSchedule.php", {
+          idDoktor:id,
+          TimePlage:plage
+      });
+      if(response.data.success) alert("Zaman Kaldidir!");
+  };
   const [idDoktor, setIdDoktor] = useState(null);
   useEffect(() => {
           // 1. On récupère l'ID du docteur connecter
@@ -79,10 +87,15 @@ const PopUpSetTime= ({ isOpen, onClose, clinicName, onAddSlot }) => {
   const handleSubmitslots = (e) => {
     e.preventDefault();
     // onAddSlot({ day: selectedDay, start: startTime, end: endTime });
-    console.log("end :",newplage.end)
-    console.log("start :",newplage.start)
     console.log("le temps est :",newplage.slots)
     saveScheduleAraligi(idDoktor,newplage);
+    onClose();
+  };
+   const handleDeleteTime = (e) => {
+    e.preventDefault();
+    DeleteSchedule(idDoktor,newplage);
+     console.log("start :",newplage.start)
+     console.log("end :",newplage.end)
     onClose();
   };
     if (!isOpen) return null;
@@ -152,6 +165,7 @@ const PopUpSetTime= ({ isOpen, onClose, clinicName, onAddSlot }) => {
             <button type="button" onClick={onClose} className={style.cancelBtn}>Iptal</button>
             <button type="submit" className={style.submitBtn} onClick={handleSubmit}>Onayla</button>
             <button type="submit" className={style.submitBtn} onClick={handleSubmitslots}>Zaman Aralığı</button>
+            <button type="submit" className={style.cancelBtn} onClick={handleDeleteTime}>Zaman Kaldır</button>
           </div>
         </form>
       </div>

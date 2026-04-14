@@ -123,7 +123,7 @@ const WelcomeHasta = () => {
                     <div className={style.infoGrid}>
                         <div className={style.infoItem}>
                             <label><i className="fa-solid fa-user-tag"></i> Cinsiyet</label>
-                            <p>{hasta.gender}</p>
+                            <p style={{textTransform:'capitalize'}}>{hasta.gender}</p>
                         </div>
                         <div className={style.infoItem}>
                             <label><i className="fa-solid fa-map-location-dot"></i> Şehir</label>
