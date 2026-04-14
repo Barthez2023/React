@@ -318,7 +318,10 @@ Gerer les boutton uzatmak qui va juste consuiste a cchanger de plages de temps.
 
 on vas continuer avec le syteme lorsque l'admin clique sur le boutton klinik ver la liste de des clinique dois s'afficher sous forme de popup seul les clinique qui ont la disciplene du docteur doivent s'afficher sue le popup et l'admis dois assigner une clinique ou le doctrue dois aller travailler
 
+# 14-04-2026
+Gestion du boutton Fazla Goster pour gerer les cas ou on a plus de 4 rendezvous que ce sooir sur l'interface dokteur ou l'interface patient
 
+---Gestion du boutton "Randevu programımı düzenle"  du home page du docteur.Ajout du bouton "Zaman Araligi" qui permet au medecin pour un jour precis de creer une plage de temps ou les heure sont espace de 1h30 .
 
 
 

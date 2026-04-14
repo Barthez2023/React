@@ -7,7 +7,8 @@ const PopUpSetTime= ({ isOpen, onClose, clinicName, onAddSlot }) => {
     const [newplage, setPlage] = useState({ 
         gun: 'Pazartesi', 
         start: '08:00', 
-        end: '09:00' 
+        end: '09:00' ,
+        slots:[]
     });
   // Date du jour formatée proprement
   const today = new Intl.DateTimeFormat('tr-TR', {
@@ -22,19 +23,52 @@ const PopUpSetTime= ({ isOpen, onClose, clinicName, onAddSlot }) => {
             idDoktor:id,
             TimePlage:plage
         });
-        if(response.data.success) alert("Horaire ajouté !");
-    };
-    const [idDoktor, setIdDoktor] = useState(null);
-    useEffect(() => {
-            // 1. On récupère l'ID du docteur connecter
-            const savedId = localStorage.getItem('doktorId');
-            if (savedId) {
-                setIdDoktor(savedId);
-            } else {
-                console.error("Aucun ID trouvé dans le localStorage");
-            }
-    }, []);
+        if(response.data.success) alert("Zaman eklendi!");
+  };
 
+  const saveScheduleAraligi = async (id,plage) => {
+      const response = await axios.post("http://localhost/BilisimTekno/SaveScheduleAraligi.php", {
+          idDoktor:id,
+          TimePlage:plage
+      });
+      if(response.data.success) alert("Zaman aralığı eklendi!");
+  };
+  const [idDoktor, setIdDoktor] = useState(null);
+  useEffect(() => {
+          // 1. On récupère l'ID du docteur connecter
+          const savedId = localStorage.getItem('doktorId');
+          if (savedId) {
+              setIdDoktor(savedId);
+          } else {
+              console.error("Aucun ID trouvé dans le localStorage");
+          }
+  }, []);
+  const handleEndChange = (e) => {
+    const endValue = e.target.value;
+    const startTime = newplage.start; 
+
+    // 1. Convertir les heures en minutes totales pour faciliter le calcul
+    const startInMinutes = (parseInt(startTime.split(':')[0]) * 60) + parseInt(startTime.split(':')[1]);
+    const endInMinutes = (parseInt(endValue.split(':')[0]) * 60) + parseInt(endValue.split(':')[1]);
+
+    const ZamanAraligi = [];
+    let current = startInMinutes;
+
+    // 2. Boucle de génération avec un écart de 90 minutes (1h30)
+    while (current <= endInMinutes) {
+        const h = Math.floor(current / 60).toString().padStart(2, '0');
+        const m = (current % 60).toString().padStart(2, '0');
+        ZamanAraligi.push(`${h}:${m}`);
+        current += 90; // Ajouter 1h30
+    }
+
+    // 3. Mise à jour unique de l'état (Atomique)
+    setPlage({
+        ...newplage,
+        end: endValue,
+        slots: ZamanAraligi
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -42,7 +76,15 @@ const PopUpSetTime= ({ isOpen, onClose, clinicName, onAddSlot }) => {
     saveSchedule(idDoktor,newplage);
     onClose();
   };
-
+  const handleSubmitslots = (e) => {
+    e.preventDefault();
+    // onAddSlot({ day: selectedDay, start: startTime, end: endTime });
+    console.log("end :",newplage.end)
+    console.log("start :",newplage.start)
+    console.log("le temps est :",newplage.slots)
+    saveScheduleAraligi(idDoktor,newplage);
+    onClose();
+  };
     if (!isOpen) return null;
 
   return (
@@ -58,7 +100,7 @@ const PopUpSetTime= ({ isOpen, onClose, clinicName, onAddSlot }) => {
         </div>
 
         {/* Corps du formulaire */}
-        <form onSubmit={handleSubmit} className={style.body}>
+        <form className={style.body}>
           <div className={style.infoSection}>
             <i className="fa-solid fa-hospital"></i>
             <span>{clinicName ? (
@@ -99,7 +141,7 @@ const PopUpSetTime= ({ isOpen, onClose, clinicName, onAddSlot }) => {
               <input 
                 type="time" 
                 value={newplage.end} 
-                onChange={(e) => setPlage({...newplage, end: e.target.value})}
+                onChange={handleEndChange}
                 className={style.timeInput}
               />
             </div>
@@ -108,7 +150,8 @@ const PopUpSetTime= ({ isOpen, onClose, clinicName, onAddSlot }) => {
           {/* Footer avec boutons d'action */}
           <div className={style.footer}>
             <button type="button" onClick={onClose} className={style.cancelBtn}>Iptal</button>
-            <button type="submit" className={style.submitBtn}>Onayla</button>
+            <button type="submit" className={style.submitBtn} onClick={handleSubmit}>Onayla</button>
+            <button type="submit" className={style.submitBtn} onClick={handleSubmitslots}>Zaman Aralığı</button>
           </div>
         </form>
       </div>
