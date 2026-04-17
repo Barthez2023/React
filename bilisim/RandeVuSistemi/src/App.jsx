@@ -24,6 +24,7 @@ import DoctorBugunkuRandevu from './pages/doktorlar/bugunRandevu';
 import DoctorGecmisRandevu from './pages/doktorlar/gecmisRandevu';
 import HastaGecmisRandevularim from './pages/hastalar/gecmisRendevular';
 import Hastalar from './pages/administration/hastalar/hastalarList';
+import AdminStats from './pages/administration/home1';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -52,7 +53,7 @@ function App() {
       <Route path="/doktor/bugunkurandevular" element={<DoctorBugunkuRandevu/>} />
       <Route path="/doktor/gecmisrandevular" element={<DoctorGecmisRandevu/>} />
       <Route path="/klinik" element={<Klinik/>} />
-
+      <Route path="/adminStats" element={<AdminStats/>} />
 
     </Routes>
     </>

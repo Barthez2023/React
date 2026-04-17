@@ -1,0 +1,164 @@
+.adminContainer {
+    padding: 30px;
+    background-color: #f8fafc;
+    min-height: 100vh;
+}
+
+.pageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.headerLeft h1 {
+    font-size: 24px;
+    color: #1e293b;
+    margin-bottom: 5px;
+}
+
+.headerLeft p { color: #64748b; }
+
+.statsBadge {
+    background: white;
+    padding: 10px 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
+}
+
+.actionToolbar {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.searchWrapper {
+    position: relative;
+    flex: 1;
+}
+
+.searchWrapper i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+}
+
+.searchWrapper input {
+    width: 100%;
+    padding: 12px 12px 12px 45px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    outline: none;
+    transition: border 0.3s;
+}
+
+.searchWrapper input:focus { border-color: #3b82f6; }
+
+.tableWrapper {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.patientTable {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.patientTable th {
+    background: #f1f5f9;
+    padding: 15px;
+    color: #475569;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.patientTable td {
+    padding: 15px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #1e293b;
+    vertical-align: middle;
+}
+
+.patientName {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+}
+
+.avatar {
+    width: 35px;
+    height: 35px;
+    background: #e2e8f0;
+    color: #475569;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.genderBadge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.male { background: #e0f2fe; color: #0369a1; }
+.female { background: #fce7f3; color: #be185d; }
+
+.actions{
+    display: flex;
+    gap: 20px;
+}
+.actions button {
+    background: none;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    font-size: 20px;
+    margin-right: 10px;
+    transition: color 0.2s;
+    color: #3b82f6;
+}
+.deleteIcon{ color: #ef4444 !important; }
+.filterWrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.genderFilter {
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background-color: white;
+    color: #475569;
+    font-weight: 500;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.genderFilter:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.countBadge {
+    font-size: 13px;
+    color: #64748b;
+    background: #f1f5f9;
+    padding: 5px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+}

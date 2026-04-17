@@ -322,6 +322,15 @@ on vas continuer avec le syteme lorsque l'admin clique sur le boutton klinik ver
 Gestion du boutton Fazla Goster pour gerer les cas ou on a plus de 4 rendezvous que ce sooir sur l'interface dokteur ou l'interface patient
 
 ---Gestion du boutton "Randevu programımı düzenle"  du home page du docteur.Ajout du bouton "Zaman Araligi" qui permet au medecin pour un jour precis de creer une plage de temps ou les heure sont espace de 1h30 .
+--- Gestion de l'onglet hastalar du profil de l'administrateurs avec gestion des boutton de filtages.
+# 17-04-2026
+Gestion et conception de l'interface statistique qui va permettre a l'administrateur d'avoir un vue d'ensemble sur l'evolution du systeme et de mieux gerer les ressources.
+SUM(CASE WHEN  status='Onaylandı'THEN 1 ELSE 0 END):agrégation conditionnelle.
+. Le test : CASE WHEN status = 'Onaylandı':C'est une structure de type "Si... Alors...". SQL regarde la colonne status de la ligne actuelle.Si le texte est exactement 'Onaylandı' (Confirmé)...Alors (THEN), il génère le chiffre 1.Sinon (ELSE), il génère le chiffre 0.La fin du test : END
+L'addition : SUM(...):QL va additionner tous les 1 et tous les 0 qu'il a générés.Chaque rendez-vous confirmé ajoute +1 au total.
+
+---creation des graphique de visuakisation de l'evolution des rendezvous dans un mois.
+
 
 
 

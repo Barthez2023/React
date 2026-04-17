@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
+.dash{padding:1.25rem;display:flex;flex-direction:column;gap:14px;font-family:'DM Sans',sans-serif;}
+.loader{padding:3rem;text-align:center;color:#64748b;font-family:'DM Sans',sans-serif;font-size:14px;}
+
+/* ── Topbar ── */
+.topbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.dashTitle{font-size:20px;font-weight:700;color:#0f172a;margin:0 0 3px;letter-spacing:-.02em;}
+.dashSub{font-size:13px;color:#64748b;margin:0;}
+.topbarRight{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.docSelect{font-size:12px;padding:7px 11px;border:1px solid #e2e8f0;border-radius:10px;background:#fff;color:#1e293b;outline:none;cursor:pointer;}
+.dateBadge{font-size:12px;color:#64748b;background:#f8fafc;padding:6px 14px;border-radius:20px;border:1px solid #f1f5f9;}
+
+/* ── Grilles ── */
+.row{display:grid;gap:12px;}
+.r4{grid-template-columns:repeat(4,1fr);}
+.r3{grid-template-columns:repeat(3,1fr);}
+.r2{grid-template-columns:1fr 1fr;}
+@media(max-width:780px){.r4,.r3{grid-template-columns:repeat(2,1fr);}.r2{grid-template-columns:1fr;}}
+@media(max-width:480px){.r4{grid-template-columns:1fr 1fr;}}
+
+/* ── Card ── */
+.card{background:#fff;border:1px solid #f1f5f9;border-radius:14px;padding:1rem 1.1rem;}
+.ct{font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
+.divider{height:1px;background:#f1f5f9;margin:10px 0;}
+
+/* Accent border gauche */
+.borderGreen{border-left:3px solid #1D9E75;border-radius:0 14px 14px 0;}
+.borderBlue {border-left:3px solid #378ADD;border-radius:0 14px 14px 0;}
+.borderGray {border-left:3px solid #cbd5e1;border-radius:0 14px 14px 0;}
+
+/* ── Consultation blocks ── */
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;vertical-align:middle;}
+.dotGreen{background:#1D9E75;}
+.dotAmber{background:#BA7517;}
+.dotGray{background:#94a3b8;}
+.consultName{font-size:15px;font-weight:600;color:#1e293b;margin:0 0 4px;}
+.consultSub{font-size:12px;color:#64748b;margin:0 0 3px;}
+.timer{font-size:13px;font-weight:600;color:#1D9E75;margin-top:6px;letter-spacing:.04em;}
+
+/* ── Métriques ── */
+.metric{background:#f8fafc;border-radius:12px;padding:.85rem 1rem;display:flex;align-items:center;gap:12px;}
+.metricIcon{width:36px;height:36px;border-radius:10px;flex-shrink:0;}
+.iconBlue {background:#e0f2fe;color:#0369a1;}
+.iconGreen{background:#dcfce7;color:#166534;}
+.iconAmber{background:#fef9c3;color:#854d0e;}
+.iconRed  {background:#fff5f5;color:#dc2626;}
+.metricVal{font-size:22px;font-weight:700;color:#0f172a;line-height:1;}
+.metricLbl{font-size:11px;color:#64748b;margin-top:3px;}
+
+/* ── RDV du jour ── */
+.rdvRow{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #f9fafb;}
+.rdvRow:last-child{border-bottom:none;}
+.rdvDoc{font-size:13px;font-weight:500;color:#1e293b;margin:0 0 2px;}
+.rdvMeta{font-size:11px;color:#64748b;margin:0;}
+.rdvRight{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.rdvTime{font-size:12px;font-weight:500;color:#64748b;background:#f8fafc;padding:3px 9px;border-radius:20px;}
+
+/* ── Badges statut ── */
+.badgeS{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;}
+.bsOk    {background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;}
+.bsWait  {background:#fefce8;color:#854d0e;border:1px solid #fef08a;}
+.bsCancel{background:#fff5f5;color:#dc2626;border:1px solid #fecaca;}
+
+/* ── File d'attente ── */
+.waitList{display:flex;flex-direction:column;gap:7px;}
+.waitItem{display:flex;align-items:center;padding:8px 10px;background:#f8fafc;border-radius:10px;gap:10px;}
+.waitNum{width:22px;height:22px;border-radius:50%;background:#e0f2fe;color:#0369a1;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;}
+.waitName{font-size:13px;font-weight:500;color:#1e293b;flex:1;}
+.waitTime{font-size:11px;color:#64748b;}
+
+/* ── Alertes ── */
+.alertList{display:flex;flex-direction:column;gap:7px;}
+.alertItem{display:flex;align-items:flex-start;gap:10px;padding:8px 10px;background:#f8fafc;border-radius:10px;}
+.alertIcon{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.alertMsg{font-size:12px;color:#1e293b;line-height:1.4;margin:0 0 2px;}
+.alertAgo{font-size:11px;color:#94a3b8;margin:0;}
+
+/* ── Graphique barres ── */
+.barWrap{display:flex;flex-direction:column;gap:9px;}
+.barRow{display:flex;align-items:center;gap:8px;}
+.barLabel{font-size:11px;color:#64748b;width:70px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.barTrack{flex:1;height:7px;background:#f1f5f9;border-radius:4px;overflow:hidden;}
+.barFill{height:100%;border-radius:4px;background:#378ADD;transition:width .6s ease;}
+.barVal{font-size:11px;font-weight:500;color:#1e293b;width:22px;text-align:right;flex-shrink:0;}
+
+/* ── Donut ── */
+.donutWrap{display:flex;align-items:center;gap:16px;margin-bottom:4px;}
+.donutLegend{display:flex;flex-direction:column;gap:8px;flex:1;}
+.legendItem{display:flex;align-items:center;gap:8px;}
+.legendDot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.legendLabel{font-size:12px;color:#64748b;flex:1;}
+.legendVal{font-size:12px;font-weight:600;color:#1e293b;}
+
+/* ── Progress ── */
+.progressTrack{background:#f1f5f9;border-radius:4px;height:7px;overflow:hidden;}
+.progressFill{height:100%;background:#1D9E75;border-radius:4px;transition:width .6s ease;}
+.progressLbl{font-size:11px;color:#64748b;margin-top:6px;}
