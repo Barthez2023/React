@@ -12,7 +12,6 @@ const RandevuTimePopup = ({slots, selectedDoctor,isOpen, onClose,randevuday }) =
     // };
     const currentDay = new Intl.DateTimeFormat('tr-TR', { weekday: 'long',day: 'numeric',month: 'long',year: 'numeric' }).format(new Date());
   
-  
   //ici on va gerer la prise de rendez-vous pour un partient on a deja l'id du docteur selectionner
   //et le patient connecter .
 

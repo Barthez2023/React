@@ -9,7 +9,7 @@ function NavbarHasta() {
   const navigate=useNavigate()
   const handleLogout = () => {
     // Ta logique de déconnexion ici (ex: localStorage.clear())
-    navigate('/logindoktor');
+    navigate('/loginhasta');
   };
   const name = localStorage.getItem('hastaname');
   const Surname = localStorage.getItem('hastasurname');

@@ -6,27 +6,27 @@ import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, R
 const AdminHomePage = () => {
     const [stats, setStats] = useState({});
     const [loading, setLoading]     = useState(true);
-    const [selectedDoctor, setSelectedDoctor] = useState('all');
     //Définition de l'état (format YYYY-MM-DD pour l'input date)
     const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
     const isToday = selectedDate === new Date().toISOString().split('T')[0];
-    // Données fictives pour la visualisation (à remplacer par tes appels API)
-    const appointmentData = [
-        { name: 'Jan', value: 400 }, { name: 'Fév', value: 300 },
-        { name: 'Mar', value: 600 }, { name: 'Avr', value: 800 },
-    ];
     const[rdv,setRdv]=useState([]);
-    const[rdvIptal,setRdvIptal]=useState([]);
-
+    const[randevu,setRandevu]=useState({ beklemede: [], Iptal: [], onaylandi: [] ,current:[]});
+    const [showAll, setShowAll] = useState(false);
+    const [showAll1, setShowAll1] = useState(false);
+    const [showAll2, setShowAll2] = useState(false);
+    // On définit les rendez-vous à afficher selon l'état showAll
     useEffect(()=>{
       const fecthDatat=async()=>{
         setLoading(true); // On met le loader au début du changement de date
         try {
           const res=await axios.get(`http://localhost/BilisimTekno/globalStats.php?date=${selectedDate}`)
+          const res1=await axios.get("http://localhost/BilisimTekno/GetInfoRandevu.php")
           setStats(res.data.data)
           console.log(res.data)  //pour le debugging
           setRdv(res.data.data.graphiquegun || [])
-          // setRdvIptal(res.data.data.graphiquegunIptal || [])
+
+          setRandevu(res1.data.data)
+          console.log("Randevu Infolar",res1.data)
         } catch (error) {
           console.error('Stats yükleme hatası:', error);
         }
@@ -36,6 +36,10 @@ const AdminHomePage = () => {
       }
       fecthDatat()
     },[selectedDate])
+    const displayedAppointments = showAll? randevu?.beklemede ?? []: randevu?.beklemede?.slice(0, 1) ?? [];
+    const displayedAppointments1 = showAll1? randevu?.onaylandi ?? []: randevu?.onaylandi?.slice(0, 1) ?? [];
+    const displayedAppointments2 = showAll2? randevu?.current ?? []: randevu?.current?.slice(0, 1) ?? [];
+
     return (
         <div className={style.statsContainer}>
             <NavbarAmin/>
@@ -61,53 +65,158 @@ const AdminHomePage = () => {
             {/* 2. SECTION FLUX PATIENT (Inspirée de l'image) */}
             <section className={style.patientFlow}>
                 {/* CARDE 1: PRÉCÉDENT / TOTAL */}
-                <div className={`${style.flowCard} ${style.previous}`}>
-                    <span>{!isToday ? "Genel Bakış" : "Önceki Hasta"}</span>
-                    <h3>{!isToday ? "Toplam Randevu" : "Salma Benkirane"}</h3>
-                    <small>
-                        {!isToday ? `${stats?.total || 0} Randevu` : "14:30 - Tamamlandı"}
-                    </small>
-                </div>
+                <div className={style.waitingListContainer}>
+                    {/* On vérifie s'il y a des rendez-vous en attente */}
+                    {randevu.onaylandi && randevu.onaylandi.length > 0 ? (
+                        <div className={`${style.flowCard} ${style.previous}`}>
+                            {/* En-tête fixe du bloc */}
+                            <span>{!isToday ? "Genel Bakış" : "Önceki Hasta"}</span>
+                            <div className={style.patientsList}>
+                                {displayedAppointments1.map((item) => (
+                                    <div key={item.id} className={style.patientItem}>
+                                        <div className={style.patientInfo}>
+                                            <h3>{!isToday ? "Toplam Randevu" : `${item.Hastaname} ${item.Hastasurname}`}</h3>
+                                            <small>
+                                                {!isToday 
+                                                    ? `${stats?.onayma || 0} Randevu` 
+                                                    : `Saat ${item.bitis_saat}-${item.status} olarak Tamamlandı.`}
+                                            </small>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            
+                            {/* Optionnel : un badge avec le total en bas du bloc */}
+                            <div className={style.totalBadge}>
+                                {randevu?.onaylandi.length > 1 && isToday && (
+                                <button 
+                                    className={style.viewAllBtn}
+                                    onClick={() => setShowAll1(!showAll1)}
+                                >
+                                    <i className={`fa-solid ${showAll1 ? 'fa-compress' : 'fa-list'}`}></i> 
+                                    {showAll1 ? 'Daha Az Görüntüle' : `Tüm Listeyi Görüntüle (${randevu?.onaylandi.length})`}
+                                </button>
+                            )}
+                            </div>
+                            
+                        </div>
+                    ) : (
+                        <div className={style.emptyState}>
+                            <p>Bugün için Onaylaniyor randevu bulunmuyor.</p>
+                        </div>
+                    )}
+                </div> 
                 {/* CARDE 2: EN COURS / EFFECTUÉS */}
-                <div className={`${style.flowCard} ${style.current}`}>
-                    {isToday && <div className={style.livePulse}></div>}
-                    <span>{!isToday ? "Performans" : "Randevu DevanEdiiyor"}</span>
-                    <h3>{!isToday ? "Onaylanmıs Randevu" : "Jean Dupont"}</h3>
-                    <small>
-                        {!isToday ? `${stats?.onayla || 0} Randevu` : "12 dakika önce başladı"}
-                    </small>
+                <div className={style.waitingListContainer}>
+                    {/* On vérifie s'il y a des rendez-vous en attente */}
+                    {randevu.current && randevu.current.length > 0 ? (
+                        <div className={`${style.flowCard} ${style.current}`}>
+                            {isToday && <div className={style.livePulse}></div>}
+                            {/* En-tête fixe du bloc */}
+                            <span>{!isToday ? "Performans" : "Randevu Devam Ediiyor"}</span>
+                            <div className={style.patientsList}>
+                                {displayedAppointments2.map((item) => (
+                                    <div key={item.id} className={style.patientItem}>
+                                        <div className={style.patientInfo}>
+                                            <h3>{!isToday ? "Onaylanmıs Randevu" : `${item.Hastaname} ${item.Hastasurname}`}</h3>
+                                            <small>
+                                                {!isToday 
+                                                    ? `${stats?.onayma || 0} Randevu` 
+                                                    : `Saat ${item.baslangic_saat}'te başladı.`}
+                                            </small>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            
+                            {/* Optionnel : un badge avec le total en bas du bloc */}
+                            <div className={style.totalBadge}>
+                                {randevu?.current.length > 1 && isToday && (
+                                <button 
+                                    className={style.viewAllBtn}
+                                    onClick={() => setShowAll2(!showAll2)}
+                                >
+                                    <i className={`fa-solid ${showAll2 ? 'fa-compress' : 'fa-list'}`}></i> 
+                                    {showAll2 ? 'Daha Az Görüntüle' : `Tüm Listeyi Görüntüle (${randevu?.current.length})`}
+                                </button>
+                            )}
+                            </div>
+                            
+                        </div>
+                    ) : (
+                        <div className={style.emptyState}>
+                            <p>Bugün için Onaylaniyor randevu bulunmuyor.</p>
+                        </div>
+                    )}
+                </div>
+                {/* CARDE 3: SUIVANT / noneffectuer */}
+                <div className={style.waitingListContainer}>
+                    {/* On vérifie s'il y a des rendez-vous en attente */}
+                    {randevu.beklemede && randevu.beklemede.length > 0 ? (
+                        <div className={`${style.flowCard} ${style.next}`}>
+                            {/* En-tête fixe du bloc */}
+                            <span>{!isToday ? "Gerçekleştirme" : "Bekleyen Hastalar"}</span>
+                            
+                            <div className={style.patientsList}>
+                                {displayedAppointments.map((item) => (
+                                    <div key={item.id} className={style.patientItem}>
+                                        <div className={style.patientInfo}>
+                                            <h3>{!isToday ? "Onaylamamıs" : `${item.Hastaname} ${item.Hastasurname}`}</h3>
+                                            <small>
+                                                {!isToday 
+                                                    ? `${stats?.onayma || 0} Randevu` 
+                                                    : `Saat ${item.baslangic_saat}'te planlandı.`}
+                                            </small>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            
+                            {/* Optionnel : un badge avec le total en bas du bloc */}
+                            <div className={style.totalBadge}>
+                                {randevu?.beklemede.length > 1 && isToday &&(
+                                <button 
+                                    className={style.viewAllBtn}
+                                    onClick={() => setShowAll(!showAll)}
+                                >
+                                    <i className={`fa-solid ${showAll ? 'fa-compress' : 'fa-list'}`}></i> 
+                                    {showAll ? 'Daha Az Görüntüle' : `Tüm Listeyi Görüntüle (${randevu.beklemede.length})`}
+                                </button>
+                            )}
+                            </div>
+                            
+                        </div>
+                    ) : (
+                        <div className={style.emptyState}>
+                            <p>Bugün için bekleyen randevu bulunmuyor.</p>
+                        </div>
+                    )}
                 </div>
 
-                {/* CARDE 3: SUIVANT / noneffectuer */}
-                <div className={`${style.flowCard} ${style.next}`}>
-                    <span>{!isToday ? "Gerçekleştirme" : "Sonraki Hasta"}</span>
-                    <h3>{!isToday ? "Onaylamamıs" : "Amine Alami"}</h3>
-                    <small>
-                        {!isToday ? `${stats?.onayma || 0} Randevu` : "Saat 15:45'te planlandı."}
-                    </small>
-                </div>
                 {/* CARDE 4: ATTENTE / RATIO */}
-                <div className={`${style.flowCard} ${isToday ? style.waiting : style.next}`}>
-                {isToday ? (
-                  /* --- MODE TEMPS RÉEL : SALLE D'ATTENTE --- */
-                  <>
-                    <span>Bekleme odasında</span>
-                    <div className={style.waitingCount}>
-                      {stats?.bekleme || 0}
+                <div className={style.waitingListContainer}>
+                    <div className={`${style.flowCard} ${style.waiting}`}>
+                        {isToday ? (
+                        /* --- MODE TEMPS RÉEL : SALLE D'ATTENTE --- */
+                        <>
+                            <span>Bekleme odasında</span>
+                            <div className={style.waitingCount}>
+                            {stats?.bekleme || 0}
+                            </div>
+                            <small>Bekleyen hastalar</small>
+                        </>
+                        ) : (
+                        /* --- MODE HISTORIQUE : ANNULATIONS --- */
+                        <>
+                            <span>İptaller</span>
+                            <h3>İptal Edilen</h3>
+                            <small>
+                            {stats?.iptal || 0} Randevu
+                            </small>
+                        </>
+                        )}
                     </div>
-                    <small>Bekleyen hastalar</small>
-                  </>
-                ) : (
-                  /* --- MODE HISTORIQUE : ANNULATIONS --- */
-                  <>
-                    <span>İptaller</span>
-                    <h3>İptal Edilen</h3>
-                    <small>
-                      {stats?.iptal || 0} Randevu
-                    </small>
-                  </>
-                )}
-              </div>
+                </div>
             </section>
 
             {/* 3. GRILLE DE KPI (Indicateurs Clés) pour les patients */}

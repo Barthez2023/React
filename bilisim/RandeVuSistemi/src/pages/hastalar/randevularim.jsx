@@ -75,6 +75,7 @@ function RandevularimHasta({isOpen, onClose}) {
     const [showAll, setShowAll] = useState(false);
     // On définit les rendez-vous à afficher selon l'état showAll
     const displayedAppointments = showAll ? appointments : appointments.slice(0, 4);
+    const currentDay = new Intl.DateTimeFormat('tr-TR', { weekday: 'long' }).format(new Date());
   return (
     <div className={style.container}>
             <NavbarHasta />
@@ -157,7 +158,8 @@ function RandevularimHasta({isOpen, onClose}) {
                 isOpen={isTimePopupOpen} 
                 onClose={() => setIsTimePopupOpen(false)} 
                 slots={slots} 
-                selectedDoctor={selectedDocForUpdate} 
+                selectedDoctor={selectedDocForUpdate}
+                randevuday={currentDay} 
             />
         </div>
   );

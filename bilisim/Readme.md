@@ -330,6 +330,17 @@ SUM(CASE WHEN  status='Onaylandı'THEN 1 ELSE 0 END):agrégation conditionnelle.
 L'addition : SUM(...):QL va additionner tous les 1 et tous les 0 qu'il a générés.Chaque rendez-vous confirmé ajoute +1 au total.
 
 ---creation des graphique de visuakisation de l'evolution des rendezvous dans un mois.
+//ICD10
+
+
+# Note
+usort : Cette fonction permet de trier un tableau avec une logique personnalisée.
+strcmp($a, $b) : C'est la fonction idéale pour comparer des chaînes de caractères représentant des heures (ex: "13:30").
+--Gestion de l'interface staistique l'administrateur a la possibilite de voir les patient qui sont en cour ce qui on deja ete consulte et ceux qui sont en cour de consultation.
+on vas ajouter l'option qui permet de visualiser les docteur en cour de consultation et les cliniques ou il travailles
+### Les ajouts 
+--- Gestion de l'interface statistique des docteurs
+--- Gestion de l'interface de prise de rendevous ou le patient peut decrire sa maladie et le docteru donne une ordonnance.
 
 
 
