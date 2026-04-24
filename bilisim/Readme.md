@@ -345,6 +345,81 @@ on vas ajouter l'option qui permet de visualiser les docteur en cour de consulta
 
 
 
+  const handleEndChange = (e) => {
+    const endValue = e.target.value;
+    const startTime = newplage.start; 
+
+    // 1. Convertir les heures en minutes totales pour faciliter le calcul
+    const startInMinutes = (parseInt(startTime.split(':')[0]) * 60) + parseInt(startTime.split(':')[1]);
+    const endInMinutes = (parseInt(endValue.split(':')[0]) * 60) + parseInt(endValue.split(':')[1]);
+
+    const ZamanAraligi = [];
+    let current = startInMinutes;
+
+    // 2. Boucle de génération avec un écart de 90 minutes (1h30)
+    while (current <= endInMinutes) {
+        const h = Math.floor(current / 60).toString().padStart(2, '0');
+        const m = (current % 60).toString().padStart(2, '0');
+        ZamanAraligi.push(`${h}:${m}`);
+        current += araligi; // Ajouter la plage de temps vouleu par le medecin
+    }
+
+    // 3. Mise à jour unique de l'état (Atomique)
+    setPlage({
+        ...newplage,
+        end: endValue,
+        slots: ZamanAraligi
+    });
+  };
+
+
+
+<header className={style.header}>
+                <div>
+                    <h1>Analitik Gösterge Paneli</h1>
+                    <p>Hastane sisteminin genel istatistikleri</p>
+                </div>
+                <div className={style.filterBox}>
+                    <label htmlFor="date">Gün içindeki sistemin genel analizi:</label>
+                    <input 
+                        type="date" 
+                        name="date" 
+                        id="date" 
+                        className={style.dateInput} // Ajoute une classe pour ton CSS
+                        value={selectedDate} 
+                        onChange={(e) => setSelectedDate(e.target.value)} 
+                    />
+                </div>
+            </header>
+
+
+
+            
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+.filterBox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.dateInput {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    color: #333;
+    font-family: inherit;
+    outline: none;
+    transition: border 0.3s ease;
+}
+
+.dateInput:focus {
+    border-color: #378ADD; /* Ta couleur bleue */
+}
+.dateInput:hover {
+    background-color: #d5e5f6; /* Ta couleur bleue */
+}
+
 
 
 

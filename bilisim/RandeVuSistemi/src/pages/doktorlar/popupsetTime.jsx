@@ -10,6 +10,7 @@ const PopUpSetTime= ({ isOpen, onClose, clinicName, onAddSlot }) => {
         end: '09:00' ,
         slots:[]
     });
+    const[araligi,setAraligi]=useState(30)
   // Date du jour formatée proprement
   const today = new Intl.DateTimeFormat('tr-TR', {
     weekday: 'long',
@@ -41,6 +42,13 @@ const PopUpSetTime= ({ isOpen, onClose, clinicName, onAddSlot }) => {
       });
       if(response.data.success) alert("Zaman Kaldidir!");
   };
+   const DeleteScheduleDay = async (id,plage) => {
+      const response = await axios.post("http://localhost/BilisimTekno/DeleteScheduleDay.php", {
+          idDoktor:id,
+          TimePlage:plage
+      });
+      if(response.data.success) alert("Gunluk randeVular Kaldidir!");
+  };
   const [idDoktor, setIdDoktor] = useState(null);
   useEffect(() => {
           // 1. On récupère l'ID du docteur connecter
@@ -51,32 +59,27 @@ const PopUpSetTime= ({ isOpen, onClose, clinicName, onAddSlot }) => {
               console.error("Aucun ID trouvé dans le localStorage");
           }
   }, []);
-  const handleEndChange = (e) => {
-    const endValue = e.target.value;
-    const startTime = newplage.start; 
+  // LOGIQUE DE CALCUL DES SLOTS (Automatique)
+    useEffect(() => {
+        if (!newplage.start || !newplage.end || araligi <= 0) return;
 
-    // 1. Convertir les heures en minutes totales pour faciliter le calcul
-    const startInMinutes = (parseInt(startTime.split(':')[0]) * 60) + parseInt(startTime.split(':')[1]);
-    const endInMinutes = (parseInt(endValue.split(':')[0]) * 60) + parseInt(endValue.split(':')[1]);
+        const startInMinutes = (parseInt(newplage.start.split(':')[0]) * 60) + parseInt(newplage.start.split(':')[1]);
+        const endInMinutes = (parseInt(newplage.end.split(':')[0]) * 60) + parseInt(newplage.end.split(':')[1]);
 
-    const ZamanAraligi = [];
-    let current = startInMinutes;
+        if (endInMinutes <= startInMinutes) return;
 
-    // 2. Boucle de génération avec un écart de 90 minutes (1h30)
-    while (current <= endInMinutes) {
-        const h = Math.floor(current / 60).toString().padStart(2, '0');
-        const m = (current % 60).toString().padStart(2, '0');
-        ZamanAraligi.push(`${h}:${m}`);
-        current += 90; // Ajouter 1h30
-    }
+        const generatedSlots = [];
+        let current = startInMinutes;
 
-    // 3. Mise à jour unique de l'état (Atomique)
-    setPlage({
-        ...newplage,
-        end: endValue,
-        slots: ZamanAraligi
-    });
-  };
+        while (current <= endInMinutes) {
+            const h = Math.floor(current / 60).toString().padStart(2, '0');
+            const m = (current % 60).toString().padStart(2, '0');
+            generatedSlots.push(`${h}:${m}`);
+            current += parseInt(araligi); // Forcer la conversion en nombre
+        }
+
+        setPlage(prev => ({ ...prev, slots: generatedSlots }));
+    }, [newplage.start, newplage.end, araligi]); // Se recalcule si l'un de ces 3 change
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -91,11 +94,17 @@ const PopUpSetTime= ({ isOpen, onClose, clinicName, onAddSlot }) => {
     saveScheduleAraligi(idDoktor,newplage);
     onClose();
   };
-   const handleDeleteTime = (e) => {
+  const handleDeleteTime = (e) => {
     e.preventDefault();
     DeleteSchedule(idDoktor,newplage);
      console.log("start :",newplage.start)
      console.log("end :",newplage.end)
+    onClose();
+  };
+
+  const handleDeleteDay = (e) => {
+    e.preventDefault();
+    DeleteScheduleDay(idDoktor,newplage);
     onClose();
   };
     if (!isOpen) return null;
@@ -137,6 +146,16 @@ const PopUpSetTime= ({ isOpen, onClose, clinicName, onAddSlot }) => {
               ))}
             </select>
           </div>
+          <div className={style.inputGroup}>
+              <label>Randevular arasındaki zaman farkı (dakika olarak)</label>
+              <input 
+                type="number" 
+                value={araligi} 
+                onChange={(e) => setAraligi(Math.max(1, parseInt(e.target.value) || 1))}
+                className={style.timeInput}
+                min={1}
+              />
+            </div>
 
           <div className={style.timeRow}>
             <div className={style.inputGroup}>
@@ -154,7 +173,7 @@ const PopUpSetTime= ({ isOpen, onClose, clinicName, onAddSlot }) => {
               <input 
                 type="time" 
                 value={newplage.end} 
-                onChange={handleEndChange}
+                onChange={(e) => setPlage({...newplage, end: e.target.value})}
                 className={style.timeInput}
               />
             </div>
@@ -166,6 +185,7 @@ const PopUpSetTime= ({ isOpen, onClose, clinicName, onAddSlot }) => {
             <button type="submit" className={style.submitBtn} onClick={handleSubmit}>Onayla</button>
             <button type="submit" className={style.submitBtn} onClick={handleSubmitslots}>Zaman Aralığı</button>
             <button type="submit" className={style.cancelBtn} onClick={handleDeleteTime}>Zaman Kaldır</button>
+            <button type="submit" className={style.cancelBtn} onClick={handleDeleteDay}>Gunluk Zaman Kaldır</button>
           </div>
         </form>
       </div>

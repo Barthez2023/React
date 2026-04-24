@@ -1,7 +1,4 @@
 .statsContainer { padding: 25px; background: #f1f5f9; min-height: 100vh; }
-
-.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-
 /* Flux Patient - Style Horizontal Cards */
 .patientFlow {
     display: grid;
@@ -98,7 +95,7 @@
 
 /* Le conteneur du bouton */
 .totalBadge {
-    margin-top: 15px;
+    /* margin-top: 15px; */                                       /*ce marge je vais la travailler apres ### important */
     padding-top: 15px;
     border-top: 1px solid rgba(255, 255, 255, 0.2); /* Ligne de séparation subtile */
     display: flex;
@@ -235,7 +232,6 @@
     font-size: 2.2rem;
     font-weight: 900;
     color: #ef4444;
-    margin-top: 10px;
 }
 
 /* Grille de statistiques */
@@ -286,11 +282,61 @@
 .consultItem img { width: 40px; border-radius: 50%; }
 .timeTag { margin-left: auto; background: #eff6ff; color: #3b82f6; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; }
 
-.filterBox{
+
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.filterArea {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.modeToggle {
+    display: flex;
+    background: #d5e5f6;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.modeToggle button {
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+    background: transparent;
+    color: #64748b;
+}
+
+.modeToggle button.activeMode {
+    background: #fff;
+    color: #3b82f6;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.rangeBox {
+    display: flex;
+    gap: 15px;
+}
+
+.filterBox {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10px;
+}
+
+.filterBox label {
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
 }
 .dateInput {
     padding: 8px 12px;
