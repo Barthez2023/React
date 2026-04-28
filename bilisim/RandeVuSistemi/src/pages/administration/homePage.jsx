@@ -12,22 +12,40 @@ const AdminHomePage = () => {
         () => selectedDate === new Date().toISOString().split('T')[0],
         [selectedDate]
     );
-    const[rdv,setRdv]=useState([]);
     const[randevu,setRandevu]=useState({ beklemede: [], Iptal: [], onaylandi: [] ,current:[]});
     const [showAll, setShowAll] = useState(false);
     const [showAll1, setShowAll1] = useState(false);
     const [showAll2, setShowAll2] = useState(false);
+
+    // 1. Récupérer l'année en cours (ex: 2026)
+    const currentYear = new Date().getFullYear();
+    // 2. Créer la chaîne pour le 1er janvier (Format YYYY-MM-DD)
+    const firstDayOfYear = `${currentYear}-01-01`;
+    // 3. Récupérer la date du jour proprement (Format YYYY-MM-DD)
+    // On utilise toLocaleDateString avec 'en-CA' car c'est le format YYYY-MM-DD standard
+    const today = new Date().toLocaleDateString('en-CA');
+
+    //declaration des variable
+    const [startDate, setStartDate] = useState(firstDayOfYear); 
+    const [endDate, setEndDate] = useState(today);
+    const [viewMode, setViewMode] = useState('day'); // 'day' ou 'range'
     // On définit les rendez-vous à afficher selon l'état showAll
     useEffect(()=>{
       const fecthDatat=async()=>{
+        // Empêcher l'appel si on est en mode 'range' mais que les dates sont vides
+        if (viewMode === 'range' && (!startDate || !endDate)) return;
         setLoading(true); // On met le loader au début du changement de date
         try {
-          const res=await axios.get(`http://localhost/BilisimTekno/globalStats.php?date=${selectedDate}`)
+          const res = await axios.get(`http://localhost/BilisimTekno/globalStats.php`, {
+            params: {
+                date: selectedDate,    // Pour les stats du jour
+                startDate: startDate,  // Pour le nouveau graphique
+                endDate: endDate       // Pour le nouveau graphique
+            }
+        });
           const res1 = await axios.get(`http://localhost/BilisimTekno/GetInfoRandevu.php?date=${selectedDate}`)
           setStats(res.data.data)
           console.log("Statistiques : ",res.data)  //pour le debugging
-          setRdv(res.data.data.graphiquegun || [])
-
           setRandevu(res1.data.data)
           console.log("Randevu Infolar",res1.data)
         } catch (error) {
@@ -38,17 +56,24 @@ const AdminHomePage = () => {
         }
       }
       fecthDatat()
-    },[selectedDate])
+    },[selectedDate,startDate,endDate,viewMode])
+
+
+    const chartData = useMemo(() => {
+        if (viewMode === 'day') {
+           return stats?.graphiquegun || [];
+        } else {
+            return stats?.graphiquePeriode || [];
+        }
+    }, [stats, viewMode]);
+    // La clé de l'axe X change aussi : 'gun' pour le mois, 'label' pour la période
+    const xAxisKey = viewMode === 'day' ? 'gun' : 'label';
     const displayedAppointments = showAll? randevu?.beklemede ?? []: randevu?.beklemede?.slice(0, 1) ?? [];
     const displayedAppointments1 = showAll1? randevu?.onaylandi ?? []: randevu?.onaylandi?.slice(0, 1) ?? [];
     const displayedAppointments2 = showAll2? randevu?.current ?? []: randevu?.current?.slice(0, 1) ?? [];
-
-
-
-    // États à ajouter
-    const [viewMode, setViewMode] = useState('day'); // 'day' ou 'range'
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
+    const dateObj = new Date(selectedDate);
+    // Pour obtenir le nom du mois
+    const monthName = new Intl.DateTimeFormat('tr-TR', { month: 'long' }).format(dateObj);
     return (
         <div className={style.statsContainer}>
             <NavbarAmin/>
@@ -390,16 +415,20 @@ const AdminHomePage = () => {
             {/* 4. VISUALISATION GRAPHIQUE INTERACTIVE */}
             <section className={style.chartsSection}>
                 <div className={style.chartBox}>
-                    <h3>Ay içindeki randevularda değişiklikler</h3>
+                    <h3>
+                        {viewMode === 'day' 
+                            ? `${monthName} Ay içindeki randevularda değişiklikler`
+                            : `${startDate} / ${endDate} arasındaki değişimler`}
+                    </h3>
                     <ResponsiveContainer width="100%" height={300}>
-                        <LineChart data={rdv}>
+                        <LineChart data={chartData}>
                             <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                            <XAxis dataKey="gun" />
+                            <XAxis dataKey={xAxisKey}/>
                             <YAxis />
                             <Tooltip />
                             <Line type="monotone" dataKey="total" stroke="#3b82f6" strokeWidth={2} dot={{ r: 3 }} />
                             <Line type="monotone" dataKey="totalIptal" stroke="#f90404" strokeWidth={2} dot={{ r: 3 }} />
-                            <Line type="monotone" dataKey="totalOyna" stroke="#07934d" strokeWidth={2} dot={{ r: 2 }} />
+                            <Line type="monotone" dataKey="totalOyna" stroke="#07934d" strokeWidth={2} dot={{ r: 3 }} />
                         </LineChart>
                     </ResponsiveContainer>
                 </div>
