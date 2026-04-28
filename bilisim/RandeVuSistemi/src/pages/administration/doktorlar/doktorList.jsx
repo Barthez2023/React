@@ -123,7 +123,7 @@ function DoktorList() {
               </td>
               <td>
                 <button className={style.btn} onClick={()=>{klinikver(doc.specialiteId,doc.id)}}>Klinik Ver</button>
-                <button onClick={() => navigate(`/doktor/stats/${doc.id}`)}>📊 Stats</button>
+                <button onClick={() => navigate(`/admin/doktor/DoktorStats/${doc.id}`)}>📊 Stats</button>
                 <button onClick={() => deleteDoctor(doc.id)} className={style.delBtn}>🗑️ Sil</button>
               </td>
             </tr>

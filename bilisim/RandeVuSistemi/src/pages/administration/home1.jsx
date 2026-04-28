@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef,useMemo } from 'react';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 import style from './home1.module.css';
-import NavbarAmin from './navBarAdmin';
 
 // ── Composants utilitaires ─────────────────────────────────────────────────
 
@@ -55,37 +55,61 @@ function BarChart({ doctors }) {
 
 // ── Composant principal ────────────────────────────────────────────────────
 
-export default function AdminStats() {
-  const [data, setData]           = useState(null);
-  const [loading, setLoading]     = useState(true);
-  const [selectedDoc, setSelectedDoc] = useState('');
-  const timerRef = useRef(null);
-  const [elapsed, setElapsed]     = useState(0);
+const DoktorStats = () => {
+  const {id} = useParams(); 
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  // On initialise avec la date du jour si besoin
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [elapsed, setElapsed] = useState(0);
+
+  // Utiliser useCallback pour que la fonction soit stable
+  const fetchStats = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost/BilisimTekno/admin_stats.php`, {
+          params: {
+            selectedDoc: id, // On utilise directement l'id du useParams
+            selectedDate: selectedDate
+          }
+        }
+      );
+      setData(res.data.data); // Attention : souvent res.data.data avec ton PHP
+      console.log(res.data)
+      setElapsed(0);
+    } catch (err) {
+      console.error('Stats yükleme hatası:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost/BilisimTekno/admin_stats.php${selectedDoc ? `?doctor_id=${selectedDoc}` : ''}`
-        );
-        setData(res.data);
-        setElapsed(0);
-      } catch (err) {
-        console.error('Stats yükleme hatası:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchStats();
-    const interval = setInterval(fetchStats, 30000); // refresh toutes les 30s
+    // Premier appel
+    if (id) {
+        fetchStats();
+    }
+
+    // Mise en place du polling (rafraîchissement auto)
+    const interval = setInterval(() => {
+      fetchStats();
+    }, 30000);
+
+    // Nettoyage : très important pour éviter les fuites de mémoire
     return () => clearInterval(interval);
-  }, [selectedDoc]);
+    
+  }, [id, selectedDate]); // Le useEffect réagit à l'ID ou à la Date
 
-  // Timer de consultation en cours
-  useEffect(() => {
-    timerRef.current = setInterval(() => setElapsed((e) => e + 1), 1000);
-    return () => clearInterval(timerRef.current);
-  }, []);
+
+
+
+
+
+
+
+
+
+
 
   const formatTimer = (s) => {
     const h = String(Math.floor(s / 3600)).padStart(2, '0');
@@ -94,13 +118,9 @@ export default function AdminStats() {
     return `${h}:${m}:${sec}`;
   };
 
-  const today = new Date().toLocaleDateString('fr-FR', {
+  const today = new Date().toLocaleDateString('tr-TR', {
     weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
   });
-
-  if (loading) return <div className={style.loader}>Tableau de bord en chargement...</div>;
-  if (!data)   return <div className={style.loader}>Données indisponibles.</div>;
-
 //   const { consultation, patients, rdv, attente, doctors_rdv, alertes, statuts } = data;
   // Remplace ta ligne de destructuring par celle-ci :
 const { 
@@ -113,29 +133,120 @@ const {
   statuts = {} 
 } = data || {};
 
+
+
+
+
+
+
+
+  //declaration des variable
+    // 1. Récupérer l'année en cours (ex: 2026)
+    const currentYear = new Date().getFullYear();
+    // 2. Créer la chaîne pour le 1er janvier (Format YYYY-MM-DD)
+    const firstDayOfYear = `${currentYear}-01-01`;
+    const [startDate, setStartDate] = useState(firstDayOfYear); 
+    const [endDate, setEndDate] = useState(today);
+    const [viewMode, setViewMode] = useState('day'); // 'day' ou 'range'
+    //Définition de l'état (format YYYY-MM-DD pour l'input date)
+    const isToday = useMemo(
+        () => selectedDate === new Date().toISOString().split('T')[0],
+        [selectedDate]
+    );
+
+
+    if (loading) return <div className={style.loader}>Tableau de bord en chargement...</div>;
+    if (!data)   return <div className={style.loader}>Données indisponibles.</div>;
   return (
     <div className={style.dash}>
-        <NavbarAmin/>
       {/* ── Topbar ── */}
-      <div className={style.topbar}>
-        <div>
-          <h2 className={style.dashTitle}>Tableau de bord</h2>
-          <p className={style.dashSub}>Vue d'ensemble des opérations cliniques</p>
+      <header className={style.header}>
+        <div className={style.welcome}>
+              <h1>Analitik Gösterge Paneli</h1>
+              <p className={style.dateDisplay}>
+                  <span className={style.locationDot}> </span>
+                  {data.doktor.doktorName}  {data.doktor.doktorSurname}  {data.doktor.klinikName}
+              </p>
+          </div>
+        <div className={style.filterArea}>
+            {/* Switcher de Mode */}
+            <div className={style.modeToggle}>
+                <button 
+                    className={viewMode === 'day' ? style.activeMode : ''} 
+                    onClick={() => setViewMode('day')}
+                >
+                    Günlük
+                </button>
+                <button 
+                    className={viewMode === 'range' ? style.activeMode : ''} 
+                    onClick={() => setViewMode('range')}
+                >
+                    Aralık
+                </button>
+            </div>
+
+            {/* Affichage conditionnel des inputs */}
+            <div className={style.inputsWrapper}>
+                {viewMode === 'day' ? (
+                    <div className={style.filterBox}>
+                        <label>Gün Seçin:</label>
+                        <input 
+                            type="date" 
+                            value={selectedDate} 
+                            onChange={(e) => setSelectedDate(e.target.value)} 
+                            className={style.dateInput}
+                        />
+                    </div>
+                ) : (
+                    <div className={style.rangeBox}>
+                        <div className={style.filterBox}>
+                            <label>Başlangıç:</label>
+                            <input 
+                                type="date" 
+                                value={startDate} 
+                                onChange={(e) => setStartDate(e.target.value)} 
+                                className={style.dateInput}
+                            />
+                        </div>
+                        <div className={style.filterBox}>
+                            <label>Bitiş:</label>
+                            <input 
+                                type="date" 
+                                value={endDate} 
+                                onChange={(e) => setEndDate(e.target.value)} 
+                                className={style.dateInput}
+                            />
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
-        <div className={style.topbarRight}>
-          <select
-            className={style.docSelect}
-            value={selectedDoc}
-            onChange={(e) => setSelectedDoc(e.target.value)}
-          >
-            <option value="">Tous les médecins</option>
-            {(data.doctors_list ?? []).map((d) => (
-              <option key={d.id} value={d.id}>Dr. {d.nom} {d.prenom}</option>
-            ))}
-          </select>
-          <span className={style.dateBadge}>{today}</span>
-        </div>
-      </div>
+    </header>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       {/* ── Consultation en cours / suivant / précédent ── */}
       <div className={`${style.row} ${style.r3}`}>
@@ -279,3 +390,5 @@ const {
     </div>
   );
 }
+
+export default DoktorStats

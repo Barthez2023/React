@@ -1,15 +1,222 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+.dash{
+    padding:1.25rem;
+    display:flex;
+    background: #f1f5f9;
+    min-height: 100vh;
+    flex-direction:column;
+    gap:14px;
+    font-family:'DM Sans',sans-serif;
+}
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
 
-.dash{padding:1.25rem;display:flex;flex-direction:column;gap:14px;font-family:'DM Sans',sans-serif;}
+/* Section Gauche : Titres */
+.dashTitle {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1e293b; /* Bleu très foncé/Ardoise */
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+.dashSub {
+    font-size: 0.9rem;
+    color: #64748b; /* Gris bleuté */
+    margin: 0.25rem 0 0 0;
+}
+
+/* Section Droite : Profil & Date */
+.topbarRight {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.topbarRight p {
+    font-weight: 600;
+    color: #334155;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+/* Le Badge de Date */
+.dateBadge {
+    background-color: #8ac3fc; /* Gris très clair */
+    color: #475569;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.dateBadge:hover {
+    background-color: #e2e8f0;
+    transform: translateY(-1px);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.filterArea {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.modeToggle {
+    display: flex;
+    background: #d5e5f6;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.modeToggle button {
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+    background: transparent;
+    color: #64748b;
+}
+
+.modeToggle button.activeMode {
+    background: #fff;
+    color: #3b82f6;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.rangeBox {
+    display: flex;
+    gap: 15px;
+}
+
+.filterBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.filterBox label {
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.dateInput {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    color: #333;
+    font-family: inherit;
+    outline: none;
+    transition: border 0.3s ease;
+}
+
+.dateInput:focus {
+    border-color: #378ADD; /* Ta couleur bleue */
+}
+.dateInput:hover {
+    background-color: #d5e5f6; /* Ta couleur bleue */
+}
+.locationDot{
+    width: 8px;
+    height: 8px;
+    background: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 0 rgba(16, 185, 129, 0.4);
+    animation: pulseAnim 2s infinite;
+}
+.welcome h1 {
+    font-size: 2.2rem;
+    color: #0f172a;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.welcome p {
+    color: #64748b;
+    font-weight: bolder;
+    display: flex;
+    gap: 20px;
+}
+.dateDisplay {
+    color: black;
+    font-weight: bolder;
+    font-size:1.3rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-transform: capitalize; /* Pour mettre la première lettre du jour en majuscule */
+}
+@keyframes pulseAnim {
+    0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .loader{padding:3rem;text-align:center;color:#64748b;font-family:'DM Sans',sans-serif;font-size:14px;}
-
-/* ── Topbar ── */
-.topbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
-.dashTitle{font-size:20px;font-weight:700;color:#0f172a;margin:0 0 3px;letter-spacing:-.02em;}
-.dashSub{font-size:13px;color:#64748b;margin:0;}
-.topbarRight{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-.docSelect{font-size:12px;padding:7px 11px;border:1px solid #e2e8f0;border-radius:10px;background:#fff;color:#1e293b;outline:none;cursor:pointer;}
-.dateBadge{font-size:12px;color:#64748b;background:#f8fafc;padding:6px 14px;border-radius:20px;border:1px solid #f1f5f9;}
 
 /* ── Grilles ── */
 .row{display:grid;gap:12px;}

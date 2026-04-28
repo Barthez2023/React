@@ -362,6 +362,148 @@ Gestion du boutton permettant de visualiser les stats du systemes sur une journe
 
 
 
+// ── 1. Consultation en cours / suivant / précédent ────────────────────────
+$cond = $doctor_id ? "AND r.doktor_id = $doctor_id" : "";
+$cons = $conn->query("
+    SELECT p.name AS pnom, p.surname AS psur, r.baslangic_saat, r.bitis_saat,
+           u.nom AS spec, r.status, d.Name AS dnom
+    FROM randevular r
+    JOIN hastalar p ON r.patient_id = p.id
+    JOIN doktorlar d ON r.doktor_id = d.id
+    LEFT JOIN uzmanlik u ON d.specialite_id = u.id
+    WHERE DATE(r.randevu_date) = '$today' $cond
+    ORDER BY r.baslangic_saat
+");
+$rdv_today = $cons->fetch_all(MYSQLI_ASSOC);
+$en_cours  = null; $suivant = null; $precedent = null;
+foreach ($rdv_today as $r) {
+    if ($r['status'] === 'en_cours')   $en_cours  = $r;
+    if ($r['status'] === 'bekliyor' && !$suivant)  $suivant   = $r;
+    if ($r['status'] === 'consulte')   $precedent = $r;
+}
+
+// ── 2. Stats patients ─────────────────────────────────────────────────────
+$total_p   = $conn->query("SELECT COUNT(*) FROM hastalar")->fetch_row()[0];
+$new_month = $conn->query("SELECT COUNT(*) FROM hastalar WHERE DATE_FORMAT(created_at,'%Y-%m')='$month'")->fetch_row()[0];
+$consul_d  = $conn->query("SELECT COUNT(*) FROM randevular WHERE DATE(randevu_date)='$today' AND status='consulte' $cond")->fetch_row()[0];
+
+// ── 3. Stats rendez-vous ──────────────────────────────────────────────────
+$rdv_d  = $conn->query("SELECT COUNT(*) FROM randevular WHERE DATE(randevu_date)='$today' $cond")->fetch_row()[0];
+$rdv_m  = $conn->query("SELECT COUNT(*) FROM randevular WHERE DATE_FORMAT(randevu_date,'%Y-%m')='$month' $cond")->fetch_row()[0];
+$rdv_y  = $conn->query("SELECT COUNT(*) FROM randevular WHERE YEAR(randevu_date)='$year' $cond")->fetch_row()[0];
+
+// ── 4. File d'attente ─────────────────────────────────────────────────────
+$att = $conn->query("
+    SELECT p.name AS nom, p.surname AS sur,
+           TIMESTAMPDIFF(MINUTE, r.baslangic_saat, NOW()) AS attente_min
+    FROM randevular r
+    JOIN hastalar p ON r.patient_id = p.id
+    WHERE DATE(r.randevu_date)='$today' AND r.status='bekliyor' $cond
+    ORDER BY r.baslangic_saat
+");
+$attente_list = [];
+while ($row = $att->fetch_assoc()) {
+    $attente_list[] = [
+        "nom"         => $row['nom'].' '.$row['sur'],
+        "attente_min" => max(0, (int)$row['attente_min']),
+    ];
+}
+
+// ── 5. RDV du jour détaillé ───────────────────────────────────────────────
+$rdvj = $conn->query("
+    SELECT p.name AS pnom, p.surname AS psur,
+           d.Name AS dnom, d.Surname AS dsur,
+           u.nom AS spec, r.baslangic_saat AS heure, r.status
+    FROM randevular r
+    JOIN hastalar p   ON r.patient_id      = p.id
+    JOIN doktorlar d  ON r.doktor_id     = d.id
+    LEFT JOIN uzmanlik u ON d.specialite_id = u.id
+    WHERE DATE(r.randevu_date)='$today' $cond
+    ORDER BY r.baslangic_saat
+    LIMIT 10
+");
+$rdv_jour = [];
+while ($row = $rdvj->fetch_assoc()) {
+    $rdv_jour[] = [
+        "patient"    => $row['pnom'].' '.$row['psur'],
+        "doc_nom"    => $row['dnom'],
+        "doc_prenom" => $row['dsur'],
+        "specialite" => $row['spec'],
+        "heure"      => substr($row['heure'], 0, 5),
+        "status"     => $row['status'],
+    ];
+}
+
+// ── 6. RDV par médecin ce mois ────────────────────────────────────────────
+$drdv = $conn->query("
+    SELECT d.Name AS nom, d.Surname AS prenom, COUNT(*) AS nb_rdv
+    FROM randevular r
+    JOIN doktorlar d ON r.doktor_id = d.id
+    WHERE DATE_FORMAT(r.randevu_date,'%Y-%m')='$month'
+    GROUP BY d.id ORDER BY nb_rdv DESC LIMIT 5
+");
+$doctors_rdv = $drdv->fetch_all(MYSQLI_ASSOC);
+
+// ── 7. Statuts (%) ────────────────────────────────────────────────────────
+$total_rdv = max(1, (int)$rdv_m);
+$con_pct   = round($conn->query("SELECT COUNT(*) FROM randevular WHERE DATE_FORMAT(randevu_date,'%Y-%m')='$month' AND status='consulte' $cond")->fetch_row()[0] / $total_rdv * 100);
+$bek_pct   = round($conn->query("SELECT COUNT(*) FROM randevular WHERE DATE_FORMAT(randevu_date,'%Y-%m')='$month' AND status='bekliyor' $cond")->fetch_row()[0] / $total_rdv * 100);
+$ipt_pct   = 100 - $con_pct - $bek_pct;
+
+// ── 8. Liste médecins (filtre select) ─────────────────────────────────────
+$dl = $conn->query("SELECT id, Name AS nom, Surname AS prenom FROM doktorlar ORDER BY Name");
+$doctors_list = $dl->fetch_all(MYSQLI_ASSOC);
+
+// ── 9. Cliniques actives ──────────────────────────────────────────────────
+$clin_count = $conn->query("SELECT COUNT(*) FROM klinik")->fetch_row()[0];
+
+// ── 10. Alertes système ───────────────────────────────────────────────────
+$alertes = [
+    ["type" => "success", "message" => "Nouveau patient inscrit", "ago" => "Il y a 5 min"],
+    ["type" => "warning", "message" => "RDV annulé — vérifiez la file", "ago" => "Il y a 22 min"],
+    ["type" => "info",    "message" => "Disponibilités mises à jour", "ago" => "Il y a 1h"],
+];
+
+echo json_encode([
+    "consultation" => [
+        "en_cours"       => $en_cours  ? $en_cours['pnom'].' '.$en_cours['psur']   : null,
+        "suivant"        => $suivant   ? $suivant['pnom'].' '.$suivant['psur']     : null,
+        "precedent"      => $precedent ? $precedent['pnom'].' '.$precedent['psur'] : null,
+        "specialite"     => $en_cours['spec']        ?? null,
+        "heure_debut"    => $en_cours  ? substr($en_cours['baslangic_saat'],0,5)   : null,
+        "heure_suivant"  => $suivant   ? substr($suivant['baslangic_saat'],0,5)    : null,
+        "heure_precedent"=> $precedent ? substr($precedent['bitis_saat'],0,5)      : null,
+        "attente_min"    => 12,
+    ],
+    "patients"          => ["total"=>$total_p,"nouveaux_mois"=>$new_month,"consultes_auj"=>$consul_d],
+    "rdv"               => ["aujourd_hui"=>$rdv_d,"ce_mois"=>$rdv_m,"cette_annee"=>$rdv_y],
+    "attente"           => ["nombre"=>count($attente_list),"liste"=>$attente_list],
+    "rdv_jour"          => $rdv_jour,
+    "doctors_rdv"       => $doctors_rdv,
+    "doctors_list"      => $doctors_list,
+    "statuts"           => ["consulte_pct"=>$con_pct,"bekliyor_pct"=>$bek_pct,"iptal_pct"=>$ipt_pct],
+    "cliniques_actives" => (int)$clin_count,
+    "alertes"           => $alertes,
+]);
+$conn->close();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*const data = {
