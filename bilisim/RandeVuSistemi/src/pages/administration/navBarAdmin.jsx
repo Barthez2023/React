@@ -34,7 +34,6 @@ function NavbarAmin() {
         {/* Partie droite */}
         <div className={style.right}>
           <Link to="/adminhomepage" className={`${style.link} ${isActive('/adminhomepage') ? style.linkActive : ''}`}>Home</Link>
-          <Link to="/adminStats" className={`${style.link} ${isActive('/adminStats') ? style.linkActive : ''}`}>Home1</Link>
           <div className={style.dropdown}>
               <div 
                 className={`${style.link} ${isActive('/klinikadmin') ? style.linkActive : ''}`}

@@ -13,6 +13,7 @@ function NavbarDoktor() {
   };
     const name = localStorage.getItem('doktorName');
     const Surname = localStorage.getItem('doktorSurName');
+    const idDoc=localStorage.getItem('doktorId')
   return (
     <div style={{marginBottom:'60px'}}>
       <nav className={style.navbar}>
@@ -36,7 +37,15 @@ function NavbarDoktor() {
           <Link to="/doktor/gecmisrandevular" className={`${style.link} ${isActive('/doktor/gecmisrandevular') ? style.linkActive : ''}`}>
             Geçmiş randevular
           </Link>
-          
+          <Link to="/admin/doktor/Analyse" className={`${style.link} ${isActive('/admin/doktor/Analyse') ? style.linkActive : ''}`}>
+            Analiz Paneli
+          </Link>
+         {/* <Link 
+              to={`/admin/doktor/DoktorStats/${localStorage.getItem('doktorId')}`} 
+              className={`${style.link} ${isActive(`/admin/doktor/DoktorStats/${localStorage.getItem('doktorId')}`) ? style.linkActive : ''}`}
+            >
+                Günlük Analizi
+          </Link> */}
           <div style={{width: '1px', height: '24px', background: '#e2e8f0', margin: '0 10px'}}></div>
 
           <Link to="/profile" className={`${style.link} ${isActive('/profile') ? style.linkActive : ''}`}>
