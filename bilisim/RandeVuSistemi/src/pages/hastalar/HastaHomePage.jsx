@@ -9,6 +9,7 @@ const WelcomeHasta = () => {
     const [currentTime, setCurrentTime] = useState(new Date());
 
     const [hasta, setHasta] = useState(null);
+    const [appointment, setAppointment] = useState(null);
     const { HastaRandevusayisi } = useContext(UserContext);
     useEffect(() => {
           const hastaId=localStorage.getItem("hastaId");
@@ -24,6 +25,7 @@ const WelcomeHasta = () => {
                 });
                 if (resHasta.data.success){
                     setHasta(resHasta.data.data);
+                    setAppointment(resHasta.data.patientrandevu);
                 } 
                 console.log("Réponse du serveur docteur:", resHasta.data);
 
@@ -37,7 +39,7 @@ const WelcomeHasta = () => {
             return () => clearInterval(timer);
         }, []);
     const formatDate = (date) => {
-        return new Intl.DateTimeFormat('fr-FR', {
+        return new Intl.DateTimeFormat('tr-TR', {
             weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
         }).format(date);
     };
@@ -144,34 +146,33 @@ const WelcomeHasta = () => {
                 <div className={`${style.card} ${style.appointmentCard}`}>
                     <h3><i className="fa-solid fa-calendar-check"></i> Yaklaşan Randevularınız</h3>
 
-                    {hasta.patientrandevu ? (
+                    {appointment ? (
                         /* --- ÉTAT : RENDEZ-VOUS TROUVÉ --- */
                         <div className={style.activeAppointment}>
-                        <div className={style.docInfoSection}>
-                            <div className={style.docAvatarMini}>
-                            <i className="fa-solid fa-user-md"></i>
+                            <div className={style.docInfoSection}>
+                                <div className={style.docAvatarMini}>
+                                <i className="fa-solid fa-user-md"></i>
+                                </div>
+                                <div className={style.docText}>
+                                <h4>Dr. {appointment.docName} {appointment.docSurname}</h4>
+                                <p>{appointment.klinikName}</p>
+                                </div>
                             </div>
-                            <div className={style.docText}>
-                            <h4>Dr. {hasta.patientrandevu.docName} {hasta.patientrandevu.docSurname}</h4>
-                            <p>{hasta.patientrandevu.klinik}</p>
-                            </div>
-                        </div>
 
-                        <div className={style.appointmentDetails}>
-                            <div className={style.detailRow}>
-                            <i className="fa-solid fa-calendar-day"></i>
-                            <span>{new Date(hasta.patientrandevu.randevu_date).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                            <div className={style.appointmentDetails}>
+                                <div className={style.detailRow}>
+                                <i className="fa-solid fa-calendar-day"></i>
+                                <span>{new Date(appointment.randevu_date).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                                </div>
+                                <div className={style.detailRow}>
+                                <i className="fa-solid fa-clock"></i>
+                                <span>{appointment.baslangic_saat.substring(0, 5)} - {appointment.bitis_saat.substring(0, 5)}</span>
+                                </div>
                             </div>
-                            <div className={style.detailRow}>
-                            <i className="fa-solid fa-clock"></i>
-                            <span>{hasta.patientrandevu.baslangic_saat.substring(0, 5)} - {hasta.patientrandevu.bitis_saat.substring(0, 5)}</span>
+                            <div className={style.approachingBadge}>
+                                <span className={style.dotPulse}></span>
+                                <span className={style.movingText}>Randevunuz Yaklaşıyor...</span>
                             </div>
-                        </div>
-
-                        <div className={style.actionArea}>
-                            <button className={style.primaryBtn}>Detayları Gör</button>
-                            <button className={style.textBtn}>Randevuyu İptal Et</button>
-                        </div>
                         </div>
                     ) : (
                         /* --- ÉTAT : VIDE (EXISTANT) --- */
