@@ -2,6 +2,7 @@ import React from 'react';
 import { useState,useEffect } from 'react';
 import style from './randevuTime.module.css';
 import axios from 'axios';
+import ConsultationModalPopup from './RandevuInfopopup';
 
 const RandevuTimePopup = ({slots, selectedDoctor,isOpen, onClose,randevuday }) => {
     // Si le popup n'est pas censé être ouvert, on n'affiche rien
@@ -24,18 +25,25 @@ const RandevuTimePopup = ({slots, selectedDoctor,isOpen, onClose,randevuday }) =
     // Déclare un état pour suivre quel créneau est en train d'être réservé afin d'eviter a deux patient de reserver un rendevu a la meme heure
     const [isBookingId, setIsBookingId] = useState(null);
 
-    const handleBooking = async (slot) => {
-        // On bloque le bouton immédiatement
-        setIsBookingId(slot.id);
+
+    const handleFinalConfirm = async (consultationData) => {
+        if (!tempSlot) return;
+
+        setIsBookingId(tempSlot.id); // Active le spinner sur le créneau
         const patientId = localStorage.getItem('hastaId');
-        // On prépare les données
+
+        // On prépare l'objet complet avec les données du modal
         const bookingData = {
             patientId: patientId,
             doktorId: selectedDoctor.id,
-            date: currentDate, //date aleatoire elle sera modifier plus tard
-            start: slot.baslangic_saat,
-            end: slot.bitis_saat,
-            durum:"mesgul"
+            date: currentDate,
+            start: tempSlot.baslangic_saat,
+            end: tempSlot.bitis_saat,
+            durum: "mesgul",
+            // Nouvelles données issues du formulaire du modal
+            history: consultationData.history,
+            symptoms: consultationData.symptoms,
+            medications: consultationData.medications
         };
 
         try {
@@ -43,25 +51,37 @@ const RandevuTimePopup = ({slots, selectedDoctor,isOpen, onClose,randevuday }) =
             
             if (response.data.success) {
                 alert("Randevu başarıyla alındı !");
-                onClose(); // On ferme le popup
-                // Optionnel : rediriger vers la page d'accueil pour voir le RDV s'afficher
+                setIsConsultationOpen(false); // Ferme le modal
+                // Tu peux ici déclencher un rafraîchissement des slots pour afficher celui-ci comme occupé
             } else {
                 alert("Hata: " + response.data.message);
-                setIsBookingId(null); // On débloque seulement en cas d'erreur pour qu'il puisse réessayer
             }
         } catch (error) {
             console.error("Erreur lors de la réservation", error);
+        } finally {
             setIsBookingId(null);
         }
     };
+
     //On récupère l'heure actuelle (ex: "14:30")
     const now = new Date();
     const currentTime = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
     // On récupère le nom du jour actuel (ex: "Pazartesi")
     const todayName = new Intl.DateTimeFormat('tr-TR', { weekday: 'long' }).format(now);
 
+    // État pour ouvrir/fermer le modal
+    const [isConsultationOpen, setIsConsultationOpen] = useState(false);
+
+    // État pour stocker temporairement le slot cliqué avant validation
+    const [tempSlot, setTempSlot] = useState(null);
+    const handleOpenConsultation = (slot) => {
+        setTempSlot(slot); // On garde le créneau en mémoire
+        setIsConsultationOpen(true); // On affiche le popup
+    };
+    
+
     return (
-    <div className={style.overlay} onClick={onClose}>
+    <div className={style.overlay}>
         <div className={style.modal} onClick={(e) => e.stopPropagation()}>
             {/* onClick={(e) => e.stopPropagation()} : Ajouté sur les .modal. Sans cela, quand tu cliques à 
             l'intérieur du popup, il se ferme tout seul (car le clic "remonte" jusqu'à l'overlay). */}
@@ -90,16 +110,10 @@ const RandevuTimePopup = ({slots, selectedDoctor,isOpen, onClose,randevuday }) =
                                 <button 
                                     key={index} 
                                     className={`${style.timeChip} ${isPast ? style.pastSlot : ''}`}
-                                    /* Le bouton est désactivé si son ID est celui en cours de traitement */
                                     disabled={isBookingId === slot.id || isPast}
-                                    onClick={() => handleBooking(slot)}
+                                    onClick={() => handleOpenConsultation(slot)} // Appelle l'ouverture du modal
                                 >
-                                    {isBookingId === slot.id ? (
-                                            <span><i className="fa-solid fa-spinner fa-spin"></i> ...</span>
-                                        ) : (
-                                            `${slot.baslangic_saat} - ${slot.bitis_saat}`
-                                        )
-                                    }
+                                    {slot.baslangic_saat} - {slot.bitis_saat}
                                 </button>
                             ) 
                         })
@@ -113,6 +127,12 @@ const RandevuTimePopup = ({slots, selectedDoctor,isOpen, onClose,randevuday }) =
             </div>
              <div className={style.footer}></div>
         </div>
+        <ConsultationModalPopup
+            isOpen={isConsultationOpen}
+            onClose={() => setIsConsultationOpen(false)}
+            onConfirm={handleFinalConfirm} // La fonction de sauvegarde
+            patientName={localStorage.getItem('hastaname')} // Optionnel
+        />
     </div>
   )
     

@@ -329,8 +329,8 @@ SUM(CASE WHEN  status='Onaylandı'THEN 1 ELSE 0 END):agrégation conditionnelle.
 . Le test : CASE WHEN status = 'Onaylandı':C'est une structure de type "Si... Alors...". SQL regarde la colonne status de la ligne actuelle.Si le texte est exactement 'Onaylandı' (Confirmé)...Alors (THEN), il génère le chiffre 1.Sinon (ELSE), il génère le chiffre 0.La fin du test : END
 L'addition : SUM(...):QL va additionner tous les 1 et tous les 0 qu'il a générés.Chaque rendez-vous confirmé ajoute +1 au total.
 
----creation des graphique de visuakisation de l'evolution des rendezvous dans un mois.
-//ICD10
+# ---creation des graphique de visuakisation de l'evolution des rendezvous dans un mois.
+# //ICD10 
 
 
 # Note
@@ -344,6 +344,27 @@ on vas ajouter l'option qui permet de visualiser les docteur en cour de consulta
 
 # 28 - 04- 2026
 Gestion du boutton permettant de visualiser les stats du systemes sur une journee ou sur une periode definir.
+
+# 29-04-2026
+Gestion du panel de controle et d'analyse du docteur cote docteur et cote administration .
+Utilisation de  const {iddocURL} = useParams(); du module import { useParams } from 'react-router-dom'; pour recuperre un parametre dans l'url.Visualisation cote docteur et administrateur 
+
+--Gestion et tracage cote administrateur du barchart pour la visualisation des docteurs et des cliniques qui effectue le plus de consultations.
+--Gestion de l'API du prof
+
+# 01-05-2026
+--Gestion de l'interface permettant  au pateint d'entrer les symtopme de sa maladie
+l'anamnèse (histoire), les symptômes et les antécédents médicamenteux avant de valider ou d'annuler le rendez-vous.
+
+
+
+
+
+
+Dün gece iki tane 358 mg'lık parasetamol tableti, bu sabah da iki tane aldım.
+Mide bulantısı, kusma, baş ağrısı ve karın ağrısı, yorgunluk
+Dün öğle yemeğinden hemen sonra kendimi çok kötü hissetmeye başladım. Yemek sırasında sadece bir kase pilav ve biraz tavuk yedim.
+
 
 
 

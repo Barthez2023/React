@@ -316,3 +316,93 @@
 .dateInput:hover {
     background-color: #d5e5f6; /* Ta couleur bleue */
 }
+
+/* .barchatcontainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  padding: 1.5rem;
+  width: 100%;
+} */
+ .barchatcontainer {
+    margin-top: 40px;
+   display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 25px;
+}
+ 
+
+.statsColumn {
+  flex: 1; /* Chaque colonne prend 50% de l'espace */
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.columnTitle {
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  color: #333;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 0.5rem;
+}
+
+/* On garde tes styles existants pour barWrap, barRow, etc. */
+.barWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Conteneur principal du graphique */
+.barWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 10px 0;
+}
+
+/* Une ligne : Label | Barre | Valeur */
+.barRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Le texte à gauche (nom) */
+.barLabel {
+  width: 120px; /* Largeur fixe pour aligner les barres */
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #444;
+}
+
+/* Le rail de la barre (fond gris) */
+.barTrack {
+  flex: 1; /* Prend tout l'espace disponible */
+  background-color: #e2e8f0;
+  height: 12px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* La partie remplie (la barre bleue) */
+.barFill {
+  height: 100%;
+  background-color: #3b82f6; /* Couleur bleue */
+  border-radius: 6px;
+  transition: width 0.5s ease-in-out;
+}
+
+/* Le chiffre à droite */
+.barVal {
+  width: 30px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  text-align: right;
+  color: #1e293b;
+}

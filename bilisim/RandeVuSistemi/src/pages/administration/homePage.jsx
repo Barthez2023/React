@@ -3,6 +3,55 @@ import style from './homePage.module.css'
 import NavbarAmin from './navBarAdmin';
 import React, { useState, useEffect,useMemo } from 'react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+
+function BarChartProfessional({ parametres }) {
+  return (
+    <div style={{ width: '100%', height: 250 }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart 
+          data={parametres} 
+          layout="vertical" /* Pour avoir des barres horizontales */
+          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+        >
+          <XAxis type="number" hide />
+          <YAxis 
+            dataKey="name" 
+            type="category" 
+            width={100} 
+            fontSize={12}
+          />
+          <Tooltip />
+          <Bar dataKey="RandeVu_Saysisi" radius={[0, 4, 4, 0]}>
+            {parametres.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={index === 0 ? '#3b82f6' : '#94a3b8'} />
+            ))}
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+function BarChart2({ parametres }) {
+  const max = Math.max(...parametres.map((d) => d.nb_rdv), 1);
+  return (
+    <div className={style.barWrap}>
+      {parametres.map((d, i) => (
+        <div key={i} className={style.barRow}>
+          <span className={style.barLabel}>{d.name.split(' ')[1] ?? d.name}</span>
+          <div className={style.barTrack}>
+            <div
+              className={style.barFill}
+              style={{ width: `${Math.round((d.nb_rdv / max) * 100)}%` }}
+            />
+          </div>
+          <span className={style.barVal}>{d.nb_rdv}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 const AdminHomePage = () => {
     const [stats, setStats] = useState({});
     const [loading, setLoading]     = useState(true);
@@ -65,6 +114,20 @@ const AdminHomePage = () => {
         } else {
             return stats?.graphiquePeriode || [];
         }
+    }, [stats, viewMode]);
+    // On calcule directement les données à afficher sans passer par des setStates
+    const activeDoktors = useMemo(() => {
+        if (viewMode === 'day') {
+            return stats?.doktorBarchatDay || [];
+        }
+        return stats?.doktorBarchat || [];
+    }, [stats, viewMode]);
+
+    const activeKliniks = useMemo(() => {
+        if (viewMode === 'day') {
+            return stats?.KlinikBarchatDay || [];
+        }
+        return stats?.KlinikBarchat || [];
     }, [stats, viewMode]);
     // La clé de l'axe X change aussi : 'gun' pour le mois, 'label' pour la période
     const xAxisKey = viewMode === 'day' ? 'gun' : 'label';
@@ -474,6 +537,23 @@ const AdminHomePage = () => {
                         )}
                         </div>
                     </div>
+                </div>
+            </section>
+
+            {/* section barchat */}
+            <section className={style.barchatcontainer}>
+                {/* Section des Cliniques */}
+                <div className={style.statsColumn}>
+                    <h3 className={style.columnTitle}>En çok görüntülenen klinikler</h3>
+                    {/* On envoie KlinikBarchat à la section Clinique, et on utilise la prop 'data' */}
+                    <BarChartProfessional parametres={activeKliniks ?? []} />
+                </div>
+
+                {/* Section des Médecins */}
+                <div className={style.statsColumn}>
+                    <h3 className={style.columnTitle}>En çok görüntülenen doktorlar</h3>
+                    {/* On envoie doktorBarchat à la section Médecin, et on utilise la prop 'data' */}
+                    <BarChartProfessional parametres={activeDoktors ?? []} />
                 </div>
             </section>
         </div>

@@ -143,17 +143,47 @@ const WelcomeHasta = () => {
                 {/* 2. Résumé des rendez-vous à venir */}
                 <div className={`${style.card} ${style.appointmentCard}`}>
                     <h3><i className="fa-solid fa-calendar-check"></i> Yaklaşan Randevularınız</h3>
-                    <div className={style.emptyState}>
-                        {/* Ajout d'une icône d'illustration discrète */}
+
+                    {hasta.patientrandevu ? (
+                        /* --- ÉTAT : RENDEZ-VOUS TROUVÉ --- */
+                        <div className={style.activeAppointment}>
+                        <div className={style.docInfoSection}>
+                            <div className={style.docAvatarMini}>
+                            <i className="fa-solid fa-user-md"></i>
+                            </div>
+                            <div className={style.docText}>
+                            <h4>Dr. {hasta.patientrandevu.docName} {hasta.patientrandevu.docSurname}</h4>
+                            <p>{hasta.patientrandevu.klinik}</p>
+                            </div>
+                        </div>
+
+                        <div className={style.appointmentDetails}>
+                            <div className={style.detailRow}>
+                            <i className="fa-solid fa-calendar-day"></i>
+                            <span>{new Date(hasta.patientrandevu.randevu_date).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                            </div>
+                            <div className={style.detailRow}>
+                            <i className="fa-solid fa-clock"></i>
+                            <span>{hasta.patientrandevu.baslangic_saat.substring(0, 5)} - {hasta.patientrandevu.bitis_saat.substring(0, 5)}</span>
+                            </div>
+                        </div>
+
+                        <div className={style.actionArea}>
+                            <button className={style.primaryBtn}>Detayları Gör</button>
+                            <button className={style.textBtn}>Randevuyu İptal Et</button>
+                        </div>
+                        </div>
+                    ) : (
+                        /* --- ÉTAT : VIDE (EXISTANT) --- */
+                        <div className={style.emptyState}>
                         <i className="fa-solid fa-calendar-day" style={{fontSize: '3rem', color: '#cbd5e1', marginBottom: '15px'}}></i>
-                        
-                        <p>Şu anda planlanmış herhangi bir randevu bulunmamaktadır.</p>
-                        
+                        <p>Şu anda planlanmış nherhangi bir randevu bulunmamaktadır.</p>
                         <button className={style.secondaryBtn}>
                             <i className="fa-solid fa-clock-rotate-left"></i> Geçmişi görüntüle
                         </button>
+                        </div>
+                    )}
                     </div>
-                </div>
 
                 {/* 3. Section Statistiques Santé (Optionnel) */}
                 <div className={style.statsGrid}>
