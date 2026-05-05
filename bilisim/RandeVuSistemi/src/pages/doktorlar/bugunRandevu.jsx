@@ -4,6 +4,8 @@ import axios from 'axios';
 import style from './bugunRandevu.module.css'
 import NavbarDoktor from './navbar';
 import { UserContext } from '../contextAPI/randevuSayiContext';
+import DetailsPopup from '../details';
+import SonucPopup from './sonuc';
 
 
 function DoctorBugunkuRandevu() {
@@ -67,6 +69,21 @@ function DoctorBugunkuRandevu() {
             console.error("Hata:", error);
         }
     };
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedPatient, setSelectedPatient] = useState(null);
+    const handleDetails=(hasta) => {
+        setSelectedPatient(hasta); // On enregistre les données du patient cliqué
+        setIsModalOpen(true);
+    };
+
+    // État pour ouvrir/fermer le modal
+    const [isopen, setIsOpen] = useState(false);
+    const [pateintName, setPateintName] = useState(null);
+    const handleOpenPopup = (patient) => {
+        setIsOpen(true); // On garde le créneau en mémoire
+        setPateintName(patient); // On affiche le popup
+    };
+
     const [showAll, setShowAll] = useState(false);
     // On définit les rendez-vous à afficher selon l'état showAll
     const displayedAppointments = showAll ? appointments : appointments.slice(0, 4);
@@ -126,13 +143,16 @@ function DoctorBugunkuRandevu() {
 
                                 {/* Section Droite : Actions */}
                                 <div className={style.actionSection}>
-                                    <button className={style.extendBtn} onClick={() => handleOnayla(apt.id)}
+                                    <button className={style.extendBtn} onClick={() => handleOpenPopup(apt.patientName)}
                                         disabled={apt.status !== "Beklemede"}>
                                         <i className="fa-solid fa-clock"></i> Oynala
                                     </button>
                                     <button className={style.deleteBtn} onClick={() => handleDelete(apt.id)}
                                         disabled={apt.status !== "Beklemede"}>
                                         <i className="fa-solid fa-trash-can"></i> Iptal Et
+                                    </button>
+                                    <button className={style.detailsBtn} onClick={() => handleDetails(apt)}>
+                                        <i className="fas fa-eye"></i> Detaylar
                                     </button>
                                 </div>
                             </div>
@@ -145,6 +165,19 @@ function DoctorBugunkuRandevu() {
                     </div>
                 )}
             </div>
+
+            {isModalOpen && (<DetailsPopup 
+                isOpen={isModalOpen} 
+                onClose={() => setIsModalOpen(false)} 
+                Detaylar={selectedPatient} 
+            />
+            )}
+            <SonucPopup
+                isOpen={isopen}
+                onClose={() => setIsOpen(false)}
+                onConfirm={handleOnayla} // La fonction de sauvegarde
+                patientName={pateintName} // Optionnel
+            />
         </div>
   );
 }

@@ -212,7 +212,7 @@
     background-color: #fafafa;
 }
 
-.extendBtn, .deleteBtn {
+.extendBtn, .deleteBtn ,.detailsBtn {
     padding: 10px;
     border-radius: 10px;
     border: none;
@@ -243,6 +243,19 @@
 .deleteBtn:hover {
     background-color: #dc2626;
     color: white;
+}
+
+.detailsBtn {
+    color: orange; 
+    background-color: #f8f3bb;
+}
+
+.detailsBtn:hover {
+    background-color: #f5eb81;
+    color: #ffffff;
+}
+.detailsBtn:active,.deleteBtn:active,.extendBtn:active {
+    transform: scale(0.98); /* Effet de clic */
 }
 
 .extendBtn:disabled, .deleteBtn:disabled {

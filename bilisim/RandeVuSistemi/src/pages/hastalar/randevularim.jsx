@@ -5,6 +5,7 @@ import style from './randevularim.module.css'
 import NavbarHasta from './navbar';
 import { UserContext } from '../contextAPI/randevuSayiContext';
 import RandevuTimePopup from '../klinik/randevuTime';
+import DetailsPopup from '../details';
 
 function RandevularimHasta({isOpen, onClose}) {
     const [appointments, setAppointments] = useState([]);
@@ -72,6 +73,15 @@ function RandevularimHasta({isOpen, onClose}) {
             console.log("Supprimer RDV:", id);
         }
     };
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedPatient, setSelectedPatient] = useState(null);
+    const handleDetails=(hasta) => {
+        setSelectedPatient(hasta); // On enregistre les données du patient cliqué
+        setIsModalOpen(true);
+    };
+
+
     const [showAll, setShowAll] = useState(false);
     // On définit les rendez-vous à afficher selon l'état showAll
     const displayedAppointments = showAll ? appointments : appointments.slice(0, 4);
@@ -142,6 +152,9 @@ function RandevularimHasta({isOpen, onClose}) {
                                         disabled={apt.status !== "Beklemede"}>
                                         <i className="fa-solid fa-trash-can"></i> Iptal Et
                                     </button>
+                                    <button className={style.detailsBtn} onClick={() => handleDetails(apt)}>
+                                        <i className="fas fa-eye"></i> Detaylar
+                                    </button>
                                 </div>
                             </div>
                             
@@ -161,6 +174,12 @@ function RandevularimHasta({isOpen, onClose}) {
                 selectedDoctor={selectedDocForUpdate}
                 randevuday={currentDay} 
             />
+            {isModalOpen && (<DetailsPopup 
+                isOpen={isModalOpen} 
+                onClose={() => setIsModalOpen(false)} 
+                Detaylar={selectedPatient} 
+            />
+            )}
         </div>
   );
 }

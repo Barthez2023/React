@@ -357,6 +357,11 @@ Utilisation de  const {iddocURL} = useParams(); du module import { useParams } f
 l'anamnèse (histoire), les symptômes et les antécédents médicamenteux avant de valider ou d'annuler le rendez-vous.
 
 
+# 05-05-2026
+---Gestion des boutton "detaylar  permettant au docteurs et au patient de voir les details (symptomes,remede pris par le patient...) et amelioration du boutton "onay" permettant au docturs de donner un rappor par rapport apres la consultation.
+
+--- 1.Dans le fichier bugunRandevu.jsx et updateRandevuStatus.php recuperer les donnes entres par le medecin dans le popup sonuc et le update dans la data base
+--- 2.Acfficher ces donnees cote docteur et cote patient
 
 
 
