@@ -9,12 +9,15 @@ const SonucPopup = ({ isOpen, onClose, onConfirm, patientName }) => {
   });
 
   if (!isOpen) return null;
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
+  // 2. Fonction générique pour mettre à jour le champ modifié
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value // Met à jour dynamiquement la clé correspondante (rapor, Diagnostic ou Recipe)
+        }));
+    };
+    
   const handleConfirm = () => {
     onConfirm(formData); // Envoie les données vers ton API PHP
     onClose();

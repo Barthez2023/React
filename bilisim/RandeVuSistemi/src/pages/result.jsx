@@ -1,44 +1,43 @@
 import React from 'react';
-import style from './details.module.css';
+import style from './result.module.css';
 import ExpandableText from './ExpandableText';
 
-// Utilisation des props : isOpen (booléen), onClose (fonction), Detaylar (objet data)
-const DetailsPopup = ({ isOpen, onClose, Detaylar }) => {
-    
+// Utilisation des props : isOpen (booléen), onClose (fonction), Result (objet data)
+const ResultPopup = ({ isOpen, onClose, Result }) => {
     // Si le popup n'est pas ouvert ou si les données sont absentes, on ne rend rien
-    if (!isOpen || !Detaylar) return null;
+    if (!isOpen || !Result) return null;
 
     return (
         <div className={style.modalOverlay} onClick={onClose}>
             <div className={style.modalContent} onClick={(e) => e.stopPropagation()}>
                 <div className={style.modalHeader}>
-                    <h2><i className="fa-solid fa-circle-info"></i> Randevu Detayları</h2>
+                    <h2><i className="fa-solid fa-circle-info"></i> Randevu Raporu</h2>
                     <button className={style.closeBtn} onClick={onClose}>&times;</button>
                 </div>
                 
                 <div className={style.modalBody}>
                     <div className={style.detailItem}>
-                        <label>Hasta öyküsü (Anamnez)</label>
+                        <label>RandeVu Genel Bakis</label>
                         <div className={style.textContainer}>
-                            <ExpandableText text={Detaylar.history} maxWords={20} />
+                            <ExpandableText text={Result.rapor} maxWords={20} />
                         </div>
                     </div>
                     <div className={style.detailItem}>
-                        <label>Mevcut semptomlar</label>
+                        <label>Mevcut Teşhis</label>
                         <div className={style.textContainer}>
-                            <ExpandableText text={Detaylar.symptoms} maxWords={20} />
+                            <ExpandableText text={Result.Diagnostic} maxWords={20} />
                         </div>
                     </div>
                     <div className={style.detailItem}>
-                        <label>Alınan ilaçlar ve dozları</label>
+                        <label>Tıbbi reçete</label>
                         <div className={style.textContainer}>
-                            <ExpandableText text={Detaylar.medications} maxWords={20} />
+                            <ExpandableText text={Result.Recipe} maxWords={20} />
                         </div>
                     </div>
                     <div className={style.detailItem}>
                         <label>Notlar</label>
                         <p className={style.patientNote}>
-                            Hasta tarafından girilen tüm  bilgiler.
+                            Doktor tarafından girilen   bilgiler.
                         </p>
                     </div>
                 </div>
@@ -51,4 +50,4 @@ const DetailsPopup = ({ isOpen, onClose, Detaylar }) => {
     );
 };
 
-export default DetailsPopup;
+export default ResultPopup;

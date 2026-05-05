@@ -5,6 +5,7 @@ import style from './bugunRandevu.module.css'
 import NavbarDoktor from './navbar';
 import { UserContext } from '../contextAPI/randevuSayiContext';
 import DetailsPopup from '../details';
+import ResultPopup from '../result';
 import SonucPopup from './sonuc';
 
 
@@ -50,39 +51,63 @@ function DoctorBugunkuRandevu() {
             default: return style.statusDefault;
         }
     };
-    //doktor tarafindan randevu oynalamak
-    const handleOnayla = async (id) => {
+
+    //ouverture de popup et affectation des donnes 
+    const [isopen, setIsOpen] = useState(false);             // État pour ouvrir/fermer le modal
+    const [pateintName, setPateintName] = useState(null);
+    const [SelectedId, setSelectedId] = useState(null);
+    const handleOpenPopup = (patient) => {
+        setIsOpen(true); //On affiche le popup
+        setPateintName(patient.pateintName); 
+        setSelectedId(patient.id); 
+    };
+
+
+
+    // La fonction handleOnayla reçoit automatiquement l'objet formData envoyé par le popup
+    const handleOnayla = async (dataFromPopup) => {
+        // 1. Extraction des données saisies dans le popup
+        const { rapor, Diagnostic, Recipe } = dataFromPopup;
+        console.log("Rapport :", rapor);
+        console.log("Diagnostic :", Diagnostic);
+        console.log("Reçete :", Recipe);
+
         try {
-            const response = await axios.post("http://localhost/BilisimTekno/updateRandevuStatus.php", { id });
+            // 2. Envoi direct vers votre API PHP
+            const response = await axios.post("http://localhost/BilisimTekno/updateRandevuStatus.php", {
+                id: SelectedId, // Assurez-vous d'avoir l'ID du rendez-vous actif dans un state du parent
+                rapor: rapor,
+                Diagnostic: Diagnostic,
+                Recipe: Recipe
+            });
 
             if (response.data.success) {
-                // Mise à jour de la liste locale
+                // Mettre à jour l'affichage de vos rendez-vous localement
                 setAppointments(prev => 
                     prev.map(apt => 
-                        apt.id === id ? { ...apt, status: "Onaylandı" } : apt
+                        apt.id === SelectedId ? { ...apt, status: "Onaylandı" } : apt
                     )
                 );
                 setBugunRandevuSayisi(prev => prev - 1);
                 setHastaRandevusayisi(prev => prev - 1);
             }
         } catch (error) {
-            console.error("Hata:", error);
+            console.error("Enregistrement de la consultation échoué", error);
         }
     };
+        
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedPatient, setSelectedPatient] = useState(null);
     const handleDetails=(hasta) => {
         setSelectedPatient(hasta); // On enregistre les données du patient cliqué
         setIsModalOpen(true);
     };
-
-    // État pour ouvrir/fermer le modal
-    const [isopen, setIsOpen] = useState(false);
-    const [pateintName, setPateintName] = useState(null);
-    const handleOpenPopup = (patient) => {
-        setIsOpen(true); // On garde le créneau en mémoire
-        setPateintName(patient); // On affiche le popup
+    const [popOpen, setpopOpen] = useState(false);
+    const handleResult=(hasta) => {
+        setSelectedPatient(hasta); // On enregistre les données du patient cliqué
+        setpopOpen(true);
     };
+
 
     const [showAll, setShowAll] = useState(false);
     // On définit les rendez-vous à afficher selon l'état showAll
@@ -143,7 +168,7 @@ function DoctorBugunkuRandevu() {
 
                                 {/* Section Droite : Actions */}
                                 <div className={style.actionSection}>
-                                    <button className={style.extendBtn} onClick={() => handleOpenPopup(apt.patientName)}
+                                    <button className={style.extendBtn} onClick={() => handleOpenPopup(apt)}
                                         disabled={apt.status !== "Beklemede"}>
                                         <i className="fa-solid fa-clock"></i> Oynala
                                     </button>
@@ -152,7 +177,10 @@ function DoctorBugunkuRandevu() {
                                         <i className="fa-solid fa-trash-can"></i> Iptal Et
                                     </button>
                                     <button className={style.detailsBtn} onClick={() => handleDetails(apt)}>
-                                        <i className="fas fa-eye"></i> Detaylar
+                                        <i className="fas fa-eye"></i> Detaylar 
+                                    </button>
+                                    <button className={style.resultBtn} onClick={() => handleResult(apt)}>
+                                        <i className="fa-solid fa-file-medical"></i>Teşhis
                                     </button>
                                 </div>
                             </div>
@@ -178,6 +206,12 @@ function DoctorBugunkuRandevu() {
                 onConfirm={handleOnayla} // La fonction de sauvegarde
                 patientName={pateintName} // Optionnel
             />
+            {popOpen && (<ResultPopup 
+                isOpen={popOpen} 
+                onClose={() => setpopOpen(false)} 
+                Result={selectedPatient} 
+            />
+            )}
         </div>
   );
 }

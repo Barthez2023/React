@@ -6,6 +6,7 @@ import NavbarHasta from './navbar';
 import { UserContext } from '../contextAPI/randevuSayiContext';
 import RandevuTimePopup from '../klinik/randevuTime';
 import DetailsPopup from '../details';
+import ResultPopup from '../result';
 
 function RandevularimHasta({isOpen, onClose}) {
     const [appointments, setAppointments] = useState([]);
@@ -80,6 +81,12 @@ function RandevularimHasta({isOpen, onClose}) {
         setSelectedPatient(hasta); // On enregistre les données du patient cliqué
         setIsModalOpen(true);
     };
+    const [popOpen, setpopOpen] = useState(false);
+    const handleResult=(hasta) => {
+        setSelectedPatient(hasta); // On enregistre les données du patient cliqué
+        setpopOpen(true);
+    };
+
 
 
     const [showAll, setShowAll] = useState(false);
@@ -155,6 +162,9 @@ function RandevularimHasta({isOpen, onClose}) {
                                     <button className={style.detailsBtn} onClick={() => handleDetails(apt)}>
                                         <i className="fas fa-eye"></i> Detaylar
                                     </button>
+                                    <button className={style.resultBtn} onClick={() => handleResult(apt)}>
+                                        <i className="fa-solid fa-file-medical"></i>Teşhis
+                                    </button>
                                 </div>
                             </div>
                             
@@ -178,6 +188,13 @@ function RandevularimHasta({isOpen, onClose}) {
                 isOpen={isModalOpen} 
                 onClose={() => setIsModalOpen(false)} 
                 Detaylar={selectedPatient} 
+            />
+            )}
+
+            {popOpen && (<ResultPopup 
+                isOpen={popOpen} 
+                onClose={() => setpopOpen(false)} 
+                Result={selectedPatient} 
             />
             )}
         </div>

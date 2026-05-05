@@ -212,7 +212,7 @@
     background-color: #fafafa;
 }
 
-.extendBtn, .deleteBtn ,.detailsBtn {
+.extendBtn, .deleteBtn ,.detailsBtn,.resultBtn {
     padding: 10px;
     border-radius: 10px;
     border: none;
@@ -252,6 +252,16 @@
 
 .detailsBtn:hover {
     background-color: #f5eb81;
+    color: #ffffff;
+}
+
+.resultBtn {
+    color: #10b981; /* Vert émeraude */
+    background-color: #cff4e2; /* Vert très clair */
+}
+
+.resultBtn:hover {
+    background-color: #10b981;
     color: #ffffff;
 }
 .detailsBtn:active,.deleteBtn:active,.extendBtn:active {

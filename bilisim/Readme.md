@@ -370,6 +370,14 @@ Dün gece iki tane 358 mg'lık parasetamol tableti, bu sabah da iki tane aldım.
 Mide bulantısı, kusma, baş ağrısı ve karın ağrısı, yorgunluk
 Dün öğle yemeğinden hemen sonra kendimi çok kötü hissetmeye başladım. Yemek sırasında sadece bir kase pilav ve biraz tavuk yedim.
 
+Ketoprofen 100 mg (Steroid olmayan antiinflamatuar ilaç - NSAID): Sabah ve akşam yemeklerle birlikte 1 tablet (böbrek taşının etrafındaki şişliği azaltmak için gereklidir).
+Nefopam (Acupan) 20 mg veya Tramadol 50 mg (Seviye 2 analjezik): Ağrı devam ederse 6-8 saatte bir 1 kapsül (parasetamol ile dönüşümlü olarak, günde en fazla 4 kez).
+Floroglusinol (Spasfon Lyoc) 80 mg (Spazmolitik): Ağrı atakları sırasında dil altında eritilecek 2 tablet (günde en fazla 6 tablet).
+
+Birincil şüphe: Akut sağ böbrek kolik ağrısı (muhtemelen böbrek taşlarına bağlı).  Ayırıcı tanı olarak dışlanması gereken durum: Akut sağ piyelonefrit (üst idrar yolu enfeksiyonu).
+
+Hasta, dün öğleden beri ani başlangıçlı, nöbetler halinde ortaya çıkan ve kasıklara yayılan akut sağ bel ağrısıyla başvurmuştur. Buna, sık idrara çıkma, ağrılı idrara çıkma ve makroskopik hematüri (pembe idrar) dahil olmak üzere belirgin idrar semptomları eşlik etmektedir. Tedavi edici dozda parasetamol (toplam 2 g) ile yapılan kendi kendine tedavi, bu şiddetli ağrı için tamamen etkisiz kalmıştır. Atağın şiddeti ve özellikleri, üst idrar yolunda akut bir tıkanıklığı güçlü bir şekilde düşündürmektedir.
+
 
 
 
