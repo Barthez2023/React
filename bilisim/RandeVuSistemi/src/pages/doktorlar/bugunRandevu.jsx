@@ -101,6 +101,7 @@ function DoctorBugunkuRandevu() {
     const handleDetails=(hasta) => {
         setSelectedPatient(hasta); // On enregistre les données du patient cliqué
         setIsModalOpen(true);
+        console.log(hasta)
     };
     const [popOpen, setpopOpen] = useState(false);
     const handleResult=(hasta) => {

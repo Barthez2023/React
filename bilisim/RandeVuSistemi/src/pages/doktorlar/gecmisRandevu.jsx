@@ -3,6 +3,8 @@ import { useState,useEffect } from 'react';
 import axios from 'axios';
 import style from './gecmisRandevu.module.css'
 import NavbarDoktor from './navbar';
+import DetailsPopup from '../details';
+import ResultPopup from '../result';
 
 
 function DoctorGecmisRandevu() {
@@ -42,6 +44,20 @@ function DoctorGecmisRandevu() {
             default: return style.statusDefault;
         }
     };
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+        const [selectedPatient, setSelectedPatient] = useState(null);
+        const handleDetails=(hasta) => {
+            setSelectedPatient(hasta); // On enregistre les données du patient cliqué
+            setIsModalOpen(true);
+            console.log(hasta)
+        };
+        const [popOpen, setpopOpen] = useState(false);
+        const handleResult=(hasta) => {
+            setSelectedPatient(hasta); // On enregistre les données du patient cliqué
+            setpopOpen(true);
+        };
+
     const [showAll, setShowAll] = useState(false);
     // On définit les rendez-vous à afficher selon l'état showAll
     const displayedAppointments = showAll ? appointments : appointments.slice(0, 4);
@@ -107,10 +123,13 @@ function DoctorGecmisRandevu() {
                                     <button className={style.deleteBtn} onClick={() => handleDelete(apt.id)} disabled>
                                         <i className="fa-solid fa-trash-can"></i> Iptal Et
                                     </button>
-                                    <button className={style.gecmisBtn}>
-                                        <i className="fa-solid fa-clock-rotate-left"></i> 
-                                        <span>Geçmiş</span>
+                                    <button className={style.detailsBtn} onClick={() => handleDetails(apt)}>
+                                        <i className="fas fa-eye"></i> Detaylar 
                                     </button>
+                                    <button className={style.resultBtn} onClick={() => handleResult(apt)}>
+                                        <i className="fa-solid fa-file-medical"></i>Teşhis
+                                    </button>
+                                    
                                 </div>
                             </div>
                         ))}
@@ -122,6 +141,18 @@ function DoctorGecmisRandevu() {
                     </div>
                 )}
             </div>
+                {isModalOpen && (<DetailsPopup
+                    isOpen={isModalOpen} 
+                    onClose={() => setIsModalOpen(false)} 
+                    Detaylar={selectedPatient} 
+                />
+                )}
+                {popOpen && (<ResultPopup 
+                    isOpen={popOpen} 
+                    onClose={() => setpopOpen(false)} 
+                    Result={selectedPatient} 
+                />
+                )}
         </div>
   );
 }
