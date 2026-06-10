@@ -4,9 +4,9 @@ import axios from 'axios';
 import style from './bugunRandevu.module.css'
 import NavbarDoktor from './navbar';
 import { UserContext } from '../contextAPI/randevuSayiContext';
-import DetailsPopup from '../details';
 import ResultPopup from '../result';
 import SonucPopup from './sonuc';
+import DetailsPopupDoc from '../detailsDoc';
 
 
 function DoctorBugunkuRandevu() {
@@ -194,8 +194,7 @@ function DoctorBugunkuRandevu() {
                     </div>
                 )}
             </div>
-
-            {isModalOpen && (<DetailsPopup 
+            {isModalOpen && (<DetailsPopupDoc
                 isOpen={isModalOpen} 
                 onClose={() => setIsModalOpen(false)} 
                 Detaylar={selectedPatient} 

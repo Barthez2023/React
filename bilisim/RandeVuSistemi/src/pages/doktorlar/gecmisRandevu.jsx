@@ -3,7 +3,7 @@ import { useState,useEffect } from 'react';
 import axios from 'axios';
 import style from './gecmisRandevu.module.css'
 import NavbarDoktor from './navbar';
-import DetailsPopup from '../details';
+import DetailsPopupDoc from '../detailsDoc';
 import ResultPopup from '../result';
 
 
@@ -141,7 +141,7 @@ function DoctorGecmisRandevu() {
                     </div>
                 )}
             </div>
-                {isModalOpen && (<DetailsPopup
+                {isModalOpen && (<DetailsPopupDoc
                     isOpen={isModalOpen} 
                     onClose={() => setIsModalOpen(false)} 
                     Detaylar={selectedPatient} 

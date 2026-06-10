@@ -27,6 +27,7 @@ import Hastalar from './pages/administration/hastalar/hastalarList';
 import AdminStats from './pages/administration/home1';
 import DoktorStats from './pages/administration/home1';
 import DoktorlarAnalize from './pages/doktorlar/Analizepage';
+import EmailForm from './pages/ResendTest/test';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -58,6 +59,8 @@ function App() {
       <Route path="/admin/doktor/Analyse" element={<DoktorlarAnalize />}/>
       <Route path="/klinik" element={<Klinik/>} />
       <Route path="/adminStats" element={<AdminStats/>} />
+      <Route path="/emailtest" element={<EmailForm/>} />
+  
 
     </Routes>
     </>

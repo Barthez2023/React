@@ -77,7 +77,7 @@ function NavbarAmin() {
           </div>
           <Link to="/doktorlar" className={`${style.link} ${isActive('/doktorlar') ? style.linkActive : ''}`}>Doktorlar</Link>
           <Link to="/hastalar" className={`${style.link} ${isActive('/hastalar') ? style.linkActive : ''}`}>Hastalar</Link>
-          <Link to="/klinik" className={`${style.link} ${isActive('/klinikList') ? style.linkActive : ''}`}>Randevular</Link>
+          <Link to="/emailtest" className={`${style.link} ${isActive('/emailtest') ? style.linkActive : ''}`}>Randevular</Link>
         </div>
 
       </nav>

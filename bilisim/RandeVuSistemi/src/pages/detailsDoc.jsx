@@ -1,10 +1,9 @@
 import React ,{useState} from 'react';
 import style from './details.module.css';
 import ExpandableText from './ExpandableText';
-import ModeIAPopup from './modeIA';
 
 // Utilisation des props : isOpen (booléen), onClose (fonction), Detaylar (objet data)
-const DetailsPopup = ({ isOpen, onClose, Detaylar }) => {
+const DetailsPopupDoc = ({ isOpen, onClose, Detaylar }) => {
     
     // Si le popup n'est pas ouvert ou si les données sont absentes, on ne rend rien
     if (!isOpen || !Detaylar) return null;
@@ -51,16 +50,10 @@ const DetailsPopup = ({ isOpen, onClose, Detaylar }) => {
 
                 <div className={style.modalFooter}>
                     <button className={style.closeFooterBtn} onClick={onClose}>Kapat</button>
-                    <button className={style.openAIBtn} onClick={() => setIsPopupOpen(true)}><i class="fa-solid fa-magnifying-glass-chart"></i> Mode IA</button>
                 </div>
             </div>
-            <ModeIAPopup
-                isOpen={isPopupOpen} 
-                onClose={() => setIsPopupOpen(false)} 
-                onSend={handleDataAnalysis}
-            />
         </div>
     );
 };
 
-export default DetailsPopup;
+export default DetailsPopupDoc;

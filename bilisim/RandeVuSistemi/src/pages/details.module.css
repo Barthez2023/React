@@ -81,12 +81,14 @@
 }
 
 .modalFooter {
+    display: flex;
+    justify-content: space-between;
     padding: 15px 20px;
     border-top: 1px solid #eee;
     text-align: right;
 }
 
-.closeFooterBtn {
+.closeFooterBtn,.openAIBtn {
     padding: 8px 20px;
     background-color: #3b82f6;
     color: white;
@@ -101,4 +103,12 @@
     color: #334155; /* Couleur de texte douce (slate-700) */
     word-break: break-word; /* Évite que les longs mots cassent la mise en page */
     margin-top: 5px;
+}
+.openAIBtn{
+    color: #10b981; /* Vert émeraude */
+    background-color: #cff4e2; /* Vert très clair */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }

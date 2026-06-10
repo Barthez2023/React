@@ -20,6 +20,9 @@ const ConsultationModalPopup = ({ isOpen, onClose, onConfirm, patientName }) => 
     onClose();
   };
 
+
+
+
   return (
     <div className={style.modalOverlay}>
       <div className={style.modalBox}>

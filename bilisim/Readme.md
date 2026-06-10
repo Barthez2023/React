@@ -386,10 +386,230 @@ Hasta, dün öğleden beri ani başlangıçlı, nöbetler halinde ortaya çıkan
 
 
 
+# dermatolojie 
+Hasta öyküsü (Anamnez):
+Hasta, yaklaşık üç aydır yüz ve boyun bölgesinde ortaya çıkan cilt döküntüleri ve kaşıntı şikayetleri nedeniyle başvurmuştur. Daha önce benzer şikayetler yaşamamış olup bilinen bir cilt hastalığı öyküsü bulunmamaktadır.
+
+Mevcut semptomlar:
+Yüz ve boyun bölgesinde kızarıklık, kaşıntı ve zaman zaman pullanma görülmektedir. Şikayetlerin özellikle sıcak havalarda ve bazı kozmetik ürünlerin kullanımından sonra arttığı belirtilmektedir.
+
+Alınan ilaçlar ve dozları:
+Hasta, son iki hafta içinde reçetesiz olarak Hidrokortizon %1 kremi günde iki kez ince tabaka halinde uygulamıştır. Ayrıca kaşıntıyı azaltmak amacıyla Setirizin 10 mg günde bir kez kullanmaktadır.
 
 
 
 
+
+
+
+
+
+
+
+
+import React from 'react';
+import {
+  Body,
+  Container,
+  Head,
+  Heading,
+  Hr,
+  Html,
+  Img,
+  Link,
+  Preview,
+  Section,
+  Text,
+} from 'react-email';
+// Importation du fichier CSS Module local
+import styles from './new.email.module.css';
+
+const baseUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : '';
+
+export default function NewEmail({ verificationCode }) {
+  return (
+    <Html lang="en">
+      <Head />
+      <Body className={styles.body}>
+        <Preview>New     Email Verification</Preview>
+        <Container className={styles.container}>
+          <Section className={styles.mainSection}>
+            
+            {/* Section Logo */}
+            <Section className={styles.headerSection}>
+              <Img
+                src={`${baseUrl}/static/aws-logo.png`}
+                width="75"
+                height="45"
+                alt="AWS's Logo"
+              />
+            </Section>
+
+            {/* Section Contenu Principal */}
+            <Section className={styles.contentSection}>
+              <Heading className={styles.heading}>
+                Verify your email address
+              </Heading>
+              <Text className={styles.text}>
+                Thanks for starting the new AWS account creation process. We
+                want to make sure it's really you. Please enter the following
+                verification code when prompted. If you don&apos;t want to
+                create an account, you can ignore this message.
+              </Text>
+              
+              {/* Zone du Code de vérification */}
+              <Section className={styles.codeContainer}>
+                <Text className={styles.codeLabel}>
+                  Verification code
+                </Text>
+                <Text className={styles.codeValue}>
+                  {verificationCode}
+                </Text>
+                <Text className={styles.codeValidity}>
+                  (This code is valid for 10 minutes)
+                </Text>
+              </Section>
+            </Section>
+
+            <Hr />
+
+            {/* Section Alerte Sécurité */}
+            <Section className={styles.footerSection}>
+              <Text className={styles.footerText}>
+                Amazon Web Services will never email you and ask you to
+                disclose or verify your password, credit card, or banking
+                account number.
+              </Text>
+            </Section>
+          </Section>
+
+          {/* Mentions Légales Bas de page */}
+          <Text className={styles.bottomDisclaimer}>
+            This message was produced and distributed by Amazon Web Services,
+            Inc., 410 Terry Ave. North, Seattle, WA 98109. © 2022, Amazon Web
+            Services, Inc.. All rights reserved. AWS is a registered trademark
+            of{' '}
+            <Link
+              href="https://amazon.com"
+              target="_blank"
+              className={styles.link}
+            >
+              Amazon.com
+            </Link>
+            , Inc. View our{' '}
+            <Link
+              href="https://amazon.com"
+              target="_blank"
+              className={styles.link}
+            >
+              privacy policy
+            </Link>
+            .
+          </Text>
+        </Container>
+      </Body>
+    </Html>
+  );
+}
+
+// Configuration des propriétés par défaut pour la prévisualisation locale
+NewEmail.PreviewProps = {
+  verificationCode: '596853',
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { Resend } from 'resend';
+
+// Charge les variables du fichier .env.local
+dotenv.config({ path: '.env.local' });
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+// Initialisation sécurisée côté serveur
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+app.post('/api/send', async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ error: "L'email est requis." });
+  }
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: 'Hastane@mhr.today', // Laisse ça pour les tests de base
+      to: email,
+      subject: "Test d'envoi depuis React + Vite",
+      html: '<p>Code de vérification : <strong>123456</strong></p>',
+    });
+
+    if (error) {
+      return res.status(400).json({ error: error.message });
+    }
+
+    return res.status(200).json({ success: true, data });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`🚀 Serveur Backend d'envoi d'emails démarré sur http://localhost:${PORT}`);
+});
 
 
 

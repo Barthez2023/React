@@ -47,9 +47,30 @@ https://www.youtube.com/watch?v=GXYvtczB0pk  :reactţformation
 https://www.youtube.com/watch?v=LY3xsaQB7ZE&list=PLtKaauZVThjBt8nMBSa68YMdJR_I_vIU4&index=15  :react formation
 https://www.youtube.com/watch?v=43H_PNDPHtg   :useReducer 
 https://www.youtube.com/watch?v=Pmxb-OlL_Dg   :useReducer
-
-
-
-
-
 https://youtu.be/2p9Ue_xpTAQ?si=ip01w0mriXnEPJze
+
+
+npm install @react-google-maps/api   ----->permet d'Installer la bibliothèque Google Maps 
+apres on va dans cette adresse et on creer un projet,activer Maps JavaScript API et créer une API KEY.
+
+
+
+permet d'installer les dependence liee a la gestion des emails
+npm install @react-email/ui -D -E
+npm install react-email react react-dom -E
+
+permet de visualiser l'interface de gestion des emails
+npm run email:dev
+
+pour envoyer les emails apres leurs creation on utilise resend
+npm install resend               permet d'installer l'interface de resend pour l'envoie des emails
+
+
+npm install @react-email/render react react-dom  :Bibliothèque spécialisée pour convertir un composant React Email en HTML compatible avec les clients de messagerie (Gmail, Outlook, Yahoo, etc.).
+
+npm install -D tsx : Le -D signifie devDependency (outil utilisé uniquement pendant le développement). À quoi sert tsx ?
+
+Il permet d'exécuter directement des fichiers TypeScript sans les compiler manuellement.
+
+npx email dev -d emails  permet de lancer l'interface permettant la visualisation des emails
+
