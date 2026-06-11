@@ -8,20 +8,49 @@ const ConsultationModalPopup = ({ isOpen, onClose, onConfirm, patientName }) => 
     medications: ''
   });
 
-  if (!isOpen) return null;
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleConfirm = () => {
-    onConfirm(formData); // Envoie les données vers ton API PHP
+  //ici on va mettre le code de gestion des emails
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState("");
+  const currentPatientId=localStorage.getItem('hastaId');
+  const handleSubmit = async () => {
+    setLoading(true);
+    setStatus("");
+
+    try {
+      const response = await fetch("http://localhost:3000/api/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          patientId: currentPatientId
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setStatus("Email envoyé !");
+      } else {
+        setStatus(`Erreur : ${result.error}`);
+      }
+    } catch (error) {
+      setStatus("Erreur de connexion");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleClick = async () => {
+    onConfirm(formData);
+    await handleSubmit();
     onClose();
   };
 
-
-
+  if (!isOpen) return null;
 
   return (
     <div className={style.modalOverlay}>
@@ -74,7 +103,7 @@ const ConsultationModalPopup = ({ isOpen, onClose, onConfirm, patientName }) => 
           <button className={style.cancelBtn} onClick={onClose}>
             İptal
           </button>
-          <button className={style.confirmBtn} onClick={handleConfirm}>
+          <button className={style.confirmBtn} onClick={handleClick}>
             Onay
           </button>
         </footer>

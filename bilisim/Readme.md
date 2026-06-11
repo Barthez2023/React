@@ -388,13 +388,13 @@ Hasta, dün öğleden beri ani başlangıçlı, nöbetler halinde ortaya çıkan
 
 # dermatolojie 
 Hasta öyküsü (Anamnez):
-Hasta, yaklaşık üç aydır yüz ve boyun bölgesinde ortaya çıkan cilt döküntüleri ve kaşıntı şikayetleri nedeniyle başvurmuştur. Daha önce benzer şikayetler yaşamamış olup bilinen bir cilt hastalığı öyküsü bulunmamaktadır.
+Yaklaşık üç aydır yüz ve boyun bölgesinde ortaya çıkan cilt döküntüleri ve kaşıntı şikayetleri nedeniyle başvurmuştur. Daha önce benzer şikayetler yaşamamış olup bilinen bir cilt hastalığı öyküsü bulunmamaktadır.
 
 Mevcut semptomlar:
 Yüz ve boyun bölgesinde kızarıklık, kaşıntı ve zaman zaman pullanma görülmektedir. Şikayetlerin özellikle sıcak havalarda ve bazı kozmetik ürünlerin kullanımından sonra arttığı belirtilmektedir.
 
 Alınan ilaçlar ve dozları:
-Hasta, son iki hafta içinde reçetesiz olarak Hidrokortizon %1 kremi günde iki kez ince tabaka halinde uygulamıştır. Ayrıca kaşıntıyı azaltmak amacıyla Setirizin 10 mg günde bir kez kullanmaktadır.
+Son iki hafta içinde reçetesiz olarak Hidrokortizon %1 kremi günde iki kez ince tabaka halinde uygulamıştır. Ayrıca kaşıntıyı azaltmak amacıyla Setirizin 10 mg günde bir kez kullanmaktadır.
 
 
 
@@ -534,38 +534,6 @@ NewEmail.PreviewProps = {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -613,6 +581,137 @@ app.listen(PORT, () => {
 
 
 
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { Resend } from 'resend';
+import React from 'react';
+import { render } from '@react-email/render';
+
+// On importe le  template d'email
+import NewEmail from './emails/NewEmail.jsx'; 
+
+dotenv.config({ path: '.env.local' });
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+app.post('/api/send', async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ error: "L'email est requis." });
+  }
+
+  try {
+    // 1. On transforme le composant React en HTML pur à la volée
+    const emailHtml = await render(
+      React.createElement(NewEmail, { verificationCode: "951753" })
+    );
+
+    // 2. On envoie ce HTML via Resend
+    const { data, error } = await resend.emails.send({
+      from: 'Hastane@mhr.today', // Reste sur ça pour tes tests
+      to: email,
+      subject: "Ton code de vérification !",
+      html: emailHtml, // ✨ C'est ici que la magie opère
+    });
+
+    if (error) {
+      return res.status(400).json({ error: error.message });
+    }
+
+    return res.status(200).json({ success: true, data });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`🚀 Serveur prêt à envoyer des composants React sur http://localhost:${PORT}`);
+});
+
+
+app.post('/api/send', async (req, res) => {
+  const { patientId, departmentName, hospitalName, ville, appointmentDate } = req.body;
+
+  if (!patientId || !appointmentDate) {
+    return res.status(400).json({ error: "L'ID du patient et la date sont requis." });
+  }
+
+  try {
+    // 1.REQUÊTE MYSQL : Récupérer les infos du patient depuis phpMyAdmin
+    
+    const [rows] = await dbPool.query(
+      `SELECT 
+          p.email,            
+          r.randevu_date,
+          r.baslangic_saat,
+          d.speciality,
+          p.name AS nom,
+          p.surname AS prenom,
+          p.email AS patientEmail,
+          k.name AS clinicName,
+          k.city AS clinicCity
+      FROM randevular r
+      JOIN doktorlar d ON r.doktor_id = d.id
+      JOIN klinik k ON d.klinik_id = k.id
+      JOIN hastalar p ON r.patient_id = p.id
+      WHERE p.id = ?`,
+      [patientId]
+    );
+
+    // Vérifier si le patient existe
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Patient introuvable dans la base de données." });
+    }
+
+    const patient = rows[0];
+    const nomComplet = `${patient.prenom} ${patient.nom}`;
+
+    // 2. 🎨 RENDU DE L'EMAIL : On fusionne les données de la DB
+    const emailHtml = await render(
+      React.createElement(Confirm, { 
+        patientName: nomComplet,
+        departmentName: patient.speciality,
+        hospitalName: patient.clinicName,
+        ville: patient.clinicCity,
+        appointmentDate: patient.randevu_date,
+        time: patient.baslangic_saat,
+      })
+    );
+
+    // 3. 🚀 ENVOI VIA RESEND
+    const { data, error } = await resend.emails.send({
+      from: 'Hastane@mhr.today',
+      to: patient.email, // L'adresse email récupérée directement depuis phpMyAdmin !
+      subject: `Confirmation de votre rendez-vous - ${patient.clinicName}`,
+      html: emailHtml, 
+    });
+
+    if (error) {
+      return res.status(400).json({ error: error.message });
+    }
+
+    return res.status(200).json({ success: true, data });
+  } catch (err) {
+    console.error("Erreur Serveur :", err);
+    return res.status(500).json({ error: "Erreur lors de la communication avec la base de données ou Resend." });
+  }
+});
+
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`🚀 Serveur connecté à la DB et actif sur http://localhost:${PORT}`);
+});
+
+
+ ORDER BY r.randevu_date DESC
+      LIMIT 1
 
 
 

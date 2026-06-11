@@ -165,6 +165,7 @@ export default function Confirm({
   appointmentDate,
   departmentName,
   hospitalName,
+  time,
   ville,
 }) {
   const dateObj = appointmentDate
@@ -184,7 +185,7 @@ export default function Confirm({
       <Head />
 
       <Preview>
-        Votre rendez-vous médical a été confirmé
+        Tıbbi randevunuz onaylandı.
       </Preview>
 
       <Body style={styles.body}>
@@ -193,11 +194,11 @@ export default function Confirm({
           {/* HEADER */}
           <Section style={styles.header}>
             <Heading style={styles.head}>
-                {'Notification de Rendez-Vous Confirmé'}
+                {'Randevu Onay Bildirimi'}
             </Heading>
 
             <Text style={styles.hospitalSubtitle}>
-              Votre santé, notre priorité
+              Sağlığınız, önceliğimizdir.
             </Text>
           </Section>
 
@@ -205,23 +206,22 @@ export default function Confirm({
           <Section style={styles.content}>
             
             <div style={styles.badge}>
-              ✓   Rendez-vous confirmé
+              ✓ Randevu Alindi
             </div>
 
             <Text style={styles.paragraph}>
-              Bonjour <strong>{patientName}</strong>,
+              Sayin <strong>{patientName}</strong>,
             </Text>
 
             <Text style={styles.paragraph}>
-              Nous avons le plaisir de vous confirmer
-              que votre rendez-vous a bien été enregistré
-              dans notre système.
+              Randevunuzun sistemimize başarıyla kaydedildiğini 
+              memnuniyetle teyit ederiz.
             </Text>
 
             {/* CARD */}
             <Section style={styles.card}>
               <Text style={styles.cardTitle}>
-                Détails du rendez-vous
+                Randevu Bilgileri
               </Text>
 
               <table
@@ -233,7 +233,7 @@ export default function Confirm({
                   <tr>
                     <td style={styles.row}>
                       <span style={styles.label}>
-                        Département
+                        Tıbbi bölüm
                       </span>
                     </td>
 
@@ -250,7 +250,7 @@ export default function Confirm({
                   <tr>
                     <td style={styles.row}>
                       <span style={styles.label}>
-                        Date
+                        Tarih
                       </span>
                     </td>
 
@@ -271,7 +271,7 @@ export default function Confirm({
                       }}
                     >
                       <span style={styles.label}>
-                        Heure
+                        Zaman
                       </span>
                     </td>
 
@@ -282,7 +282,7 @@ export default function Confirm({
                       }}
                     >
                       <span style={styles.value}>
-                        {formattedTime}
+                        {time}
                       </span>
                     </td>
                   </tr>
@@ -294,7 +294,7 @@ export default function Confirm({
                       }}
                     >
                       <span style={styles.label}>
-                        Ville
+                        Adres
                       </span>
                     </td>
 
@@ -316,7 +316,7 @@ export default function Confirm({
                       }}
                     >
                       <span style={styles.label}>
-                        Hostipatal
+                        Hastane
                       </span>
                     </td>
 
@@ -337,10 +337,10 @@ export default function Confirm({
 
             {/* INFO BOX */}
             <div style={styles.note}>
-              ℹ️ Si vous souhaitez modifier ou
-              annuler votre rendez-vous, merci
-              de le faire au moins 24 heures
-              avant la date prévue.
+                ℹ️ Randevunuzu değiştirmek veya
+                iptal etmek isterseniz, lütfen
+                planlanan tarihten en az 24 saat önce
+                bunu yapın.
             </div>
 
             {/* BUTTON */}
@@ -349,7 +349,7 @@ export default function Confirm({
                 href="https://mhr.today/espace-patient"
                 style={styles.button}
               >
-                Gérer mon rendez-vous
+                Randevumu yönet
               </Button>
             </Section>
           </Section>
@@ -361,11 +361,11 @@ export default function Confirm({
             </Text>
 
             <Text style={styles.footerText}>
-              Cet e-mail a été généré automatiquement.
+              Bu e-posta otomatik olarak oluşturulmuştur.
             </Text>
 
             <Text style={styles.footerText}>
-              Merci de ne pas répondre directement à ce message.
+              Lütfen bu mesaja doğrudan yanıt vermeyin.
             </Text>
           </Section>
 
@@ -378,8 +378,9 @@ export default function Confirm({
 Confirm.PreviewProps = {
   patientName: 'Valorie Barthez',
   appointmentDate: new Date(
-    '2026-06-15T14:30:00'
+    '2026-06-15'
   ),
+  time: '12:30',
   departmentName: 'Cardiologie',
   hospitalName: 'Hôpital MHR de Konya',
   ville: 'Konya',
